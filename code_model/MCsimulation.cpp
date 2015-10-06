@@ -288,8 +288,10 @@ Simulation	runSimulation_one(Population P_init,
 							   _DIR_CALIB+file_calib_targets,
 							   _DIR_CALIB+file_calib_weights);
 	
+	// ======================
 	// ==== Intervention ====
-
+	// ======================
+	
 	filename_interventions = trim(filename_interventions);
 	vector<Intervention> I;
 	for (int i=0; i<filename_interventions.size(); i++){
@@ -304,12 +306,14 @@ Simulation	runSimulation_one(Population P_init,
 	int displayProgress_prtn = 0;
 	
 	
+	// ========================================================
 	// === Pre-run to form partnerships first (no sex acts) ===
+	// ========================================================
 	
 	// Temporary set horizon and timestep
 	// for very long run to form couples only
 	
-	S.set_horizon(horizon_prtn); // long enough such that initial indiv are all > agemax (:80)
+	S.set_horizon(horizon_prtn); // long enough such that initial indiv are all > agemax (e.g. 80)
 	S.set_timeStep(timestep_prtn);
 	
 	bool doSex = false;
@@ -330,8 +334,6 @@ Simulation	runSimulation_one(Population P_init,
 	// (this is what we want, for example comparing 2
 	// intervention scenario with the _same_ seed)
 	force_seed_reset(iter_mc);
-	
-	
 	S.runAllEvents_horizon(doSex,logIndivInfo,
 						   traceNetwork_prtn,displayProgress_prtn,
 						   iter_mc);
@@ -343,16 +345,21 @@ Simulation	runSimulation_one(Population P_init,
 	S.set_horizon(horizon);
 	S.set_timeStep(timestep);
 	
+	
+	// =================================
 	// Seed STIs' initial prevalence
+	// =================================
+	
 	S.STI_set_initial_prevalence(filename_init_STI_prev);
 	cout << endl<<"Simulation has STI prevalence initialized from this file: ";
 	cout <<filename_init_STI_prev<<endl;
 	
 	
+	// =================================
 	// === STIs epidemics start ===
-
-	doSex = true;
+	// =================================
 	
+	doSex = true;
 	S.runAllEvents_horizon(doSex,
 						   logIndivInfo,
 						   TraceNetwork,

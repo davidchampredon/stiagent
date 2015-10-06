@@ -208,7 +208,7 @@ void Simulation::runAllEvents_timeStep(int numTimeStep,
 									   ofstream &f, ofstream &ff,
 									   bool logIndivInfo)
 {
-	/// Execute all simulation events during a dingle time step
+	/// Execute all simulation events during a single time step
 	
 	bool debugflag = false;
 	double t = _population.get_simulationTime();
@@ -416,13 +416,11 @@ void Simulation::runAllEvents_horizon(bool doSex,
 	
 	
 	int nSTI = _population.get_nSTImodelled();
-	
 	_population.set_timeStep(_timeStep);
 	_nursery.set_STI(_population.get_STI());
 	
-	
 	// Number of interventions
-	int n_intervention = _intervention.size();
+	unsigned long n_intervention = _intervention.size();
 	
 	// DEBUG
 	if ( _MC_trial_iter==1){
@@ -540,7 +538,6 @@ void Simulation::runAllEvents_horizon(bool doSex,
 							  f,
 							  ff,
 							  logIndivInfo);
-		
 		
 		// Record STI prevalences
 		
@@ -674,7 +671,7 @@ void Simulation::set_calibration_schedule(string filename_calibrationTime,
 	///               |  prevTp2.csv    |  prevTp3.csv
 	///               |                 |  PrevHIV3.csv
 	///
-	/// Each file name must have a pre-specify name such that
+	/// Each file name must have a pre-specified name such that
 	/// the _type_ of target is recognized and we can construct
 	/// the associated table of calibration types:
 	///
