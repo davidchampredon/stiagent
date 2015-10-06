@@ -85,6 +85,8 @@ List rcpp_stiagent(List params) {
 									 displayProgress,
 									 iter_mc);
 	
+	double prevHIV = S.get_population().STI_prevalence(HIV);
+	
 	return List::create(Named("prevHIV") = prevHIV
 						);
 	
