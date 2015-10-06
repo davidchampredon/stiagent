@@ -13,8 +13,8 @@
 source("read_singleSimul_vs_target_FCT.R")
 
 # Path to folder where output files are
-folder.calib =  "../CALIBRATION/" 
-folder.out =  "../OUT/" 
+folder.calib =  "../calibration/" 
+folder.out =  "../outputs/" 
 
 
 # Output type

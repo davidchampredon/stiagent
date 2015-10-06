@@ -1,4 +1,4 @@
-DIR.OUT <- "../OUT/"
+DIR.OUT <- "../outputs/"
 
 
 source("analyze_simulation_FCT.R")

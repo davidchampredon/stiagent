@@ -7,7 +7,7 @@ library(ggplot2);theme_set(theme_bw())
 library(gridExtra)
 source("analyze_UTILS.R")
 source("analyze_simulation_FCT.R")
-DIR_OUT="../OUT/"
+DIR_OUT="../outputs/"
 
 savetofile =TRUE
 

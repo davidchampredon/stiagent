@@ -8,7 +8,7 @@ source("analyze_UTILS.R")
 source("analyze_simulation_FCT.R")
 
 # Path to folder where output files are
-folder.out =  "../OUT/" 
+folder.out =  "../outputs/" 
 
 # Output type
 save.to.file = TRUE

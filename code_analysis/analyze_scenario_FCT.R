@@ -1,7 +1,7 @@
 
 
 source("scenario_extinct_FCT.R")
-DIR_OUT = "../OUT/"
+DIR_OUT = "../outputs/"
 
 trim.scenario.name <- function(filename){
   ### EXTRACT SCENARIO NAME FROM FILE NAME

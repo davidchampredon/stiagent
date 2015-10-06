@@ -1,7 +1,7 @@
 ### ANALYZE SEX ACTS FROM SIMULATIONS
 
-DIR_OUT="../OUT/"
-DIR_INPUTS = "../"
+DIR_OUT="../outputs/"
+DIR_INPUTS = "../inputs/"
 save.to.file = TRUE
 
 if (save.to.file) pdf("analyze_sexActs.pdf",width=20,height=15)

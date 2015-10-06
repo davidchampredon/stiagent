@@ -5,7 +5,8 @@ library(reshape2)
 
 read.simulation.file <- function(filenameroot)
 {
-	fnames <- system(paste0("ls ../OUT/",filenameroot,"*"),intern = T)
+  DIR_OUT = "../outputs/"
+	fnames <- system(paste0("ls ",DIR_OUT,filenameroot,"*"),intern = T)
 	
 	simul = data.frame()
 	for (i in 1:length(fnames))

@@ -10,7 +10,7 @@ source("analyze_simulation_FCT.R")
 source("analyze_partnerships_FCT.R")
 
 # Path to folder where output files are
-folder.out =  "../OUT/" 
+folder.out =  "../outputs/" 
 
 # Number of monte carlo simulations
 n.mc <- as.numeric(system(paste0("ls -l ",folder.out,"simul_mc*.out | wc -l"),intern = T))

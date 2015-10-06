@@ -2,7 +2,7 @@
 ### TRANSMISSION ANALYSIS  ###
 ##############################
 
-DIR_OUT <- "../OUT/"
+DIR_OUT <- "../outputs/"
 save.to.file <- TRUE
 
 if(save.to.file) pdf("analyze_transmissions.pdf", width=20,height=15)

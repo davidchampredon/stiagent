@@ -1,4 +1,4 @@
-DIR.OUT <- "../OUT/"
+DIR.OUT <- "../outputs/"
 
 
 source("analyze_simulation_FCT.R")
@@ -52,5 +52,5 @@ mc.HIV.extinct.before.interv <- function(intervFileName){
 }
 
 
-intervFileName <- "interv_base_Tp.csv"
-yy <- mc.Tp.extinct.before.interv(intervFileName)
+# intervFileName <- "interv_base_Tp.csv"
+# yy <- mc.Tp.extinct.before.interv(intervFileName)
