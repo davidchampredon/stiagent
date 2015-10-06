@@ -12,5 +12,8 @@ code_analysis/*.pdf
 code_analysis/analyze_scenario.pdf
 
 Rlibrary/stiagent/*
+Rlibrary/lib/*
+Rlibrary/stiagent.Rcheck/*
+Rlibrary/*.gz
 
 SF_MC_timestamp.txt
