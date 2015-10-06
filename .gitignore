@@ -11,6 +11,6 @@ code_analysis/*.csv
 code_analysis/*.pdf
 code_analysis/analyze_scenario.pdf
 
-Rlibrary/*
+Rlibrary/stiagent/*
 
 SF_MC_timestamp.txt
