@@ -1,1 +1,3 @@
 *.out
+*.log
+code_model/tphiv_*
