@@ -1,6 +1,7 @@
 *.out
 *.log
 *.pdf
+*.swp
 
 code_model/tphiv_*
 code_model/*.out
