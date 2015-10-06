@@ -4560,7 +4560,7 @@ double Population::STI_probaMTCT(STIname sti, double stiduration)
 	// TO DO: do not hard code
 	double proba = 0.0;
 	
-	if (sti==HIV)	proba = 0.95;
+	if (sti==HIV)	proba = 0.30;
 	if (sti==Tp)	proba = 0.90/(1.0+exp(3.0*(stiduration-2.0)));
 	return proba;
 }
@@ -4618,18 +4618,15 @@ double Population::STI_prevalence(STIname stiname)
 	unsigned long N=0;	// total number of individuals alive
 	unsigned long infected=0; // total number of infected individuals with this STI
 	
+	unsigned int sti_i = positionSTIinVector(stiname, _STI);
 	
-	for (int uid=0; uid<_size; uid++)
-	{
+	for (int uid=0; uid<_size; uid++){
 		if (_individual[uid].isAlive()){
 			N++;
-			// DELETE WHEN SURE: if (_individual[uid].get_STIduration()[s]>0)
-			if (_individual[uid].get_STIduration(stiname)>0){
+			if(_individual[uid].get_STIduration()[sti_i]>0)   // slow code:(_individual[uid].get_STIduration(stiname)>0)
 				infected++;
-			}
 		}
 	}
-	
 	return (double)(infected)/N;
 }
 
@@ -4642,9 +4639,7 @@ vector<double>	Population::STI_prevalences(vector<STIname> stinames)
 	vector<double> prev;
 	
 	for (int s=0; s<stinames.size(); s++)
-	{
 		prev.push_back(STI_prevalence(stinames[s]));
-	}
 	
 	return prev;
 }
