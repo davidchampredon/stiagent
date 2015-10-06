@@ -279,7 +279,7 @@ void CODECHECK_partnerships(Population &P)
 		fage[i] = P.form_age(age[i]);
 	}
 	
-	Matrix Mfage(age);
+	dcMatrix Mfage(age);
 	Mfage.addColVector(fage);
 	Mfage.WriteToFileCSV(_DIR_VIZINPUT + "viz_input_prtnr_form_age.out");
 	
@@ -293,7 +293,7 @@ void CODECHECK_partnerships(Population &P)
 		fagegap[i] = P.form_ageGap(gap[i]);
 	}
 	
-	Matrix Mgap(gap);
+	dcMatrix Mgap(gap);
 	Mgap.addColVector(fagegap);
 	Mgap.WriteToFileCSV(_DIR_VIZINPUT + "viz_input_prtnr_form_agegap.out");
 
@@ -314,7 +314,7 @@ void CODECHECK_partnerships(Population &P)
 			frisk.push_back(P.form_riskGroup(i, j));
 		}
 	}
-	Matrix Mfrisk(r1);
+	dcMatrix Mfrisk(r1);
 	Mfrisk.addColVector(r2);
 	Mfrisk.addColVector(frisk);
 	Mfrisk.WriteToFileCSV(_DIR_VIZINPUT + "viz_input_prtnr_form_risk.out");
@@ -339,7 +339,7 @@ void CODECHECK_partnerships(Population &P)
 			fdeficit.push_back(P.form_deficit(x1[i], x2[j]));
 		}
 	}
-	Matrix Mfdeficit(xx1);
+	dcMatrix Mfdeficit(xx1);
 	Mfdeficit.addColVector(xx2);
 	Mfdeficit.addColVector(fdeficit);
 	Mfdeficit.WriteToFileCSV(_DIR_VIZINPUT + "viz_input_prtnr_form_deficit.out");
@@ -369,7 +369,7 @@ void CODECHECK_partnerships(Population &P)
 			sp_age.push_back(s);
 		}
 	}
-	Matrix Msp_age(agef_);
+	dcMatrix Msp_age(agef_);
 	Msp_age.addColVector(agegap_);
 	Msp_age.addColVector(sp_age);
 	Msp_age.WriteToFileCSV(_DIR_VIZINPUT + "viz_input_prtnr_sp_age.out");
@@ -391,7 +391,7 @@ void CODECHECK_partnerships(Population &P)
 		
 	}
 	
-	Matrix Dage(age_1);
+	dcMatrix Dage(age_1);
 	Dage.addColVector(age_2);
 	Dage.addColVector(dage);
 	Dage.WriteToFileCSV(_DIR_VIZINPUT + "viz_input_prtnr_dissol_age.out");
@@ -412,7 +412,7 @@ void CODECHECK_partnerships(Population &P)
 			drisk.push_back(P.dissolve_riskGroup_fct(i, j));
 		}
 	}
-	Matrix Dfrisk(r1);
+	dcMatrix Dfrisk(r1);
 	Dfrisk.addColVector(r2);
 	Dfrisk.addColVector(drisk);
 	Dfrisk.WriteToFileCSV(_DIR_VIZINPUT + "viz_input_prtnr_dissol_risk.out");
@@ -427,7 +427,7 @@ void CODECHECK_partnerships(Population &P)
 		ddur[i] = P.dissolve_duration_fct(pdur[i]);
 	}
 	
-	Matrix Dpdur(pdur);
+	dcMatrix Dpdur(pdur);
 	Dpdur.addColVector(ddur);
 	Dpdur.WriteToFileCSV(_DIR_VIZINPUT + "viz_input_prtnr_dissol_pduration.out");
 	
@@ -449,7 +449,7 @@ void CODECHECK_partnerships(Population &P)
 			ddeficit.push_back(P.dissolve_partnerDeficit_fct(x1[i], x2[j]));
 		}
 	}
-	Matrix Ddeficit(xx1);
+	dcMatrix Ddeficit(xx1);
 	Ddeficit.addColVector(xx2);
 	Ddeficit.addColVector(ddeficit);
 	Ddeficit.WriteToFileCSV(_DIR_VIZINPUT + "viz_input_prtnr_dissol_deficit.out");
@@ -472,7 +472,7 @@ void CODECHECK_sexActivity(Population &P)
 		fage[i] = P.sexAct_reduce_age(age[i]);
 	}
 	
-	Matrix Mage(age);
+	dcMatrix Mage(age);
 	Mage.addColVector(fage);
 	Mage.WriteToFileCSV(_DIR_VIZINPUT + "viz_input_sexact_age.out");
 
@@ -485,7 +485,7 @@ void CODECHECK_sexActivity(Population &P)
 		frisk[i] = P.sexAct_reduce_riskGroup((int)(rskgrp[i]));
 	}
 	
-	Matrix Mrisk(rskgrp);
+	dcMatrix Mrisk(rskgrp);
 	Mrisk.addColVector(frisk);
 	Mrisk.WriteToFileCSV(_DIR_VIZINPUT + "viz_input_sexact_risk.out");
 
@@ -498,7 +498,7 @@ void CODECHECK_sexActivity(Population &P)
 		fnp[i] = P.sexAct_reduce_nPartners((int)(nprtn[i]));
 	}
 	
-	Matrix Mnp(nprtn);
+	dcMatrix Mnp(nprtn);
 	Mnp.addColVector(fnp);
 	Mnp.WriteToFileCSV(_DIR_VIZINPUT + "viz_input_sexact_npartner.out");
 	
@@ -511,7 +511,7 @@ void CODECHECK_sexActivity(Population &P)
 		maxp[i] = P.proba_nMaxCurrSexPartner(male, (int)(rskgrp[i]));
 	}
 	
-	Matrix Mmaxp(rskgrp);
+	dcMatrix Mmaxp(rskgrp);
 	Mmaxp.addColVector(maxp);
 	Mmaxp.WriteToFileCSV(_DIR_VIZINPUT + "viz_input_sexact_maxpartner_male.out");
 	
@@ -523,7 +523,7 @@ void CODECHECK_sexActivity(Population &P)
 		maxp[i] = P.proba_nMaxCurrSexPartner(female, (int)(rskgrp[i]));
 	}
 	
-	Matrix Mmaxp2(rskgrp);
+	dcMatrix Mmaxp2(rskgrp);
 	Mmaxp2.addColVector(maxp);
 	Mmaxp2.WriteToFileCSV(_DIR_VIZINPUT + "viz_input_sexact_maxpartner_female.out");
 
@@ -536,7 +536,7 @@ void CODECHECK_sexActivity(Population &P)
 		pcsw[i] = P.probaSex_sexworker((int)(rskgrp[i]));
 	}
 	
-	Matrix Mpcsw(rskgrp);
+	dcMatrix Mpcsw(rskgrp);
 	Mpcsw.addColVector(pcsw);
 	Mpcsw.WriteToFileCSV(_DIR_VIZINPUT + "viz_input_sexact_probacsw.out");
 
@@ -555,7 +555,7 @@ void CODECHECK_sexActivity(Population &P)
 		}
 	}
 	
-	Matrix Msex0(r1);
+	dcMatrix Msex0(r1);
 	Msex0.addColVector(r2);
 	Msex0.addColVector(psex0);
 	Msex0.WriteToFileCSV(_DIR_VIZINPUT + "viz_input_sexact_probatype0.out");
@@ -574,7 +574,7 @@ void CODECHECK_sexActivity(Population &P)
 		}
 	}
 	
-	Matrix Msex1(r1);
+	dcMatrix Msex1(r1);
 	Msex1.addColVector(r2);
 	Msex1.addColVector(psex1);
 	Msex1.WriteToFileCSV(_DIR_VIZINPUT + "viz_input_sexact_probatype1.out");

@@ -31,8 +31,8 @@ dcDataFrame LHS_explore(Population P,
 // === TARGET VALUES ===
 
 
-Matrix calib_getTarget_AgeDistribution(string filename);
-Matrix calib_getTarget_Distribution(string filename);
+dcMatrix calib_getTarget_AgeDistribution(string filename);
+dcMatrix calib_getTarget_Distribution(string filename);
 
 
 vector<string> calib_getTarget_STIprevalences_names(string filename);

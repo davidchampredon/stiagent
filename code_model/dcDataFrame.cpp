@@ -18,12 +18,12 @@
 void dcDataFrame::addrow(string varname, vector<double> values)
 {
 	// Add a row to the data frame
-	// Size of values MUST equal the nb of columns of Matrix _value
+	// Size of values MUST equal the nb of columns of dcMatrix _value
 	
 	if (values.size()!= _value.getNbCols() &&  _value.getNbCols()>0 )
 	{
 		cout << "ERROR dcDataFrame [addrow]:";
-		cout << "'values' vector size and Matrix nb columns 'value' do not match"<<endl;
+		cout << "'values' vector size and dcMatrix nb columns 'value' do not match"<<endl;
 		exit(1);
 	}
 	

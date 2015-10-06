@@ -91,7 +91,7 @@ void vectorFromFile(vector<int>& res, string theFileName);
 void vectorFromCSVfile(vector<double>& res, const char * theFileName, int column);
 void vectorFromCSVfile_string(vector<string>& res, const char * theFileName, int column);
 
-void MatrixFromCSVfile(Matrix& M,string filename, int ncol);
+void MatrixFromCSVfile(dcMatrix& M,string filename, int ncol);
 
 
 template <class T> void vectorToFile(vector<T> v, string fileName)
@@ -124,7 +124,7 @@ string getParameterFromFile_string(string paramName, string fileName);
 vector<string>	getFirstLineHeaders( istream& ins );
 unsigned int	getNumberColumns(string fileName);
 
-Matrix			distributionFromFile(string filename);
+dcMatrix			distributionFromFile(string filename);
 
 
 typedef vector <double> record_t;
@@ -547,7 +547,7 @@ vector<double> partitionLinear(double a_min, double a_max, int nbPartitions);
 
 vector<double> partitionLog(double a_min, double a_max, int nbPartitions);
 
-Matrix	LatinHypercubeSampling(vector<double> Vmin, vector<double> Vmax,
+dcMatrix	LatinHypercubeSampling(vector<double> Vmin, vector<double> Vmax,
 							   int samplingNb);
 
 vector<int> uniformIntVector(int seed, int size, int min, int max); // Vector of size "size", elements randomly valued with uniform distribution

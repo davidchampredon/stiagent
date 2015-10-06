@@ -851,7 +851,7 @@ void Population::increment_nChildBorn(unsigned long uid)
 
 void Population::set_STI_SFincrease(string filename)
 {
-	Matrix tmp(_nSTImodelled);
+	dcMatrix tmp(_nSTImodelled);
 	tmp.FromFile(filename);
 	
 	_STI_SFincrease = tmp;
@@ -2509,7 +2509,7 @@ void Population::update_UID_PartnershipMatrix(Individual I)
 		
 		int n = _PartnerMatrix.getNbCols();
 		//vector<double> v(n,0.0);
-		//_PartnerMatrix.addRowVector(v); // too slow need to fix Matrix function...
+		//_PartnerMatrix.addRowVector(v); // too slow need to fix dcMatrix function...
 		
 		int nr = _PartnerMatrix.getNbRows()+1;
 		_PartnerMatrix.resize(nr, n);
@@ -2525,7 +2525,7 @@ void Population::update_UID_PartnershipMatrix(Individual I)
 		
 		int n = _PartnerMatrix.getNbRows();
 		vector<double> v(n,0.0);
-		_PartnerMatrix.addColVector(v);// too slow need to fix Matrix function...
+		_PartnerMatrix.addColVector(v);// too slow need to fix dcMatrix function...
 		
 		/*THIS DOESN't WORK
 		 BECAUSE NOT AS EASY AS WITH ROW
@@ -2881,7 +2881,7 @@ void Population::spousalScanAllCasual()
 	
 	
 	// Retrieves all partnerships (casual and spousal)
-	Matrix P = getPartnershipsUID();
+	dcMatrix P = getPartnershipsUID();
 	
 	int np = P.getNbRows();
 	
@@ -2917,7 +2917,7 @@ void Population::spousalScanAllCasual()
 	}
 	
 	// Update the records of spouses in the population
-	Matrix dummy = getSpousesUID();
+	dcMatrix dummy = getSpousesUID();
 }
 
 
@@ -3066,7 +3066,7 @@ void Population::dissolvePartnerships(double prd, bool save_trace_file)
 	//<< " ~ Binom("<< proportion<<"," << N << ")" << endl;
 	
 	// Retrieve all partnerships
-	Matrix P = getPartnershipsUID();
+	dcMatrix P = getPartnershipsUID();
 	
 	// Select which partnerships will be candidate for dissolution
 	vector<long> random_index = uniformIntVectorUnique(Dc,0,N-1);
@@ -3158,14 +3158,14 @@ unsigned long Population::findPositionIn_partnershipsMatrix(unsigned long uid_fe
 }
 
 
-Matrix	Population::getPartnershipsUID()
+dcMatrix	Population::getPartnershipsUID()
 {
 	// GET RID OF THIS FUNCTION
 	
 	//_totalNumberPartnerships = _partnershipsMatrix().getNbRows();  //TO DO: this should not be here
 	return get_partnershipsMatrix();
 	
-	/*	Matrix res(1,2);
+	/*	dcMatrix res(1,2);
 	 int c=0;
 	 
 	 for(int i=0; i<_PartnerMatrix.getNbRows(); i++)
@@ -3194,16 +3194,16 @@ Matrix	Population::getPartnershipsUID()
 	 }*/
 }
 
-Matrix	Population::getSpousesUID()
+dcMatrix	Population::getSpousesUID()
 {
 	if (_totalNumberPartnerships==0)
 	{
 		cout << endl << "*** WARNING [Population::getSpousesUID]: No partnerships, so no spousal ones...";
-		Matrix resZero(0);
+		dcMatrix resZero(0);
 		return resZero;
 	}
 	
-	Matrix res(1,2);
+	dcMatrix res(1,2);
 	
 	unsigned long c=0;
 	
@@ -3236,7 +3236,7 @@ Matrix	Population::getSpousesUID()
 	
 	if (c==0)
 	{
-		Matrix dummy(0,0);
+		dcMatrix dummy(0,0);
 		res = dummy;
 	}
 	
@@ -4673,14 +4673,14 @@ double Population::STI_prevalence(STIname s, int riskGroup)
 }
 
 
-Matrix Population::STI_prevalence_by_riskGroup(vector<STIname> stinames)
+dcMatrix Population::STI_prevalence_by_riskGroup(vector<STIname> stinames)
 {
 	/// MATRIX WHERE:
 	/// ROWS = STIS
 	/// COLUMNS = RISK GROUPS, THE LAST ONE BEING CSW
 	
 	
-	Matrix res(0,0);
+	dcMatrix res(0,0);
 	
 	for (int s=0; s<stinames.size(); s++)
 	{
@@ -5029,8 +5029,8 @@ void Population::displayInfo(bool IndividualDetails)
 	// May not be used, but initialized the correct count
 	// of number of partnerships
 	
-	Matrix P	= getPartnershipsUID();
-	Matrix SP	= getSpousesUID();
+	dcMatrix P	= getPartnershipsUID();
+	dcMatrix SP	= getSpousesUID();
 	
 	
 	// Display info
@@ -5450,7 +5450,7 @@ void Population::save_outputs_demog(string pathFolder)
 	vector<double> AD = census_ageDistribution(ageBreaks);
 	
 	ageBreaks.pop_back();
-	Matrix M(ageBreaks);
+	dcMatrix M(ageBreaks);
 	M.addColVector(AD);
 	
 	M.WriteToFileCSV(pathFolder+"census_ageDistribution.out");
@@ -5480,7 +5480,7 @@ void Population::save_outputs_demog(string pathFolder,
 	
 	vector<double> AD = census_ageDistribution(ageBreaks);
 	ageBreaks.pop_back();
-	Matrix M(ageBreaks);
+	dcMatrix M(ageBreaks);
 	M.addColVector(AD);
 	
 	string fileout = pathFolder+"ageDistrib_D"+to_string(idate)+"mc"+int2string(iMC)+".out";
@@ -5505,7 +5505,7 @@ void Population::save_outputs_prtnr(string pathFolder)
 	
 	vector<double> AGD = census_ageGapDistribution(ageBreaks);
 	ageBreaks.pop_back();
-	Matrix M(ageBreaks);
+	dcMatrix M(ageBreaks);
 	M.addColVector(AGD);
 	
 	M.WriteToFileCSV(pathFolder+"census_ageGapDistrib.out");
@@ -5553,7 +5553,7 @@ void Population::save_outputs_prtnr(string pathFolder,
 	
 	vector<double> AGD = census_ageGapDistribution(ageBreaks);
 	ageBreaks.pop_back();
-	Matrix M(ageBreaks);
+	dcMatrix M(ageBreaks);
 	M.addColVector(AGD);
 	
 	string fileout = pathFolder+"ageGapDistrib_D"+to_string(idate)+"mc"+int2string(iMC)+".out";
@@ -5601,12 +5601,12 @@ void Population::save_outputs_sex(string pathFolder)
 	
 	ageBreaks.pop_back();
 	
-	Matrix M_f(ageBreaks);
+	dcMatrix M_f(ageBreaks);
 	M_f.addColVector(AFSD_f);
 	M_f.WriteToFileCSV(pathFolder+"census_ageFirstSexDistribution_f.out");
 	
 	
-	Matrix M_m(ageBreaks);
+	dcMatrix M_m(ageBreaks);
 	M_m.addColVector(AFSD_m);
 	M_m.WriteToFileCSV(pathFolder+"census_ageFirstSexDistribution_m.out");
 	
@@ -5622,11 +5622,11 @@ void Population::save_outputs_sex(string pathFolder)
 	
 	ageGapBreaks.pop_back();
 	
-	Matrix MG_f(ageGapBreaks);
+	dcMatrix MG_f(ageGapBreaks);
 	MG_f.addColVector(AGFSD_f);
 	MG_f.WriteToFileCSV(pathFolder+"census_ageGapFirstSexSpouseDistribution_f.out");
 	
-	Matrix MG_m(ageGapBreaks);
+	dcMatrix MG_m(ageGapBreaks);
 	MG_m.addColVector(AGFSD_m);
 	MG_m.WriteToFileCSV(pathFolder+"census_ageGapFirstSexSpouseDistribution_m.out");
 	
@@ -5642,11 +5642,11 @@ void Population::save_outputs_sex(string pathFolder)
 	
 	nBreaks.pop_back();
 	
-	Matrix ML_f(nBreaks);
+	dcMatrix ML_f(nBreaks);
 	ML_f.addColVector(LSPD_f);
 	ML_f.WriteToFileCSV(pathFolder+"census_nLifeSexPrtnrDistrib_f.out");
 	
-	Matrix ML_m(nBreaks);
+	dcMatrix ML_m(nBreaks);
 	ML_m.addColVector(LSPD_m);
 	ML_m.WriteToFileCSV(pathFolder+"census_nLifeSexPrtnrDistrib_m.out");
 	
@@ -5696,11 +5696,11 @@ void Population::save_outputs_sex(string pathFolder,
 	fileout_f = pathFolder+"age1sex_f_D"+to_string(idate)+"mc"+int2string(iMC)+".out";
 	fileout_m = pathFolder+"age1sex_m_D"+to_string(idate)+"mc"+int2string(iMC)+".out";
 	
-	Matrix M_f(ageBreaks_f);
+	dcMatrix M_f(ageBreaks_f);
 	M_f.addColVector(AFSD_f);
 	M_f.WriteToFileCSV(fileout_f);
 	
-	Matrix M_m(ageBreaks_m);
+	dcMatrix M_m(ageBreaks_m);
 	M_m.addColVector(AFSD_m);
 	M_m.WriteToFileCSV(fileout_m);
 	
@@ -5718,11 +5718,11 @@ void Population::save_outputs_sex(string pathFolder,
 		fileout_f = pathFolder+"ageGap1SexSpouseDistrib_f_D"+to_string(idate)+"mc"+int2string(iMC)+".out";
 		fileout_m = pathFolder+"ageGap1SexSpouseDistrib_m_D"+to_string(idate)+"mc"+int2string(iMC)+".out";
 		
-		Matrix MG_f(ageGapBreaks_f);
+		dcMatrix MG_f(ageGapBreaks_f);
 		MG_f.addColVector(AGFSD_f);
 		MG_f.WriteToFileCSV(fileout_f);
 		
-		Matrix MG_m(ageGapBreaks_m);
+		dcMatrix MG_m(ageGapBreaks_m);
 		MG_m.addColVector(AGFSD_m);
 		MG_m.WriteToFileCSV(fileout_m);
 	}
@@ -5741,11 +5741,11 @@ void Population::save_outputs_sex(string pathFolder,
 	fileout_m = pathFolder+"lftNP_m_D"+to_string(idate)+"mc"+int2string(iMC)+".out";
 	
 	
-	Matrix ML_f(nBreaks_f);
+	dcMatrix ML_f(nBreaks_f);
 	ML_f.addColVector(LSPD_f);
 	ML_f.WriteToFileCSV(fileout_f);
 	
-	Matrix ML_m(nBreaks_m);
+	dcMatrix ML_m(nBreaks_m);
 	ML_m.addColVector(LSPD_m);
 	ML_m.WriteToFileCSV(fileout_m);
 	
@@ -5770,7 +5770,7 @@ void Population::save_outputs_sex(string pathFolder,
 	
 	ageBreaks_malesVisitCSW.pop_back();
 	
-	Matrix MAMVC(ageBreaks_malesVisitCSW);
+	dcMatrix MAMVC(ageBreaks_malesVisitCSW);
 	MAMVC.addColVector(AMVC);
 	
 	string fileout =pathFolder+"visitCSWage_D"+to_string(idate)+"mc"+int2string(iMC)+".out";
@@ -5809,7 +5809,7 @@ void Population::save_outputs_epi(string pathFolder,
 	{
 		vector<double> hiv_f = STI_prevalence_by_age(HIV, female, agebreaks_HIVprev_f);
 		agebreaks_HIVprev_f.pop_back();
-		Matrix HIVprev_f(agebreaks_HIVprev_f);
+		dcMatrix HIVprev_f(agebreaks_HIVprev_f);
 		HIVprev_f.addColVector(hiv_f);
 		string fileout_f = pathFolder+"HIV_prev_age_f_D"+to_string(idate)+"mc"+int2string(iMC)+".out";
 		HIVprev_f.WriteToFileCSV(fileout_f);
@@ -5819,7 +5819,7 @@ void Population::save_outputs_epi(string pathFolder,
 	{
 		vector<double> hiv_m = STI_prevalence_by_age(HIV, male, agebreaks_HIVprev_m);
 		agebreaks_HIVprev_m.pop_back();
-		Matrix HIVprev_m(agebreaks_HIVprev_m);
+		dcMatrix HIVprev_m(agebreaks_HIVprev_m);
 		HIVprev_m.addColVector(hiv_m);
 		string fileout_m = pathFolder+"HIV_prev_age_m_D"+to_string(idate)+"mc"+int2string(iMC)+".out";
 		HIVprev_m.WriteToFileCSV(fileout_m);

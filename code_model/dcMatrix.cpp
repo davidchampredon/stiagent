@@ -15,7 +15,7 @@
 // ////////////////////////////////////////////////////////////////////
 
 
-Matrix::Matrix(string fileName)
+dcMatrix::dcMatrix(string fileName)
 {
     ifstream thefile (fileName.c_str());
 	
@@ -29,11 +29,11 @@ Matrix::Matrix(string fileName)
 
 /*
 // ****** TRY TO FIX ME when have time **** 
-Matrix::Matrix(string fileName)
+dcMatrix::dcMatrix(string fileName)
 {
     ifstream thefile (fileName.c_str());
 	
-	cout << "DEBUG Matrix constructor from : "<<fileName<<endl;
+	cout << "DEBUG dcMatrix constructor from : "<<fileName<<endl;
 	
 	unsigned char_idx=0;
 	unsigned line_length,num_cols=0,num_rows=0;
@@ -85,7 +85,7 @@ Matrix::Matrix(string fileName)
 	nbRows = num_rows;
 	nbCols = num_cols;
 	
-	cout << "DEBUG: Matrix constructor from file: " << nbRows << "x" << nbCols <<endl;
+	cout << "DEBUG: dcMatrix constructor from file: " << nbRows << "x" << nbCols <<endl;
 	
 	// ==== Populate the values
 	
@@ -100,7 +100,7 @@ Matrix::Matrix(string fileName)
 */
 
 
-Matrix::Matrix(vector<double> v)
+dcMatrix::dcMatrix(vector<double> v)
 {
 	int nCol = v.size();
 	nbRows = nCol;
@@ -119,7 +119,7 @@ Matrix::Matrix(vector<double> v)
 //              OPERATORS
 // ////////////////////////////////////////////////////////////////////
 
-double & Matrix::operator () (int i,int j)
+double & dcMatrix::operator () (int i,int j)
 {
 	/// Retrieve matrix element
 	/// top left element is M(0,0)
@@ -131,7 +131,7 @@ double & Matrix::operator () (int i,int j)
     return val[nbCols*i+j];
 }
 
-double & Matrix::operator [] (int i)
+double & dcMatrix::operator [] (int i)
 {
     assert(i>=0);assert(i<nbRows);assert(nbCols==1);
     return val[i];
@@ -144,7 +144,7 @@ double & Matrix::operator [] (int i)
 
 
 
-void Matrix::RandomInit()
+void dcMatrix::RandomInit()
 {
 	srand ( time(NULL) );
 	
@@ -156,7 +156,7 @@ void Matrix::RandomInit()
     
 }
 
-void Matrix::setAllValues(double value)
+void dcMatrix::setAllValues(double value)
 {
     for(int i=0;i<nbRows;i++)		
 		for(int j=0;j<nbCols;j++)
@@ -166,7 +166,7 @@ void Matrix::setAllValues(double value)
     
 }
 
-void Matrix::setValueFromMatrix(Matrix M)
+void dcMatrix::setValueFromMatrix(dcMatrix M)
 {
 	for(int i=0;i<nbRows;i++)		
 		for(int j=0;j<nbCols;j++)
@@ -181,7 +181,7 @@ void Matrix::setValueFromMatrix(Matrix M)
 // ////////////////////////////////////////////////////////////////////
 
 
-void Matrix::FromFile(const char* fileName)
+void dcMatrix::FromFile(const char* fileName)
 {
 	ifstream thefile (fileName);
 	
@@ -193,7 +193,7 @@ void Matrix::FromFile(const char* fileName)
 	
 }
 
-void Matrix::FromFile(string fileName)
+void dcMatrix::FromFile(string fileName)
 {
 	/// READ A FILE AND FILL THE
 	/// ELEMENT VALUES TO THE MATRIX
@@ -206,7 +206,7 @@ void Matrix::FromFile(string fileName)
 			thefile >> val[nbCols*i+j];
 }
 
-void Matrix::FromFile_Rows(string fileName, int nrow)
+void dcMatrix::FromFile_Rows(string fileName, int nrow)
 {
 	/// READ A FILE AND FILL THE
 	/// ELEMENT VALUES TO THE MATRIX
@@ -258,7 +258,7 @@ void Matrix::FromFile_Rows(string fileName, int nrow)
 
 
 
-void Matrix::WriteToFile(string fileName)
+void dcMatrix::WriteToFile(string fileName)
 {
 	ofstream thefile (fileName.c_str());
 	
@@ -272,7 +272,7 @@ void Matrix::WriteToFile(string fileName)
     }
 }
 
-void Matrix::WriteToFileCSV(string fileName)
+void dcMatrix::WriteToFileCSV(string fileName)
 {
 	ofstream thefile (fileName.c_str());
 	
@@ -287,17 +287,17 @@ void Matrix::WriteToFileCSV(string fileName)
     }
 }
 
-void Matrix::WriteToFileCSV(string fileName, vector<string> headers)
+void dcMatrix::WriteToFileCSV(string fileName, vector<string> headers)
 {
 	ofstream thefile (fileName.c_str());
 	
-	string err_msg = "Headers size (" + to_string(headers.size()) + ") does not match Matrix columns size (" + to_string(nbCols) + ")!\n";
+	string err_msg = "Headers size (" + to_string(headers.size()) + ") does not match dcMatrix columns size (" + to_string(nbCols) + ")!\n";
 	err_msg = err_msg + "Cannot write matrix to this file: " + fileName;
 	stopif(nbCols!=headers.size(), err_msg);
 	
 //	if (nbCols!=headers.size())
 //	{
-//		cout << "ERROR -- WriteToFileCSV: Headers size ("<<headers.size()<<") does not match Matrix columns size ("<<nbCols<<")!"<<endl;
+//		cout << "ERROR -- WriteToFileCSV: Headers size ("<<headers.size()<<") does not match dcMatrix columns size ("<<nbCols<<")!"<<endl;
 //		cout << "Cannot write matrix to this file: "<<fileName<<endl;
 //		exit(1);
 //	}
@@ -330,16 +330,16 @@ void Matrix::WriteToFileCSV(string fileName, vector<string> headers)
 
 
 
-void Matrix::addRowVector(vector<double> v)
+void dcMatrix::addRowVector(vector<double> v)
 {    
-	Matrix res;
+	dcMatrix res;
 	
 	if (nbRows==0 && nbCols==0)
 	{
-		// If Matrix is empty, then this vector initialize the Matrix
+		// If dcMatrix is empty, then this vector initialize the dcMatrix
 		// as a 1 row matrix
 		
-		Matrix tmp(1,v.size());
+		dcMatrix tmp(1,v.size());
 		
 		for (int j=0; j<v.size(); j++) 
 		{
@@ -350,16 +350,16 @@ void Matrix::addRowVector(vector<double> v)
 	
 	else 
 	{
-		// If Matrix is NOT empty
+		// If dcMatrix is NOT empty
 		
 		if(nbCols != v.size())
 		{
-			cout<<"CAN'T ADD ROW VECTOR TO MATRIX, SIZES DO NOT MATCH: Matrix cols = "<< nbCols
+			cout<<"CAN'T ADD ROW VECTOR TO MATRIX, SIZES DO NOT MATCH: dcMatrix cols = "<< nbCols
 			<<" vs Vector size = "<< v.size() << endl;
 			exit(1);
 		}
 		
-		Matrix tmp(nbRows+1,nbCols);
+		dcMatrix tmp(nbRows+1,nbCols);
 		
 		for(int i=0; i<nbRows; i++)
 		{
@@ -405,7 +405,7 @@ void Matrix::addRowVector(vector<double> v)
 }
 
 
-void Matrix::addRowVector(vector<unsigned long> v)
+void dcMatrix::addRowVector(vector<unsigned long> v)
 {
 	vector<double> tmp;
 	
@@ -416,19 +416,19 @@ void Matrix::addRowVector(vector<unsigned long> v)
 }
 
 
-void Matrix::addColVector(vector<double> v)
+void dcMatrix::addColVector(vector<double> v)
 {        
     int nrow = this->nbRows;
     int ncol = this->nbCols;
     
     if(nrow != v.size())
 	{
-		cout<<"CAN'T ADD Col VECTOR TO MATRIX, SIZES DO NOT MATCH: Matrix rows = "<<nrow
+		cout<<"CAN'T ADD Col VECTOR TO MATRIX, SIZES DO NOT MATCH: dcMatrix rows = "<<nrow
 		<<" vs Vector size = "<<v.size()<<endl;
 		exit(1);
 	}
     
-    Matrix tmp(nrow,ncol+1);
+    dcMatrix tmp(nrow,ncol+1);
     
     for(int i=0; i<nrow; i++)
     {
@@ -446,7 +446,7 @@ void Matrix::addColVector(vector<double> v)
     *this = tmp;
 }
 
-void Matrix::removeRow(int i_row)
+void dcMatrix::removeRow(int i_row)
 {
 	for (int j=nbCols-1; j>=0; j--) 
 	{
@@ -456,7 +456,7 @@ void Matrix::removeRow(int i_row)
 }
 
 
-void Matrix::removeCol(int j_col)
+void dcMatrix::removeCol(int j_col)
 {
 	for (int i=nbRows-1; i>=0; i--)
 	{
@@ -466,9 +466,9 @@ void Matrix::removeCol(int j_col)
 }
 
 
-vector<double> Matrix::extractColumn(int j_col)
+vector<double> dcMatrix::extractColumn(int j_col)
 {
-	string errmsg ="Cannot extract Matrix column("+ to_string(j_col)+") greater than size (0--"+ to_string(nbCols-1)+")!";
+	string errmsg ="Cannot extract dcMatrix column("+ to_string(j_col)+") greater than size (0--"+ to_string(nbCols-1)+")!";
 	stopif (j_col >= nbCols, errmsg);
 	
 	vector<double> v(nbRows);
@@ -478,10 +478,10 @@ vector<double> Matrix::extractColumn(int j_col)
 	return v;
 }
 
-vector<double> Matrix::extractRow(int i_row)
+vector<double> dcMatrix::extractRow(int i_row)
 {
 	if (i_row >= nbRows) {
-		cout << endl << " ERROR [Matrix::extractRow]:cannot extract row("<< i_row;
+		cout << endl << " ERROR [dcMatrix::extractRow]:cannot extract row("<< i_row;
 		cout << ") greater than size (0--"<< nbRows-1<< ")!"<<endl;
 		exit(1);
 	}
@@ -495,10 +495,10 @@ vector<double> Matrix::extractRow(int i_row)
 }
 
 
-vector<double>	Matrix::extractRow_cond_minElement(int j_col)
+vector<double>	dcMatrix::extractRow_cond_minElement(int j_col)
 {
 	if (j_col >= nbCols) {
-		cout << endl << " ERROR [Matrix::extractRow_cond_minElement]:cannot extract row("<< j_col;
+		cout << endl << " ERROR [dcMatrix::extractRow_cond_minElement]:cannot extract row("<< j_col;
 		cout << ") greater than size (0--"<< nbCols-1<< ")!"<<endl;
 		exit(1);
 	}
@@ -525,9 +525,9 @@ vector<double>	Matrix::extractRow_cond_minElement(int j_col)
 
 
 
-void Matrix::setColumnValues(int colNb_start0, vector<double> v)
+void dcMatrix::setColumnValues(int colNb_start0, vector<double> v)
 {
-	string errmsg = "Matrix column size ("+to_string(nbRows)+") is different from vector size ("+to_string(v.size())+")" ;
+	string errmsg = "dcMatrix column size ("+to_string(nbRows)+") is different from vector size ("+to_string(v.size())+")" ;
     stopif(v.size() != nbRows,errmsg);
     
     for(int i=0; i<nbRows; i++) 
@@ -535,11 +535,11 @@ void Matrix::setColumnValues(int colNb_start0, vector<double> v)
 }
 
 
-void Matrix::setRowValues(int rowNb_start0, vector<double> v)
+void dcMatrix::setRowValues(int rowNb_start0, vector<double> v)
 {
 	/// Set the values of a given row
 	
-	string errmsg = "Matrix row size ("+to_string(nbCols)+") is different from vector size ("+to_string(v.size())+")" ;
+	string errmsg = "dcMatrix row size ("+to_string(nbCols)+") is different from vector size ("+to_string(v.size())+")" ;
 	stopif(v.size() != nbCols,errmsg);
     
     for(int j=0; j<nbCols; j++) 
@@ -547,11 +547,11 @@ void Matrix::setRowValues(int rowNb_start0, vector<double> v)
 }
 
 
-void Matrix::setRowValues(int rowNb_start0, vector<unsigned long> v)
+void dcMatrix::setRowValues(int rowNb_start0, vector<unsigned long> v)
 {
 	/// Set the values of a given row
 	
-	string errmsg = "Matrix row size ("+to_string(nbCols)+") is different from vector size ("+to_string(v.size())+")" ;
+	string errmsg = "dcMatrix row size ("+to_string(nbCols)+") is different from vector size ("+to_string(v.size())+")" ;
 	stopif(v.size() != nbCols,errmsg);
 	
 	for(int j=0; j<nbCols; j++)
@@ -562,15 +562,15 @@ void Matrix::setRowValues(int rowNb_start0, vector<unsigned long> v)
 
 
 // ////////////////////////////////////////////////////////////////////
-//              Usual Matrix Functions
+//              Usual dcMatrix Functions
 // ////////////////////////////////////////////////////////////////////
 
 
 
-void Matrix::display()
+void dcMatrix::display()
 {
     cout<<endl;
-	cout << "Matrix dimension: "<<nbRows<<"x"<<nbCols<<endl;
+	cout << "dcMatrix dimension: "<<nbRows<<"x"<<nbCols<<endl;
     for(int i=0;i<nbRows;i++)
     {
         cout<<"[ ";
@@ -583,7 +583,7 @@ void Matrix::display()
     }
 }
 
-bool Matrix::isSymetric()
+bool dcMatrix::isSymetric()
 {
 	if (nbCols!=nbRows) return false;
 	int nCol = nbRows;
@@ -600,9 +600,9 @@ bool Matrix::isSymetric()
 }
 
 
-Matrix Matrix::transpose()
+dcMatrix dcMatrix::transpose()
 {
-    Matrix B(nbCols,nbRows);
+    dcMatrix B(nbCols,nbRows);
     
     for (int i=0;i<nbCols;i++)
         for (int j=0;j<nbRows;j++)
@@ -613,7 +613,7 @@ Matrix Matrix::transpose()
 }
 
 
-double Matrix::determinant()
+double dcMatrix::determinant()
 {
     assert (nbCols==nbRows);
 
@@ -625,7 +625,7 @@ double Matrix::determinant()
     
     else
     {
-        Matrix B(nCol-1);
+        dcMatrix B(nCol-1);
         for(int k=0;k<nCol;k++)
         {
             for(int i=0;i<nCol;i++)
@@ -640,17 +640,17 @@ double Matrix::determinant()
     }
 }
 
-Matrix Matrix::getMinor(int row, int col)
+dcMatrix dcMatrix::getMinor(int row, int col)
 {
 	if (nbCols!=nbRows)
 	{
-		cout << endl<< "ERROR [Matrix::getMinor] : non square matrix" <<endl;
+		cout << endl<< "ERROR [dcMatrix::getMinor] : non square matrix" <<endl;
 		exit(1);
 	}
 	
 	int n = nbCols;
 	
-	Matrix B(n-1);
+	dcMatrix B(n-1);
 	// calculate the cofactor of element (row,col)
 	
 	// indicate which col and row is being copied to dest
@@ -678,18 +678,18 @@ Matrix Matrix::getMinor(int row, int col)
 }
 
 
-Matrix Matrix::inverse()
+dcMatrix dcMatrix::inverse()
 {	
 	if (nbRows!=nbCols)
 	{
-		cout << "ERROR [Matrix::inverse] : cannot inverse a non-square matrix!"<<endl;
+		cout << "ERROR [dcMatrix::inverse] : cannot inverse a non-square matrix!"<<endl;
 		exit(1);
 	}
 	
 	int n = nbCols;
 	
-	// Copy this Matrix into A
-	Matrix A(n);
+	// Copy this dcMatrix into A
+	dcMatrix A(n);
 	for (int i=0; i<n; i++) {
 		for (int j=0; j<n; j++) {
 			A(i,j) = val[n*i+j];
@@ -701,13 +701,13 @@ Matrix Matrix::inverse()
 	
 	if (det==0)
 	{
-		cout << "ERROR [Matrix::inverse] : cannot inverse matrix (determinant	=0)!"<<endl;
+		cout << "ERROR [dcMatrix::inverse] : cannot inverse matrix (determinant	=0)!"<<endl;
 		exit(1);
 	}
 	
     double oneOverDet = 1.0/det;
 	
-	Matrix AInverse(n);
+	dcMatrix AInverse(n);
 	
 	if (n==2)
 	{
@@ -719,7 +719,7 @@ Matrix Matrix::inverse()
 	
 	if (n>2)
 	{
-		Matrix Aminor(n-1);
+		dcMatrix Aminor(n-1);
 		
 		for(int j=0;j<n;j++)
 		{
@@ -741,20 +741,20 @@ Matrix Matrix::inverse()
 
 
 
-Matrix Matrix::Cholesky()
+dcMatrix dcMatrix::Cholesky()
 {				
     if(nbCols!=nbRows) 		
-    { cout<<"Cholesky: non square Matrix !"<<endl;
+    { cout<<"Cholesky: non square dcMatrix !"<<endl;
         exit(1);
     }
     
     if( ! this->isSymetric() ) 
-    {  cout<<"Cholesky: non symetric Matrix !"<<endl;
+    {  cout<<"Cholesky: non symetric dcMatrix !"<<endl;
         exit(1);
     }
 	
     int nCol = nbCols;
-    Matrix L(nCol);			
+    dcMatrix L(nCol);			
     float s;
     
     for(int i=0;i<nCol;i++)
@@ -774,7 +774,7 @@ Matrix Matrix::Cholesky()
 } 
 
 
-double Matrix::getMinimumValue()
+double dcMatrix::getMinimumValue()
 {
     double min = 1e36;
     
@@ -789,7 +789,7 @@ double Matrix::getMinimumValue()
 }
 
 
-double Matrix::getMaximumValue()
+double dcMatrix::getMaximumValue()
 {
     double maxi = -1e36;
     
@@ -803,7 +803,7 @@ double Matrix::getMaximumValue()
     return maxi;
 }
 
-double Matrix::sumAllElements()
+double dcMatrix::sumAllElements()
 {
 	double s=0;
 	
@@ -819,7 +819,7 @@ double Matrix::sumAllElements()
 	return s;
 }
 
-double Matrix::sumLine(int i)
+double dcMatrix::sumLine(int i)
 {
 	double s=0.0;
 	
@@ -831,7 +831,7 @@ double Matrix::sumLine(int i)
 	return s;
 }
 
-double Matrix::sumColumn(int j)
+double dcMatrix::sumColumn(int j)
 {
 	double s=0.0;
 	
@@ -844,7 +844,7 @@ double Matrix::sumColumn(int j)
 }
 
 
-double Matrix::sumColumnIf(int colToSum, int colToTest,
+double dcMatrix::sumColumnIf(int colToSum, int colToTest,
 						   double lowerBound, double upperBound)
 {
 	double s=0.0;
@@ -860,7 +860,7 @@ double Matrix::sumColumnIf(int colToSum, int colToTest,
 	return s;
 }
 
-int Matrix::countColumnIf(int colToTest, double lowerBound, double upperBound)
+int dcMatrix::countColumnIf(int colToTest, double lowerBound, double upperBound)
 {
 	int c = 0;
 	
@@ -879,10 +879,10 @@ int Matrix::countColumnIf(int colToTest, double lowerBound, double upperBound)
 /* ************************************************************ */
 
 
-Matrix operator + (Matrix &A,Matrix &B)
+dcMatrix operator + (dcMatrix &A,dcMatrix &B)
 {
     assert(A.nbCols==B.nbCols && A.nbRows==B.nbRows);
-    Matrix C(A.nbRows,A.nbCols);
+    dcMatrix C(A.nbRows,A.nbCols);
     for (int i=0;i<A.nbRows;i++)
         for (int j=0;j<A.nbCols;j++)
         {
@@ -891,10 +891,10 @@ Matrix operator + (Matrix &A,Matrix &B)
     return C;   
 }
 
-Matrix operator - (Matrix &A,Matrix &B)
+dcMatrix operator - (dcMatrix &A,dcMatrix &B)
 {
     assert(A.nbCols==B.nbCols && A.nbRows==B.nbRows);
-    Matrix C(A.nbRows,A.nbCols);
+    dcMatrix C(A.nbRows,A.nbCols);
     for (int i=0;i<A.nbRows;i++)
         for (int j=0;j<A.nbCols;j++)
         {
@@ -904,10 +904,10 @@ Matrix operator - (Matrix &A,Matrix &B)
 }
 
 
-Matrix operator * (Matrix &A,Matrix &B)
+dcMatrix operator * (dcMatrix &A,dcMatrix &B)
 {
     assert(A.nbCols==B.nbRows);
-    Matrix C(A.nbRows,B.nbCols);
+    dcMatrix C(A.nbRows,B.nbCols);
     double s=0;
     for (int i=0;i<A.nbRows;i++)
         for (int j=0;j<B.nbCols;j++)
@@ -919,9 +919,9 @@ Matrix operator * (Matrix &A,Matrix &B)
     return C;   
 }
 
-Matrix operator * (double a,Matrix &A)
+dcMatrix operator * (double a,dcMatrix &A)
 {
-    Matrix C(A.nbRows,A.nbCols);
+    dcMatrix C(A.nbRows,A.nbCols);
     for (int i=0;i<A.nbRows;i++)
         for (int j=0;j<A.nbCols;j++)
         {
@@ -934,9 +934,9 @@ Matrix operator * (double a,Matrix &A)
 
 
 
-Matrix transpo(Matrix A)
+dcMatrix transpo(dcMatrix A)
 {
-    Matrix B(A.nbCols,A.nbRows);
+    dcMatrix B(A.nbCols,A.nbRows);
     for (int i=0;i<A.nbCols;i++)
         for (int j=0;j<A.nbRows;j++)
         {
@@ -945,7 +945,7 @@ Matrix transpo(Matrix A)
     return B;
 }
 
-int test_sym(Matrix A)
+int test_sym(dcMatrix A)
 {
 	if (A.nbCols!=A.nbRows) return 0;
 	int nCol=A.nbRows,i=0,j=0;
@@ -960,9 +960,9 @@ int test_sym(Matrix A)
 	else return 0;
 }
 
-Matrix Id(int nCol)
+dcMatrix Id(int nCol)
 {
-    Matrix I(nCol);
+    dcMatrix I(nCol);
     for (int i=0;i<nCol;i++) 
         for (int j=0;j<=i;j++)
         {
@@ -974,32 +974,32 @@ Matrix Id(int nCol)
 
 
 
-Matrix power(Matrix A,int nCol)
+dcMatrix power(dcMatrix A,int nCol)
 {
     if (A.nbCols!=A.nbRows)
     {cout<<"Power over non square matrix impossible!"<<endl;
         exit(1);}
     else
     {
-        Matrix B(A.nbCols);
+        dcMatrix B(A.nbCols);
         B=Id(A.nbCols);
         for(int i=0;i<nCol;i++) {B=B*A;}
         return B;
     }
 }
 
-Matrix cholesky(Matrix A)	//renvoi la Matrix triangul L tq:
+dcMatrix cholesky(dcMatrix A)	//renvoi la dcMatrix triangul L tq:
 {				//si A symetrique,carre
     if(A.nbCols!=A.nbRows) 		//L*transpo(L)=A
-    { cout<<"Cholesky(non memb): non square Matrix !"<<endl;
+    { cout<<"Cholesky(non memb): non square dcMatrix !"<<endl;
         exit(1);}
     if(!test_sym(A)) 
-    {  cout<<"Cholesky(non memb): non symetric Matrix !"<<endl;
+    {  cout<<"Cholesky(non memb): non symetric dcMatrix !"<<endl;
         exit(1);
     }
 	
     int nCol=A.nbCols;
-    Matrix L(nCol);			
+    dcMatrix L(nCol);			
     float s;
     for(int i=0;i<nCol;i++)
     {
@@ -1018,7 +1018,7 @@ Matrix cholesky(Matrix A)	//renvoi la Matrix triangul L tq:
 } 
 
 
-bool same_size(Matrix A, Matrix B)
+bool same_size(dcMatrix A, dcMatrix B)
 {
 	bool res = true;
 	int ra = A.getNbRows();
@@ -1031,7 +1031,7 @@ bool same_size(Matrix A, Matrix B)
 	return res;
 }
 
-double distance_Matrix(Matrix A, Matrix B, double power)
+double distance_Matrix(dcMatrix A, dcMatrix B, double power)
 {
 	if (!same_size(A,B))
 	{
@@ -1052,7 +1052,7 @@ double distance_Matrix(Matrix A, Matrix B, double power)
 }
 
 
-Matrix rowBind(Matrix A, Matrix B)
+dcMatrix rowBind(dcMatrix A, dcMatrix B)
 {
 	if (A.getNbCols()!=B.getNbCols())
 	{
@@ -1060,7 +1060,7 @@ Matrix rowBind(Matrix A, Matrix B)
 		exit(1);
 	}
 	
-	Matrix M(A.getNbRows()+B.getNbRows(),A.getNbCols());
+	dcMatrix M(A.getNbRows()+B.getNbRows(),A.getNbCols());
 	int i=0;
 	
 	for (i=0; i<A.getNbRows(); i++) {
@@ -1079,7 +1079,7 @@ Matrix rowBind(Matrix A, Matrix B)
 
 
 
-double Det(Matrix A)
+double Det(dcMatrix A)
 {
     assert (A.nbCols==A.nbRows);
     double s=0;
@@ -1087,7 +1087,7 @@ double Det(Matrix A)
     if (nCol==2) return A(0,0)*A(1,1)-A(0,1)*A(1,0);
     else
     {
-        Matrix B(nCol-1);
+        dcMatrix B(nCol-1);
         for(int k=0;k<nCol;k++)
         {
             for(int i=0;i<nCol;i++)

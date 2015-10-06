@@ -34,7 +34,7 @@ class dcDataFrame
 	
 	vector<string>	_rowname;
 	vector<string>	_colname;
-	Matrix			_value;
+	dcMatrix			_value;
 
 
 
@@ -49,19 +49,19 @@ public:
 	dcDataFrame(){}
 	
 	
-	dcDataFrame(vector<string> rowname, Matrix M, vector<string> colName)
+	dcDataFrame(vector<string> rowname, dcMatrix M, vector<string> colName)
 	{
 		if(rowname.size()!=M.getNbRows())
 		{
 			cout << "ERROR dcDataFrame constructor:";
-			cout << "'_rowname' vector size and Matrix nb rows 'value' do not match"<<endl;
+			cout << "'_rowname' vector size and dcMatrix nb rows 'value' do not match"<<endl;
 			exit(1);
 		}
 		
 		if(colName.size()!=M.getNbCols())
 		{
 			cout << "ERROR dcDataFrame constructor:";
-			cout << "'_colname' (headers) vector size and Matrix cols 'value' do not match"<<endl;
+			cout << "'_colname' (headers) vector size and dcMatrix cols 'value' do not match"<<endl;
 			exit(1);
 		}
 		
@@ -73,12 +73,12 @@ public:
 	}
 	
 	
-	dcDataFrame(vector<string> rowname, Matrix M)
+	dcDataFrame(vector<string> rowname, dcMatrix M)
 	{
 		if(rowname.size()!=M.getNbRows())
 		{
 			cout << "ERROR dcDataFrame constructor:";
-			cout << "'_rowname' vector size and Matrix nb rows 'value' do not match"<<endl;
+			cout << "'_rowname' vector size and dcMatrix nb rows 'value' do not match"<<endl;
 			exit(1);
 		}
 		
@@ -95,9 +95,9 @@ public:
 	}
 	
 	
-	dcDataFrame(Matrix M)
+	dcDataFrame(dcMatrix M)
 	{
-		/// Construct a dcDataFrame from a Matrix
+		/// Construct a dcDataFrame from a dcMatrix
 		/// (row and column names are given defualt values)
 		
 		int ncol = M.getNbCols();
@@ -172,7 +172,7 @@ public:
 		// Read the values
 		
 		// Read the matrix including the varnames and (potential) headers
-		Matrix M;
+		dcMatrix M;
 		MatrixFromCSVfile(M, filename, n);
 		
 		// Remove 1st column = var names
@@ -204,7 +204,7 @@ public:
 	
 	vector<string>	get_rowname() {return _rowname;}
 	vector<string>	get_colname() {return _colname;}
-	Matrix			get_value() {return _value;}
+	dcMatrix			get_value() {return _value;}
 	
 	
 	double	getValue(string varname, string valuename);

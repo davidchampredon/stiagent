@@ -872,7 +872,7 @@ void Simulation::calculate_calibDistance_one(int calibtime, int i)
 	if(calibtype=="AGEDIST")
 	{
 		// set age distribution found in file as a new target
-		Matrix TAD = distributionFromFile(targetfile);
+		dcMatrix TAD = distributionFromFile(targetfile);
 		set_target_ageDistribution(TAD);
 		
 		d = calib_distance_ageDistrib();
@@ -885,7 +885,7 @@ void Simulation::calculate_calibDistance_one(int calibtime, int i)
 	if(calibtype=="GAPDIST")
 	{
 		// set age gap distribution found in file as a new target
-		Matrix TAGD = distributionFromFile(targetfile);
+		dcMatrix TAGD = distributionFromFile(targetfile);
 		set_target_ageGapDistribution(TAGD);
 		
 		d = calib_distance_ageGapDistrib();
@@ -910,7 +910,7 @@ void Simulation::calculate_calibDistance_one(int calibtime, int i)
 	
 	if(calibtype=="AGE1SEXF")
 	{
-		Matrix TAFS_f = calib_getTarget_Distribution(targetfile);
+		dcMatrix TAFS_f = calib_getTarget_Distribution(targetfile);
 		set_target_ageFirstSexDistribution_f(TAFS_f);
 		
 		d = calib_distance_ageFirstSexDistrib(female);
@@ -920,7 +920,7 @@ void Simulation::calculate_calibDistance_one(int calibtime, int i)
 	
 	if(calibtype=="AGE1SEXM")
 	{
-		Matrix TAFS_m = calib_getTarget_Distribution(targetfile);
+		dcMatrix TAFS_m = calib_getTarget_Distribution(targetfile);
 		set_target_ageFirstSexDistribution_m(TAFS_m);
 		
 		d = calib_distance_ageFirstSexDistrib(male);
@@ -931,7 +931,7 @@ void Simulation::calculate_calibDistance_one(int calibtime, int i)
 	
 	if(calibtype=="LFTNPF")
 	{
-		Matrix TNLS_f = calib_getTarget_Distribution(targetfile);
+		dcMatrix TNLS_f = calib_getTarget_Distribution(targetfile);
 		set_target_nLftSexPrtnrDistribution_f(TNLS_f);
 		
 		d = calib_distance_nLifeSexPrtnrDistrib(female);
@@ -941,7 +941,7 @@ void Simulation::calculate_calibDistance_one(int calibtime, int i)
 	
 	if(calibtype=="LFTNPM")
 	{
-		Matrix TNLS_m = calib_getTarget_Distribution(targetfile);
+		dcMatrix TNLS_m = calib_getTarget_Distribution(targetfile);
 		set_target_nLftSexPrtnrDistribution_m(TNLS_m);
 		
 		d = calib_distance_nLifeSexPrtnrDistrib(male);
@@ -979,7 +979,7 @@ void Simulation::calculate_calibDistance_one(int calibtime, int i)
 		// STI Prevalence by risk group
 		int nRiskGroup = _population.get_maxRiskGroup()+2;
 		
-		Matrix STIprevTargetRiskGroup(stinames.size(),nRiskGroup);
+		dcMatrix STIprevTargetRiskGroup(stinames.size(),nRiskGroup);
 		
 		MatrixFromCSVfile(STIprevTargetRiskGroup,
 						  targetfile.c_str(),
@@ -994,7 +994,7 @@ void Simulation::calculate_calibDistance_one(int calibtime, int i)
 	
 	if(calibtype=="HIVPREVAGEF")
 	{
-		Matrix THIVAGE_f = calib_getTarget_AgeDistribution(targetfile);
+		dcMatrix THIVAGE_f = calib_getTarget_AgeDistribution(targetfile);
 		set_target_HIV_prev_age_f(THIVAGE_f);
 		
 		d = calib_distance_HIV_prev_age(female);
@@ -1004,7 +1004,7 @@ void Simulation::calculate_calibDistance_one(int calibtime, int i)
 	
 	if(calibtype=="HIVPREVAGEM")
 	{
-		Matrix THIVAGE_m = calib_getTarget_AgeDistribution(targetfile);
+		dcMatrix THIVAGE_m = calib_getTarget_AgeDistribution(targetfile);
 		set_target_HIV_prev_age_m(THIVAGE_m);
 		
 		d = calib_distance_HIV_prev_age(male);
@@ -1164,7 +1164,7 @@ double Simulation::calib_distance_ageFirstSexDistrib(Gender g)
 	/// RETURN NORMALIZED DISTANCE TO CALIBRATION TARGET
 	/// FOR AGE AT FIRST SEX DISTRIBUTION
 	
-	Matrix M = (g==female)?_target_ageFirstSexDistribution_f:_target_ageFirstSexDistribution_m;
+	dcMatrix M = (g==female)?_target_ageFirstSexDistribution_f:_target_ageFirstSexDistribution_m;
 	
 	
 	// Extract targets: age
@@ -1195,7 +1195,7 @@ double Simulation::calib_distance_ageGapFirstSexSpouseDistrib(Gender g)
 	/// RETURN NORMALIZED DISTANCE TO CALIBRATION TARGET
 	/// FOR AGE GAP B/W FIRST SEX AND FIRST SPOUSE DISTRIBUTION
 	
-	Matrix M = (g==female)?_target_ageGapFirstSexSpouseDistribution_f:_target_ageGapFirstSexSpouseDistribution_m;
+	dcMatrix M = (g==female)?_target_ageGapFirstSexSpouseDistribution_f:_target_ageGapFirstSexSpouseDistribution_m;
 	
 	
 	// Extract targets: age
@@ -1319,7 +1319,7 @@ double Simulation::calib_distance_nLifeSexPrtnrDistrib(Gender g)
 	/// RETURN NORMALIZED DISTANCE TO CALIBRATION TARGET
 	/// FOR LIFETIME NUMBER SEX PARTNERS DISTRIBUTION
 	
-	Matrix M = (g==female)?_target_nLftSexPrtnrDistribution_f:_target_nLftSexPrtnrDistribution_m;
+	dcMatrix M = (g==female)?_target_nLftSexPrtnrDistribution_f:_target_nLftSexPrtnrDistribution_m;
 	
 	
 	// Extract targets: age
@@ -1374,7 +1374,7 @@ double Simulation::calib_distance_STIprev_riskGroup()
 	/// RETURN NORMALIZED DISTANCE TO CALIBRATION TARGET
 	/// FOR STI PREVALENCES BY RISK GROUPS
 	
-	Matrix currentSTIprevRiskGroup = _population.STI_prevalence_by_riskGroup(_target_STIprevalence_names);
+	dcMatrix currentSTIprevRiskGroup = _population.STI_prevalence_by_riskGroup(_target_STIprevalence_names);
 	
 	int thepower = 2;
 	double diff_STIprev = distance_Matrix(currentSTIprevRiskGroup,
@@ -1383,7 +1383,7 @@ double Simulation::calib_distance_STIprev_riskGroup()
 	
 	// create matrix of 0
 	// same dimension as target
-	Matrix zeromatrix = _target_STIprevalence_by_riskGroup;
+	dcMatrix zeromatrix = _target_STIprevalence_by_riskGroup;
 	zeromatrix.setAllValues(0.0);
 	
 	// Normalize distance
@@ -1398,7 +1398,7 @@ double Simulation::calib_distance_HIV_prev_age(Gender g)
 	/// Calculate the distance from the target
 	/// for HIV prevalence by age and gender
 	
-	Matrix M;
+	dcMatrix M;
 	if(g==female)	M = _target_HIV_prev_age_f;
 	if(g==male)		M = _target_HIV_prev_age_m;
 	
@@ -1584,7 +1584,7 @@ double Simulation::calib_ageDistribution_get_diff_MC(int nMC, bool doSex)
 	// MONTE-CARLO FOR EVALUATION OF DIFF FCT
 	// FOR CALIBRATION OF AGE DISTRIBUTION
 	
-	Matrix A(0); // DEBUG
+	dcMatrix A(0); // DEBUG
 	double s = 0.0;
 	
 	//cout <<"BIRTH="<<_population.get_birthRate()<<endl;
@@ -1612,17 +1612,17 @@ double Simulation::calib_ageDistribution_get_diff_MC(int nMC, bool doSex)
 }
 
 
-Matrix Simulation::TMP_LHS(vector<double>loVal, vector<double> hiVal, int nLHS, int nMC)
+dcMatrix Simulation::TMP_LHS(vector<double>loVal, vector<double> hiVal, int nLHS, int nMC)
 {
 	// TMP FCT: EXPLORE THE VALUES OF THE FUNCTION TO MINIMIZE
-	Matrix M = LatinHypercubeSampling(loVal, hiVal, nLHS);
+	dcMatrix M = LatinHypercubeSampling(loVal, hiVal, nLHS);
 	M.display();
 	
 	vector<double> param(loVal.size());
 	vector<double> res_k;
 	
 	_target_ageDistribution.WriteToFileCSV(_DIR_OUT + "calib_test1.out");
-	Matrix AD(0);
+	dcMatrix AD(0);
 	
 	// Population for reset
 	Population P0 = _population;
@@ -2504,7 +2504,7 @@ void Simulation::save_incidence(unsigned int iter_mc){
 		header.push_back(STInameString(get_population().get_STI()[s].get_name()));
 	header.push_back("time");
 	
-	Matrix tmp = get_STI_incidence();
+	dcMatrix tmp = get_STI_incidence();
 	tmp.addColVector(vector_seq_by(0.0,_horizon,_timeStep));
 	tmp.WriteToFileCSV(filename_incidence,header);
 }
@@ -2521,7 +2521,7 @@ void Simulation::save_prevalence(unsigned int iter_mc){
 		header.push_back(STInameString(get_population().get_STI()[s].get_name()));
 	header.push_back("time");
 	
-	Matrix tmp = get_STI_prevalence();
+	dcMatrix tmp = get_STI_prevalence();
 	tmp.addColVector(vector_seq_by(0.0,_horizon,_timeStep));
 	tmp.WriteToFileCSV(filename_prev,header);
 }

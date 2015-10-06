@@ -43,9 +43,9 @@ void check_partnershipMatrix()
 	int xx = 1;
 	
 	// Kill one partner
-	Matrix puid = P.getPartnershipsUID();
+	dcMatrix puid = P.getPartnershipsUID();
 	
-	Matrix PUID = P.get_partnershipsMatrix();
+	dcMatrix PUID = P.get_partnershipsMatrix();
 	PUID.display();
 	
 	cout << "PARTNERSHIP position: " << P.findPositionIn_partnershipsMatrix(PUID(xx,0),PUID(xx,1))<<endl;
@@ -58,7 +58,7 @@ void check_partnershipMatrix()
 	PUID.display();
 	
 	cout << "Spouses: "<<endl;
-	Matrix SP = P.getSpousesUID();
+	dcMatrix SP = P.getSpousesUID();
 	SP.display();
 	
 	P.displayInfo(true);
@@ -81,12 +81,12 @@ void check_partnershipMatrix()
 
 void check_matrixOperations()
 {
-	Matrix A(5);
+	dcMatrix A(5);
 	A.RandomInit();
 	A(0,0)=99;
 	A.display();
 	
-	Matrix B(5); B=A;
+	dcMatrix B(5); B=A;
 	
 	vector<double> xx(5,8);
 	A.addRowVector(xx);
@@ -105,7 +105,7 @@ void check_matrixOperations()
 	B.display();
 	
 	cout <<"--- C --- "<<endl;
-	Matrix C(0,0);
+	dcMatrix C(0,0);
 	C.display();
 	C.addRowVector(xx);
 	C.display();		

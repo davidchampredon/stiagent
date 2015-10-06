@@ -20,7 +20,7 @@
 
 using namespace std;
 
-class Matrix
+class dcMatrix
 {
 public:
 	int nbRows;	//Dimensions
@@ -37,26 +37,26 @@ public:
     
     // Constructors
 	
-	//Matrix(){nbRows=0;nbCols=0;}
-	Matrix(){}
+	//dcMatrix(){nbRows=0;nbCols=0;}
+	dcMatrix(){}
 	
-	Matrix(int h,int l) 
+	dcMatrix(int h,int l) 
 	{
 		nbRows=h; nbCols=l; 
 		vector<double> tmp(l*h,0.0);
 		val=tmp;
 	}
 	
-	Matrix(int n) 
+	dcMatrix(int n) 
 	{
 		nbRows=n; nbCols=n;
 		vector<double> tmp(n*n, 0.0);
 		val=tmp;
 	}
 	
-    Matrix(string pathFile);
+    dcMatrix(string pathFile);
 	
-	Matrix(vector<double> v);	// Matrix (n,1) from a single vector(n)
+	dcMatrix(vector<double> v);	// dcMatrix (n,1) from a single vector(n)
 	
 	
     
@@ -95,8 +95,8 @@ public:
 	
     void            addColVector(vector<double> v);
     
-	void			removeRow(int i_row);	// removes row 'i_row' and resize Matrix
-	void			removeCol(int j_col);	// removes column 'j_col' and resize Matrix
+	void			removeRow(int i_row);	// removes row 'i_row' and resize dcMatrix
+	void			removeCol(int j_col);	// removes column 'j_col' and resize dcMatrix
 
 	
 	
@@ -108,7 +108,7 @@ public:
     // Operations on elements
     
     void    setAllValues(double value);
-	void	setValueFromMatrix(Matrix M);
+	void	setValueFromMatrix(dcMatrix M);
 	
 	double  sumAllElements();
 	double  sumLine(int i);		// sum all elements of line #i
@@ -126,41 +126,41 @@ public:
 	void	setRowValues(int rowNb_start0, vector<double> v);
 	void	setRowValues(int rowNb_start0, vector<unsigned long> v);
     
-    Matrix  transpose();
+    dcMatrix  transpose();
     
     bool    isSymetric();
 
     double  determinant();
 	
-	Matrix	getMinor(int row, int col);
+	dcMatrix	getMinor(int row, int col);
 	
-	Matrix	inverse();
+	dcMatrix	inverse();
     
-    Matrix  Cholesky();
+    dcMatrix  Cholesky();
     
     double  getMinimumValue();
     double  getMaximumValue();
 	
 };
 
-Matrix operator + (Matrix &A,Matrix &B);
-Matrix operator - (Matrix &A,Matrix &B);
-Matrix operator * (Matrix &A,Matrix &B);
-Matrix operator * (double a,Matrix &A);
+dcMatrix operator + (dcMatrix &A,dcMatrix &B);
+dcMatrix operator - (dcMatrix &A,dcMatrix &B);
+dcMatrix operator * (dcMatrix &A,dcMatrix &B);
+dcMatrix operator * (double a,dcMatrix &A);
 
-Matrix Id(int n);
+dcMatrix Id(int n);
 
-Matrix power(Matrix A,int n);
+dcMatrix power(dcMatrix A,int n);
 
-Matrix cholesky(Matrix A);	//renvoi la Matrix triangul L tq://si A symetrique,carre //L*transpo(L)=A
+dcMatrix cholesky(dcMatrix A);	//renvoi la dcMatrix triangul L tq://si A symetrique,carre //L*transpo(L)=A
 
-double distance_Matrix(Matrix A, Matrix B, double power);	// Euclidian distance b/w two matrices
+double distance_Matrix(dcMatrix A, dcMatrix B, double power);	// Euclidian distance b/w two matrices
 
-Matrix rowBind(Matrix A, Matrix B);
+dcMatrix rowBind(dcMatrix A, dcMatrix B);
 
-Matrix	transpo(Matrix A);        // FIX ME : to delete if not used elsewhere
-double	Det(Matrix A);           // FIX ME : to delete if not used elsewhere
-int		test_sym(Matrix A);       // FIX ME : to delete if not used elsewhere
+dcMatrix	transpo(dcMatrix A);        // FIX ME : to delete if not used elsewhere
+double	Det(dcMatrix A);           // FIX ME : to delete if not used elsewhere
+int		test_sym(dcMatrix A);       // FIX ME : to delete if not used elsewhere
 
 
 

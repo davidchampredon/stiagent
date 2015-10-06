@@ -84,7 +84,7 @@ void writeToFile_scenario_outcome(string filename,
 	vector<double> prev0 = S[0].prevalence_final(stiname);
 	colname.push_back("prev_final0");
 	
-	Matrix M(prev0);
+	dcMatrix M(prev0);
 	
 	for (int i=1; i<S.size(); i++){
 		vector<double> prev_i = S[i].prevalence_final(stiname);

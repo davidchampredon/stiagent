@@ -37,8 +37,8 @@ class Simulation
 
 	
 	// STI related
-	Matrix			_STI_incidence;		// rows=time ; columns = STI
-	Matrix			_STI_prevalence;	// rows=time ; columns = STI
+	dcMatrix			_STI_incidence;		// rows=time ; columns = STI
+	dcMatrix			_STI_prevalence;	// rows=time ; columns = STI
 	
 	
 	
@@ -89,29 +89,29 @@ class Simulation
 	// FOR ALL AGE (AGE GAP) DISTRIBUTIONS:
 	// 1st col = age breaks
 	// 2nd col = proportion of population in associated age range age[i]<prop[i]<age[i+1]
-	Matrix			_target_ageDistribution;
-	Matrix			_target_ageGapDistribution;
-	Matrix			_target_ageFirstSexDistribution_f;
-	Matrix			_target_ageFirstSexDistribution_m;
-	Matrix			_target_ageGapFirstSexSpouseDistribution_f;	// gap b/w 1st sex and 1st spouse
-	Matrix			_target_ageGapFirstSexSpouseDistribution_m;	// gap b/w 1st sex and 1st spouse
+	dcMatrix			_target_ageDistribution;
+	dcMatrix			_target_ageGapDistribution;
+	dcMatrix			_target_ageFirstSexDistribution_f;
+	dcMatrix			_target_ageFirstSexDistribution_m;
+	dcMatrix			_target_ageGapFirstSexSpouseDistribution_f;	// gap b/w 1st sex and 1st spouse
+	dcMatrix			_target_ageGapFirstSexSpouseDistribution_m;	// gap b/w 1st sex and 1st spouse
 	
-	Matrix			_target_nLftSexPrtnrDistribution_f;	// Distribution of lifetime number of sex partners for females
-	Matrix			_target_nLftSexPrtnrDistribution_m;	// Distribution of lifetime number of sex partners for males
+	dcMatrix			_target_nLftSexPrtnrDistribution_f;	// Distribution of lifetime number of sex partners for females
+	dcMatrix			_target_nLftSexPrtnrDistribution_m;	// Distribution of lifetime number of sex partners for males
 	
 	double			_target_malesVisitCSW;					// propotion of males ever visited CSW
-	Matrix			_target_ageMalesVisitCSWDistribution;	// age distrib males ever visited CSW
+	dcMatrix			_target_ageMalesVisitCSWDistribution;	// age distrib males ever visited CSW
 	
 	
 	vector<STIname>	_target_STIprevalence_names;	// Names of the STI to be calibrated
 	vector<double>	_target_STIprevalence;			// Prevalence targets of the STI to be calibrated
-	Matrix			_target_STIprevalence_by_riskGroup; // Prevalence targets by risk group
+	dcMatrix			_target_STIprevalence_by_riskGroup; // Prevalence targets by risk group
 	
 	// TO DO: include in a more general variables (for all STIs)?
 	// not sure, as we may rarely have STI prevalence by age...
 	
-	Matrix			_target_HIV_prev_age_f;		// HIV prevalence by age (for females)
-	Matrix			_target_HIV_prev_age_m;		// HIV prevalence by age (for females)
+	dcMatrix			_target_HIV_prev_age_f;		// HIV prevalence by age (for females)
+	dcMatrix			_target_HIV_prev_age_m;		// HIV prevalence by age (for females)
 	
 	bool			_save_trace_files;
 	
@@ -140,30 +140,30 @@ public:
 	void		set_calibrationTime(vector<double> x) {_calibrationTime=x;}
 	void		set_calibrationOutput(int i, vector<string> s) {_calibrationTargetFile[i] = s;}
 	
-	void		set_target_ageDistribution(Matrix M) { _target_ageDistribution = M;}
-	void		set_target_ageGapDistribution(Matrix M) { _target_ageGapDistribution = M;}
-	void		set_target_ageFirstSexDistribution_f(Matrix M) { _target_ageFirstSexDistribution_f = M;}
-	void		set_target_ageFirstSexDistribution_m(Matrix M) { _target_ageFirstSexDistribution_m = M;}
-	void		set_target_ageGapFirstSexSpouseDistribution_f(Matrix M) { _target_ageGapFirstSexSpouseDistribution_f = M;}
-	void		set_target_ageGapFirstSexSpouseDistribution_m(Matrix M) { _target_ageGapFirstSexSpouseDistribution_m = M;}
+	void		set_target_ageDistribution(dcMatrix M) { _target_ageDistribution = M;}
+	void		set_target_ageGapDistribution(dcMatrix M) { _target_ageGapDistribution = M;}
+	void		set_target_ageFirstSexDistribution_f(dcMatrix M) { _target_ageFirstSexDistribution_f = M;}
+	void		set_target_ageFirstSexDistribution_m(dcMatrix M) { _target_ageFirstSexDistribution_m = M;}
+	void		set_target_ageGapFirstSexSpouseDistribution_f(dcMatrix M) { _target_ageGapFirstSexSpouseDistribution_f = M;}
+	void		set_target_ageGapFirstSexSpouseDistribution_m(dcMatrix M) { _target_ageGapFirstSexSpouseDistribution_m = M;}
 	
 	
 	void		set_target_singleRatio_f(double r) {_target_singleRatio_f = r;}
 	void		set_target_singleRatio_m(double r) {_target_singleRatio_m = r;}
 	
 	void		set_target_malesVisitCSW(double x) {_target_malesVisitCSW = x;}
-	void		set_target_ageMalesVisitCSWDistribution(Matrix M) { _target_ageMalesVisitCSWDistribution = M;}
+	void		set_target_ageMalesVisitCSWDistribution(dcMatrix M) { _target_ageMalesVisitCSWDistribution = M;}
 	
-	void		set_target_nLftSexPrtnrDistribution_f(Matrix M) {_target_nLftSexPrtnrDistribution_f = M;}
-	void		set_target_nLftSexPrtnrDistribution_m(Matrix M) {_target_nLftSexPrtnrDistribution_m = M;}
+	void		set_target_nLftSexPrtnrDistribution_f(dcMatrix M) {_target_nLftSexPrtnrDistribution_f = M;}
+	void		set_target_nLftSexPrtnrDistribution_m(dcMatrix M) {_target_nLftSexPrtnrDistribution_m = M;}
 	
 	
 	void		set_target_STIprevalence_names(vector<STIname> stinames){_target_STIprevalence_names=stinames;}
 	void		set_target_STIprevalence(vector<double> prev) {_target_STIprevalence=prev;}
-	void		set_target_STIprevalence_by_riskGroup(Matrix M) {_target_STIprevalence_by_riskGroup=M;}
+	void		set_target_STIprevalence_by_riskGroup(dcMatrix M) {_target_STIprevalence_by_riskGroup=M;}
 	
-	void		set_target_HIV_prev_age_f(Matrix M) {_target_HIV_prev_age_f = M;}
-	void		set_target_HIV_prev_age_m(Matrix M) {_target_HIV_prev_age_m = M;}
+	void		set_target_HIV_prev_age_f(dcMatrix M) {_target_HIV_prev_age_f = M;}
+	void		set_target_HIV_prev_age_m(dcMatrix M) {_target_HIV_prev_age_m = M;}
 	
 	void		set_save_trace_files(bool x) {_save_trace_files = x;}
 	
@@ -182,8 +182,8 @@ public:
 	double				get_timeStep(){return _timeStep;}
 	vector<double>		get_schedule(){return _schedule;}
 	
-	Matrix				get_STI_incidence(){return _STI_incidence;}
-	Matrix				get_STI_prevalence(){return _STI_prevalence;}
+	dcMatrix				get_STI_incidence(){return _STI_incidence;}
+	dcMatrix				get_STI_prevalence(){return _STI_prevalence;}
 	
 	
 	vector<STIname>		get_target_STIprevalence_names() {return _target_STIprevalence_names;}
@@ -204,20 +204,20 @@ public:
 	// 2nd col = proportion of population
 	// in associated age range age[i]<prop[i]<age[i+1]
 	
-	Matrix			get_target_ageDistribution() {return _target_ageDistribution;}
-	Matrix			get_target_ageGapDistribution() {return _target_ageGapDistribution;}
-	Matrix			get_target_ageFirstSexDistribution_f() {return _target_ageFirstSexDistribution_f;}
-	Matrix			get_target_ageFirstSexDistribution_m() {return _target_ageFirstSexDistribution_m;}
-	Matrix			get_target_ageGapFirstSexSpouseDistribution_f() {return _target_ageGapFirstSexSpouseDistribution_f;}
-	Matrix			get_target_ageGapFirstSexSpouseDistribution_m() {return _target_ageGapFirstSexSpouseDistribution_m;}
-	Matrix			get_target_nLftSexPrtnrDistribution_f() {return _target_nLftSexPrtnrDistribution_f;}
-	Matrix			get_target_nLftSexPrtnrDistribution_m() {return _target_nLftSexPrtnrDistribution_m;}
+	dcMatrix			get_target_ageDistribution() {return _target_ageDistribution;}
+	dcMatrix			get_target_ageGapDistribution() {return _target_ageGapDistribution;}
+	dcMatrix			get_target_ageFirstSexDistribution_f() {return _target_ageFirstSexDistribution_f;}
+	dcMatrix			get_target_ageFirstSexDistribution_m() {return _target_ageFirstSexDistribution_m;}
+	dcMatrix			get_target_ageGapFirstSexSpouseDistribution_f() {return _target_ageGapFirstSexSpouseDistribution_f;}
+	dcMatrix			get_target_ageGapFirstSexSpouseDistribution_m() {return _target_ageGapFirstSexSpouseDistribution_m;}
+	dcMatrix			get_target_nLftSexPrtnrDistribution_f() {return _target_nLftSexPrtnrDistribution_f;}
+	dcMatrix			get_target_nLftSexPrtnrDistribution_m() {return _target_nLftSexPrtnrDistribution_m;}
 	double			get_target_malesVisitCSW() {return _target_malesVisitCSW;}
-	Matrix			get_target_ageMalesVisitCSWDistribution() {return _target_ageMalesVisitCSWDistribution;}
-	Matrix			get_target_STIprevalence_by_riskGroup() {return _target_STIprevalence_by_riskGroup;}
+	dcMatrix			get_target_ageMalesVisitCSWDistribution() {return _target_ageMalesVisitCSWDistribution;}
+	dcMatrix			get_target_STIprevalence_by_riskGroup() {return _target_STIprevalence_by_riskGroup;}
 
-	Matrix			get_target_HIV_prev_age_f() {return _target_HIV_prev_age_f;}
-	Matrix			get_target_HIV_prev_age_m() {return _target_HIV_prev_age_m;}
+	dcMatrix			get_target_HIV_prev_age_f() {return _target_HIV_prev_age_f;}
+	dcMatrix			get_target_HIV_prev_age_m() {return _target_HIV_prev_age_m;}
 	
 	
 	
@@ -398,7 +398,7 @@ public:
 	
 	
 	
-	Matrix		TMP_LHS(vector<double>loVal, vector<double> hiVal, int nLHS, int nMC);
+	dcMatrix		TMP_LHS(vector<double>loVal, vector<double> hiVal, int nLHS, int nMC);
 	
 	
 	// Age distributions

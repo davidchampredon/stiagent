@@ -346,13 +346,13 @@ void vectorFromCSVfile_string(vector<string>& res, const char * theFileName, int
 	res = x;
 }
 
-void MatrixFromCSVfile(Matrix& M,string filename, int ncol)
+void MatrixFromCSVfile(dcMatrix& M,string filename, int ncol)
 {
 	/// CONSTRUCT A MATRIX BY READING
 	/// COLUMN VECTORS IN A CSV FILE
 	/// MUST KNOW IN ADVANCE THE NuMBER OF COLUMNS TO BE READ
 
-	Matrix A;
+	dcMatrix A;
 	
 	for (int j=0;j<ncol;j++)
 	{
@@ -368,7 +368,7 @@ void MatrixFromCSVfile(Matrix& M,string filename, int ncol)
 }
 
 
-Matrix distributionFromFile(string filename)
+dcMatrix distributionFromFile(string filename)
 {
 	/// RETRIEVE DISTRIBUTION
 	/// FORMAT EXPECTED: CSV
@@ -382,7 +382,7 @@ Matrix distributionFromFile(string filename)
 	vectorFromCSVfile(breaks, filename.c_str(), 1);
 	vectorFromCSVfile(proportion, filename.c_str(), 2);
 		
-	Matrix res(breaks);
+	dcMatrix res(breaks);
 	res.addColVector(proportion);
 	
 	return res;
@@ -1297,11 +1297,11 @@ void my_pause(double waitTime)
 // ====================  SAMPLING  ===================
 // ===================================================
 
-Matrix LatinHypercubeSampling(vector<double> Vmin, vector<double> Vmax,
+dcMatrix LatinHypercubeSampling(vector<double> Vmin, vector<double> Vmax,
                               int samplingNb)
 {
 	// For a given Min and Max values for each parameters,
-	// returns a shuffled Matrix
+	// returns a shuffled dcMatrix
 	
 	// Initialize the seed
 	timeval tim;
@@ -1312,7 +1312,7 @@ Matrix LatinHypercubeSampling(vector<double> Vmin, vector<double> Vmax,
 
     int N = Vmin.size();
     
-    Matrix V(samplingNb,N);
+    dcMatrix V(samplingNb,N);
     
     // Populate values (in order)
 	// _UNIFORMLY_ distributed
@@ -1325,7 +1325,7 @@ Matrix LatinHypercubeSampling(vector<double> Vmin, vector<double> Vmax,
         }
     }
     
-    Matrix W(samplingNb,N); 
+    dcMatrix W(samplingNb,N); 
     
 	unsigned int theseed = tim.tv_usec; // Fix the seed if reproductibility desired
     srand ( theseed );

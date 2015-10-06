@@ -50,11 +50,11 @@ class Population
 	// ==== PARTNERSHIPS ====
 	
 	/* -- GET RID OF THIS -- */
-	Matrix				_PartnerMatrix;				// Matrix (Nf,Nm) with all partnerships
+	dcMatrix				_PartnerMatrix;				// dcMatrix (Nf,Nm) with all partnerships
 	/* -- */
 
 	
-	Matrix				_partnershipsMatrix;		// Matrix of UIDs of all partnerships; Nx2 matrix; N: number of partnerships; line = pair of UID of a partnership; 1st column: UID female, 2nd column: UID male
+	dcMatrix				_partnershipsMatrix;		// dcMatrix of UIDs of all partnerships; Nx2 matrix; N: number of partnerships; line = pair of UID of a partnership; 1st column: UID female, 2nd column: UID male
 
 	vector<unsigned long>	_all_UID_femaleUID;		// UID of females (rows) associated with _PartnerMatrix
 	vector<unsigned long>	_all_UID_maleUID;		// UID of males (columns) associated with _PartnerMatrix
@@ -165,7 +165,7 @@ class Population
 	
 	vector<STI>			_STI;				// STIs modelled ; template for each Individual's STI
 	int					_nSTImodelled;		// Number of STIs modelled in the population
-	Matrix				_STI_SFincrease;	// Matrix defining the increase factor of the susceptibility factor when infected with another STI
+	dcMatrix				_STI_SFincrease;	// dcMatrix defining the increase factor of the susceptibility factor when infected with another STI
 	vector<double>		_RebHIV;			// HIV infectivity rebound due to STIs co-infections
 	
 	vector< vector<unsigned long> > _secondary_cases; // Number of all secondary cases for every STIs (size of vector increases as simulation runs)
@@ -236,7 +236,7 @@ public:
 	Individual		getIndividual(unsigned long uid) {return _individual[uid];}
 	int				get_nSTImodelled() {return _nSTImodelled;}
 	double			get_ageSexMin() {return _ageSexMin;}
-	Matrix			get_partnershipsMatrix() { return _partnershipsMatrix;}
+	dcMatrix			get_partnershipsMatrix() { return _partnershipsMatrix;}
 	
 	double			get_simulationTime() { return _simulationTime;}
 	
@@ -646,8 +646,8 @@ public:
 	
 	// === Partnerships ===
 	
-	Matrix			getPartnershipsUID();		// Retrieves the pair of UIDs for each partnerships
-	Matrix			getSpousesUID();			// Retrieves the pair of UIDs for each spousal partnerships
+	dcMatrix			getPartnershipsUID();		// Retrieves the pair of UIDs for each partnerships
+	dcMatrix			getSpousesUID();			// Retrieves the pair of UIDs for each spousal partnerships
 	
 	double			getPartnershipDuration(unsigned long uid1, unsigned long uid2);
 	
@@ -801,7 +801,7 @@ public:
 	double			STI_prevalence(STIname s);					// Global prevalence for just one STI
 	double			STI_prevalence(STIname s, int riskGroup);	// Prevalence for just one STI, within a given risk group
 
-	Matrix			STI_prevalence_by_riskGroup(vector<STIname> stinames);							// Prevalence per risk group, for every STIs
+	dcMatrix			STI_prevalence_by_riskGroup(vector<STIname> stinames);							// Prevalence per risk group, for every STIs
 	vector<double>	STI_prevalence_by_age(STIname s, vector<double> agebreaks);						// Prevalence by age for just one STI
 	vector<double>	STI_prevalence_by_age(STIname s, Gender g, vector<double> agebreaks);			// Prevalence by age for just one STI, within a given gender
 	vector<double>	STI_prevalence_by_age(STIname s, int riskGroup,vector<double> agebreaks);		// Prevalence by age for just one STI, within a given risk group

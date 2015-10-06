@@ -270,29 +270,29 @@ void calibration_set_all_target(Simulation& S,
 	
 	
 	// age distribution target
-	Matrix TAD = calib_getTarget_Distribution(target_filename_ageDistrib);
+	dcMatrix TAD = calib_getTarget_Distribution(target_filename_ageDistrib);
 	S.set_target_ageDistribution(TAD);
 	
 	// age gap distribution target
 	// TO DO: USE THE GENERIC 'calib_getTarget_Distribution'((?))
-	Matrix TAGD = calib_getTarget_AgeDistribution(target_filename_ageGapDistrib);
+	dcMatrix TAGD = calib_getTarget_AgeDistribution(target_filename_ageGapDistrib);
 	S.set_target_ageGapDistribution(TAGD);
 	
 	
 	// First sex (female) age distribution target
-	Matrix TAFS_f = calib_getTarget_Distribution(target_filename_ageFirstSexDistrib_f);
+	dcMatrix TAFS_f = calib_getTarget_Distribution(target_filename_ageFirstSexDistrib_f);
 	S.set_target_ageFirstSexDistribution_f(TAFS_f);
 	
 	// First sex (male) age distribution target
-	Matrix TAFS_m = calib_getTarget_Distribution(target_filename_ageFirstSexDistrib_m);
+	dcMatrix TAFS_m = calib_getTarget_Distribution(target_filename_ageFirstSexDistrib_m);
 	S.set_target_ageFirstSexDistribution_m(TAFS_m);
 	
 	// Gap First sex and first Spouse (female) age distribution target
-	Matrix TGFSS_f = calib_getTarget_Distribution(target_filename_ageGapFirstSexSpouseDistrib_f);
+	dcMatrix TGFSS_f = calib_getTarget_Distribution(target_filename_ageGapFirstSexSpouseDistrib_f);
 	S.set_target_ageGapFirstSexSpouseDistribution_f(TGFSS_f);
 	
 	// Gap First sex and first Spouse (male) age distribution target
-	Matrix TGFSS_m = calib_getTarget_Distribution(target_filename_ageGapFirstSexSpouseDistrib_m);
+	dcMatrix TGFSS_m = calib_getTarget_Distribution(target_filename_ageGapFirstSexSpouseDistrib_m);
 	S.set_target_ageGapFirstSexSpouseDistribution_m(TGFSS_m);
 	
 	
@@ -305,7 +305,7 @@ void calibration_set_all_target(Simulation& S,
 	
 	
 	double TMVC;
-	Matrix TAMVC;
+	dcMatrix TAMVC;
 	
 	if (!target_filename_malesVisitCSW.empty())
 	{	// Males visiting CSW
@@ -318,8 +318,8 @@ void calibration_set_all_target(Simulation& S,
 	}
 	
 	
-	Matrix TNLS_f;
-	Matrix TNLS_m;
+	dcMatrix TNLS_f;
+	dcMatrix TNLS_m;
 	
 	if (!target_filename_nLifeSexPrtnrDistrib_f.empty())
 	{
@@ -349,7 +349,7 @@ void calibration_set_all_target(Simulation& S,
 	
 	
 	// STI Prevalence by risk group
-	Matrix STIprevTargetRiskGroup(stinames.size(),
+	dcMatrix STIprevTargetRiskGroup(stinames.size(),
 								  S.get_population().get_maxRiskGroup()+2);
 	
 	MatrixFromCSVfile(STIprevTargetRiskGroup,
@@ -360,8 +360,8 @@ void calibration_set_all_target(Simulation& S,
 	
 	// HIV prevalence by age and gender
 	
-	Matrix THIVAGE_f = calib_getTarget_AgeDistribution(target_filename_HIV_prev_age_f);
-	Matrix THIVAGE_m = calib_getTarget_AgeDistribution(target_filename_HIV_prev_age_m);
+	dcMatrix THIVAGE_f = calib_getTarget_AgeDistribution(target_filename_HIV_prev_age_f);
+	dcMatrix THIVAGE_m = calib_getTarget_AgeDistribution(target_filename_HIV_prev_age_m);
 	S.set_target_HIV_prev_age_f(THIVAGE_f);
 	S.set_target_HIV_prev_age_m(THIVAGE_m);
 	
@@ -494,7 +494,7 @@ dcDataFrame LHS_generated(vector<string> varname,
 	/// SAMPLED VALUES FROM LATIN HYPERCUBE SAMPLING,
 	/// WITH NAMED PARAMETERS
 	
-	Matrix M = LatinHypercubeSampling(Vmin,Vmax,samplingNb).transpose();
+	dcMatrix M = LatinHypercubeSampling(Vmin,Vmax,samplingNb).transpose();
 	
 	dcDataFrame df(varname,M);
 	
@@ -584,7 +584,7 @@ void split_LHS_limitsFile(string filename_limits, int n)
 	// calculate intermediate new limits
 	// (store vectors into matrix)
 	
-	Matrix M(vmin);
+	dcMatrix M(vmin);
 	
 	for (int i=1; i<n; i++)
 	{
@@ -702,15 +702,15 @@ void calibration_LHS_fromFile(string target_filename_wrapper,
 	// within the lower and upper limits.
 	// (Each row is a parameter set)
 	
-	Matrix LHS_DMG;		LHS_DMG.FromFile_Rows(param_LHS_DMG, nRows);
-	Matrix LHS_FORM;	LHS_FORM.FromFile_Rows(param_LHS_FORM, nRows);
-	Matrix LHS_SPOUSAL; LHS_SPOUSAL.FromFile_Rows(param_LHS_SPOUSAL, nRows);
-	Matrix LHS_DISSOL;	LHS_DISSOL.FromFile_Rows(param_LHS_DISSOL, nRows);
-	Matrix LHS_SEXACT;	LHS_SEXACT.FromFile_Rows(param_LHS_SEXACT, nRows);
-	Matrix LHS_STIFTR_V;LHS_STIFTR_V.FromFile_Rows(param_LHS_STIFTR_V, nRows);
-	Matrix LHS_STIFTR_B;LHS_STIFTR_B.FromFile_Rows(param_LHS_STIFTR_B, nRows);
-	Matrix LHS_STIFTR_P;LHS_STIFTR_P.FromFile_Rows(param_LHS_STIFTR_P, nRows);
-	Matrix LHS_STIFTR_F;LHS_STIFTR_F.FromFile_Rows(param_LHS_STIFTR_F, nRows);
+	dcMatrix LHS_DMG;		LHS_DMG.FromFile_Rows(param_LHS_DMG, nRows);
+	dcMatrix LHS_FORM;	LHS_FORM.FromFile_Rows(param_LHS_FORM, nRows);
+	dcMatrix LHS_SPOUSAL; LHS_SPOUSAL.FromFile_Rows(param_LHS_SPOUSAL, nRows);
+	dcMatrix LHS_DISSOL;	LHS_DISSOL.FromFile_Rows(param_LHS_DISSOL, nRows);
+	dcMatrix LHS_SEXACT;	LHS_SEXACT.FromFile_Rows(param_LHS_SEXACT, nRows);
+	dcMatrix LHS_STIFTR_V;LHS_STIFTR_V.FromFile_Rows(param_LHS_STIFTR_V, nRows);
+	dcMatrix LHS_STIFTR_B;LHS_STIFTR_B.FromFile_Rows(param_LHS_STIFTR_B, nRows);
+	dcMatrix LHS_STIFTR_P;LHS_STIFTR_P.FromFile_Rows(param_LHS_STIFTR_P, nRows);
+	dcMatrix LHS_STIFTR_F;LHS_STIFTR_F.FromFile_Rows(param_LHS_STIFTR_F, nRows);
 	
 	
 	// Parameters used in each step of the loop
@@ -749,17 +749,17 @@ void calibration_LHS_fromFile(string target_filename_wrapper,
 	vector<double> SR_m(0);
 	vector<double> MVC(0);
 	
-	Matrix AD(0);
-	Matrix AGD(0);
-	Matrix AFS_f(0);
-	Matrix AFS_m(0);
-	Matrix GFSS_f(0);
-	Matrix GFSS_m(0);
-	Matrix AMVC(0);
-	Matrix NLS_f(0);
-	Matrix NLS_m(0);
+	dcMatrix AD(0);
+	dcMatrix AGD(0);
+	dcMatrix AFS_f(0);
+	dcMatrix AFS_m(0);
+	dcMatrix GFSS_f(0);
+	dcMatrix GFSS_m(0);
+	dcMatrix AMVC(0);
+	dcMatrix NLS_f(0);
+	dcMatrix NLS_m(0);
 	
-	Matrix stiPrev(0,S.get_population().get_maxRiskGroup()+2);
+	dcMatrix stiPrev(0,S.get_population().get_maxRiskGroup()+2);
 	
 	
 	//	vector<double> ageBreaks			= TAD.extractColumn(0);
@@ -885,7 +885,7 @@ void calibration_LHS_fromFile(string target_filename_wrapper,
 		//vector<double> tmp_stiPrev = S.get_population().STI_prevalences(S.get_target_STIprevalence_names());
 		//stiPrev.addRowVector(tmp_stiPrev);
 		
-		Matrix sti_tmp = S.get_population().STI_prevalence_by_riskGroup(S.get_target_STIprevalence_names());
+		dcMatrix sti_tmp = S.get_population().STI_prevalence_by_riskGroup(S.get_target_STIprevalence_names());
 		stiPrev = rowBind(stiPrev, sti_tmp);
 		
 	}
@@ -965,17 +965,17 @@ void calib_LHS_SerialFarming_GenInputFiles(int nLHS, int nJobs, string fname,
 	// GENERATES INPUT FILES FOR UNIT JOBS
 	
 	
-	Matrix LHS_DMG		= LatinHypercubeSampling(param_DMG_LowerLim, param_DMG_UpperLim, nLHS);
-	Matrix LHS_FORM		= LatinHypercubeSampling(param_FORM_LowerLim, param_FORM_UpperLim, nLHS);
-	Matrix LHS_SPOUSAL	= LatinHypercubeSampling(param_SPOUSAL_LowerLim, param_SPOUSAL_UpperLim, nLHS);
-	Matrix LHS_DISSOL	= LatinHypercubeSampling(param_DISSOL_LowerLim, param_DISSOL_UpperLim, nLHS);
+	dcMatrix LHS_DMG		= LatinHypercubeSampling(param_DMG_LowerLim, param_DMG_UpperLim, nLHS);
+	dcMatrix LHS_FORM		= LatinHypercubeSampling(param_FORM_LowerLim, param_FORM_UpperLim, nLHS);
+	dcMatrix LHS_SPOUSAL	= LatinHypercubeSampling(param_SPOUSAL_LowerLim, param_SPOUSAL_UpperLim, nLHS);
+	dcMatrix LHS_DISSOL	= LatinHypercubeSampling(param_DISSOL_LowerLim, param_DISSOL_UpperLim, nLHS);
 	
-	Matrix LHS_SEXACT	= LatinHypercubeSampling(param_SEXACT_LowerLim, param_SEXACT_UpperLim, nLHS);
+	dcMatrix LHS_SEXACT	= LatinHypercubeSampling(param_SEXACT_LowerLim, param_SEXACT_UpperLim, nLHS);
 	
-	Matrix LHS_STIFTR_V	= LatinHypercubeSampling(param_STIFTR_V_LowerLim, param_STIFTR_V_UpperLim, nLHS);
-	Matrix LHS_STIFTR_B	= LatinHypercubeSampling(param_STIFTR_B_LowerLim, param_STIFTR_B_UpperLim, nLHS);
-	Matrix LHS_STIFTR_P	= LatinHypercubeSampling(param_STIFTR_P_LowerLim, param_STIFTR_P_UpperLim, nLHS);
-	Matrix LHS_STIFTR_F	= LatinHypercubeSampling(param_STIFTR_F_LowerLim, param_STIFTR_F_UpperLim, nLHS);
+	dcMatrix LHS_STIFTR_V	= LatinHypercubeSampling(param_STIFTR_V_LowerLim, param_STIFTR_V_UpperLim, nLHS);
+	dcMatrix LHS_STIFTR_B	= LatinHypercubeSampling(param_STIFTR_B_LowerLim, param_STIFTR_B_UpperLim, nLHS);
+	dcMatrix LHS_STIFTR_P	= LatinHypercubeSampling(param_STIFTR_P_LowerLim, param_STIFTR_P_UpperLim, nLHS);
+	dcMatrix LHS_STIFTR_F	= LatinHypercubeSampling(param_STIFTR_F_LowerLim, param_STIFTR_F_UpperLim, nLHS);
 	
 	// DEBUG
 	LHS_SPOUSAL.display();
@@ -994,9 +994,9 @@ void calib_LHS_SerialFarming_GenInputFiles(int nLHS, int nJobs, string fname,
 	system(cmdline.c_str());
 	
 	
-	Matrix fDMG(0), fFORM(0), fSPOUSAL(0), fDISSOL(0);
-	Matrix fSEXACT(0);
-	Matrix fSTIFTR_V(0),fSTIFTR_B(0),fSTIFTR_P(0),fSTIFTR_F(0);
+	dcMatrix fDMG(0), fFORM(0), fSPOUSAL(0), fDISSOL(0);
+	dcMatrix fSEXACT(0);
+	dcMatrix fSTIFTR_V(0),fSTIFTR_B(0),fSTIFTR_P(0),fSTIFTR_F(0);
 	int cnt = 1;
 	
 	for (int s=1; s<=nLHS; s++)
@@ -1075,7 +1075,7 @@ void calib_LHS_SerialFarming_GenInputFiles(int nLHS, int nJobs, string fname,
 }
 
 
-Matrix calib_getTarget_Distribution(string filename)
+dcMatrix calib_getTarget_Distribution(string filename)
 {
 	/// RETRIEVE TARGET DISTRIBUTION FOR CALIBRATION
 	/// FORMAT EXPECTED: CSV
@@ -1094,14 +1094,14 @@ Matrix calib_getTarget_Distribution(string filename)
 	//cout<<endl<<"DEBUG calib_getTarget_Distribution";
 	//displayVector(breaks);
 	
-	Matrix res(breaks);
+	dcMatrix res(breaks);
 	res.addColVector(proportion);
 	
 	return res;
 }
 
 
-Matrix calib_getTarget_AgeDistribution(string filename)
+dcMatrix calib_getTarget_AgeDistribution(string filename)
 {
 	/// RETRIEVE TARGET AGE DISTRIBUTION FOR CALIBRATION
 	/// FORMAT EXPECTED: CSV
@@ -1117,7 +1117,7 @@ Matrix calib_getTarget_AgeDistribution(string filename)
 	
 	//displayVector(age_breaks);
 	
-	Matrix res(age_breaks);
+	dcMatrix res(age_breaks);
 	res.addColVector(age_proportion);
 	
 	return res;
