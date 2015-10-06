@@ -3,3 +3,4 @@
 
 code_model/tphiv_*
 code_model/*.out
+code_model/CODECHECK/*.out
