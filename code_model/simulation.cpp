@@ -2526,6 +2526,9 @@ void Simulation::save_prevalence(unsigned int iter_mc){
 	tmp.WriteToFileCSV(filename_prev,header);
 }
 
+
+
+
 // ===================================================================
 // ===================================================================
 // =====  INTERVENTION  =====
@@ -2583,66 +2586,65 @@ void Simulation::activate_intervention(int i)
 						doVacc_mass || doVacc_symptom || doVacc_female || doVacc_femaleYoung;
 	stopif(!type_known, "Unknown intervention type!");
 	
+	unsigned int sti_i = positionSTIinVector(sti, _population.get_STI());
 	
 	for (unsigned long uid=0; uid<_population.get_size(); uid++){
 		
 		// == Filter who is targeted by intervention ==
 		
 		Individual indiv = _population.getIndividual(uid);
-		bool indivIsTargeted = false;
 		
-		bool alreadyVacc = (indiv.get_STI_immunized(sti));
-		
-		if(doTreat_mass)	indivIsTargeted = indiv.STI_infected(sti); // Only STI infected indiv are targeted
-		
-		if(doTreat_symptom) indivIsTargeted = indiv.is_symptomatic(sti);
-		
-		if(doVacc_mass){
-			// everyone is targeted
-			// but exclude the ones already vaccinated
-			indivIsTargeted =  !alreadyVacc;
-		}
-		
-		if(doVacc_symptom){
-			// only symptomatic (for THAT STI) individuals
-			indivIsTargeted = indiv.is_symptomatic(sti) && !alreadyVacc;
-		}
-		
-		if(doVacc_female){
-			// only (all) females
-			indivIsTargeted = (indiv.get_gender()==female) && !alreadyVacc;
-		}
-		
-		if(doVacc_femaleYoung){
-			// only _young_ females
-			double young_age = 15.0;
+		if(indiv.isAlive()){
 			
-			bool tmp1 = (indiv.get_gender()==female);
-			bool tmp2 = (indiv.get_age()<young_age);
-			bool tmp3 = !alreadyVacc;
-			indivIsTargeted = tmp1 && tmp2 && tmp3;
-		}
-		
-		
-		// == Apply intervention on filtered individuals ==
-		
-		if(_population.getIndividual(uid).isAlive() && indivIsTargeted ){
-			cnt2++;
-			// no sampling because rate of intervention>1
-			// (speed up code execution)
-			if (!do_sample)
-			{
-				if(doTreatment)		treat_indiv(uid, sti);
-				if(doVaccination)	vaccinate_indiv(uid, sti);
-				cnt++;
+			bool indivIsTargeted	= false;
+			
+			bool isSymptomatic		= indiv.get_STIsymptom()[sti_i];
+			bool alreadyVacc		= indiv.get_STI_immunized()[sti_i];  // slow code: get_STI_immunized(sti);
+			
+			if(doTreat_mass)	indivIsTargeted = indiv.get_STIduration()[sti_i]>0; // slow code: indiv.STI_infected(sti);
+			if(doTreat_symptom) indivIsTargeted = indiv.get_STIsymptom()[sti_i]; // slow code: is_symptomatic(sti);
+			if(doVacc_mass){
+				// everyone is targeted
+				// but exclude the ones already vaccinated
+				indivIsTargeted =  !alreadyVacc;
+			}
+			if(doVacc_symptom){
+				// only symptomatic (for THAT STI) individuals
+				indivIsTargeted = isSymptomatic && !alreadyVacc;
+			}
+			if(doVacc_female){
+				// only (all) females
+				indivIsTargeted = (indiv.get_gender()==female) && !alreadyVacc;
+			}
+			if(doVacc_femaleYoung){
+				// only _young_ females
+				double young_age = 15.0;
+				
+				bool tmp1 = (indiv.get_gender()==female);
+				bool tmp2 = (indiv.get_age()<young_age);
+				bool tmp3 = !alreadyVacc;
+				indivIsTargeted = tmp1 && tmp2 && tmp3;
 			}
 			
-			// random sample
-			if (do_sample && uniform01()<= target_dt)
-			{
-				if(doTreatment)		treat_indiv(uid, sti);
-				if(doVaccination)	vaccinate_indiv(uid, sti);
-				cnt++;
+			
+			// == Apply intervention on filtered individuals ==
+			
+			if(indivIsTargeted ){
+				cnt2++;
+				// no sampling because rate of intervention>1
+				// (speed up code execution)
+				if (!do_sample){
+					if(doTreatment)		treat_indiv(uid, sti);
+					if(doVaccination)	vaccinate_indiv(uid, sti);
+					cnt++;
+				}
+				
+				// random sample
+				if (do_sample && uniform01()<= target_dt){
+					if(doTreatment)		treat_indiv(uid, sti);
+					if(doVaccination)	vaccinate_indiv(uid, sti);
+					cnt++;
+				}
 			}
 		}
 	} // end loop on individuals
@@ -2730,13 +2732,25 @@ void Simulation::update_cure(STIname sti)
 	/// Update the cure for all individuals treated against that STI
 	/// (mostly when treatment duration has reached optimal duration
 	
+	int sti_i = positionSTIinVector(sti, _population.get_STI());
+	
 	for (unsigned long uid=0; uid<_population.get_size(); uid++){
 		Individual tmp = _population.getIndividual(uid);
 		if (tmp.isAlive() &&
-			tmp.STI_treated(sti) &&
-			tmp.get_STIduration(sti)>0) cure_indiv(uid,sti);
+			(tmp.get_STItreatDuration()[sti_i]>0) &&
+			tmp.get_STIduration()[sti_i]>0) cure_indiv(uid,sti);
 		
 	}
+
+// SLOW CODE: DELETE when sure (2015-10-06)
+//	for (unsigned long uid=0; uid<_population.get_size(); uid++){
+//		Individual tmp = _population.getIndividual(uid);
+//		if (tmp.isAlive() &&
+//			tmp.STI_treated(sti) &&
+//			tmp.get_STIduration(sti)>0) cure_indiv(uid,sti);
+//		
+//	}
+	
 	
 }
 

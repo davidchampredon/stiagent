@@ -233,7 +233,7 @@ public:
 	vector<bool>		get_STIsymptom() {return _STIsymptom;}
 	bool				get_STIsymptom(STIname);
 	
-	
+	vector<double>		get_STItreatDuration() {return _STItreatDuration;}
 	double				get_STItreatDuration(STIname sti);
 	int					get_STItreatTMS(STIname sti);
 	double				get_STItreatAdherence(STIname sti);
