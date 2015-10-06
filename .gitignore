@@ -6,3 +6,6 @@
 code_model/tphiv_*
 code_model/*.out
 code_model/CODECHECK/*.out
+
+code_analysis/*.csv
+code_analysis/*.pdf
