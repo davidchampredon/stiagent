@@ -11,8 +11,9 @@
 
 //  ==== Directories ====
 
+std::string _DIR_IN			= "../inputs/";
 std::string _DIR_OUT		= "./OUT/";
-std::string _DIR_CALIB		= "./CALIBRATION/";
+std::string _DIR_CALIB		= "../calibration/";
 std::string _DIR_VIZINPUT	= "./VisualizeInput/";
 
 // ==== Random seeds ====

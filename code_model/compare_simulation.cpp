@@ -156,13 +156,11 @@ void	run_comp_interventions(unsigned int nMC,
 	
 	vector<MCsimulation> scenario;
 	
-	for (int i=0; i<n_scenario; i++)
-	{
+	for (int i=0; i<n_scenario; i++){
 		// retrieve relevant intervention wrapper
 		vector<string> interv_wrap;
-		
-		vectorFromCSVfile_string(interv_wrap,
-								 filename_intervention_wrapper[i].c_str(), 1);
+		string file_i =_DIR_IN + filename_intervention_wrapper[i];
+		vectorFromCSVfile_string(interv_wrap, file_i.c_str(), 1);
 		
 		// DEBUG
 		cout<<"Running scenario #"<<i<<endl;

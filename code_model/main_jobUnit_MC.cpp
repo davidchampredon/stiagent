@@ -75,7 +75,7 @@ int main(int argc, const char * argv[])
 	
 	// Simulate with several Monte Carlo iterations
 	// (test environment: will be serial execution - for parallel, see Makefile)
-	string file_simul_param = "in_simulation.csv";
+	string file_simul_param = _DIR_IN + "in_simulation.csv";
 	
 	double horizon		= getParameterFromFile("horizon_years", file_simul_param);
 	double timeStep		= getParameterFromFile("timestep_days", file_simul_param)/365.0;
@@ -86,8 +86,9 @@ int main(int argc, const char * argv[])
 	// Intervention specification files
 	
 	vector<string> file_intervention;
-	vectorFromCSVfile_string(file_intervention,
-							 "in_interv_baseline_wrapper.csv", 1);
+	string file_interv_base = _DIR_IN + "in_interv_baseline_wrapper.csv";
+	
+	vectorFromCSVfile_string(file_intervention,file_interv_base.c_str(), 1);
 	file_intervention = trim(file_intervention);
 	
 	bool		TraceNetwork	= false;
@@ -99,13 +100,13 @@ int main(int argc, const char * argv[])
 	
 	bool debugInfo=true;
 	
-	string file_startpop	= "startPopulation.csv";
-	string file_STI			= "in_STI.csv";
-	string file_STI_SFinc	= "in_STI_SFincrease.csv";
-	string file_HIVreb		= "in_HIVrebound.csv";
-	string file_STI_treat	= "in_STItreatment.csv";
-	string file_STI_vacc	= "in_STI_vaccine.csv";
-	string file_init_STI	= "in_STI_initial_prevalence.csv";
+	string file_startpop	= _DIR_IN + "startPopulation.csv";
+	string file_STI			= _DIR_IN + "in_STI.csv";
+	string file_STI_SFinc	= _DIR_IN + "in_STI_SFincrease.csv";
+	string file_HIVreb		= _DIR_IN + "in_HIVrebound.csv";
+	string file_STI_treat	= _DIR_IN + "in_STItreatment.csv";
+	string file_STI_vacc	= _DIR_IN + "in_STI_vaccine.csv";
+	string file_init_STI	= _DIR_IN + "in_STI_initial_prevalence.csv";
 	
 	P.setup_for_simulation(file_startpop,
 						   file_STI,

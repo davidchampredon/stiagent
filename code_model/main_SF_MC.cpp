@@ -57,15 +57,15 @@ int main(int argc, const char * argv[])
 	fstart<<"dummy"<<endl;
 	
 	// retrieve execution parameters
-	int nMCtotal	= getParameterFromFile("MCiter", "in_simulation.csv");
-	int nCPU		= getParameterFromFile("nCPU", "in_simulation.csv");
+	int nMCtotal	= getParameterFromFile("MCiter", _DIR_IN + "in_simulation.csv");
+	int nCPU		= getParameterFromFile("nCPU", _DIR_IN + "in_simulation.csv");
 	int nMCperCPU	= nMCtotal/nCPU;
 	
 	coutline(80);
 	cout << "*** SINGLE SIMULATION WITH "<<nMCtotal<<" MC ITERATIONS ***"<<endl;
 	
 	// Mandatory code checks
-	CODECHECK_mandatory();
+	//CODECHECK_mandatory();
 	
 	// Launch unit jobs (1 for each CPU)
 	

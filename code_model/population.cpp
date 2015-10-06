@@ -549,15 +549,15 @@ void Population::setAllParameters()
 	
 	// File names
 	
-	string populationFeatures_file		= "in_populationFeatures.csv";
+	string populationFeatures_file		= _DIR_IN + "in_populationFeatures.csv";
 	
-	string demographics_file			= "in_paramDMG.csv";
-	string formation_file				= "in_paramFORM.csv";
-	string spousal_file					= "in_paramSPOUSAL.csv";
-	string dissolution_file				= "in_paramDISSOL.csv";
+	string demographics_file			= _DIR_IN + "in_paramDMG.csv";
+	string formation_file				= _DIR_IN + "in_paramFORM.csv";
+	string spousal_file					= _DIR_IN + "in_paramSPOUSAL.csv";
+	string dissolution_file				= _DIR_IN + "in_paramDISSOL.csv";
 	
-	string param_sexActivity_file		= "in_paramSexActivity.csv";
-	string param_CSW_file				= "in_CSW.csv";
+	string param_sexActivity_file		= _DIR_IN + "in_paramSexActivity.csv";
+	string param_CSW_file				= _DIR_IN + "in_CSW.csv";
 	
 	
 	// Set values of parameters

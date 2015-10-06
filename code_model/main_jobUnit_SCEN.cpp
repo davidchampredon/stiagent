@@ -71,15 +71,15 @@ int main(int argc, const char * argv[])
 	
 	bool debugInfo = false;
 	
-	string file_startpop	= "startPopulation.csv";
-	string file_STI			= "in_STI.csv";
-	string file_STI_SFinc	= "in_STI_SFincrease.csv";
-	string file_HIVreb		= "in_HIVrebound.csv";
-	string file_STI_treat	= "in_STItreatment.csv";
-	string file_STI_vacc	= "in_STI_vaccine.csv";
-	string file_init_STI	= "in_STI_initial_prevalence.csv";
+	string file_startpop	= _DIR_IN + "startPopulation.csv";
+	string file_STI			= _DIR_IN + "in_STI.csv";
+	string file_STI_SFinc	= _DIR_IN + "in_STI_SFincrease.csv";
+	string file_HIVreb		= _DIR_IN + "in_HIVrebound.csv";
+	string file_STI_treat	= _DIR_IN + "in_STItreatment.csv";
+	string file_STI_vacc	= _DIR_IN + "in_STI_vaccine.csv";
+	string file_init_STI	= _DIR_IN + "in_STI_initial_prevalence.csv";
 	// Simulation parameters
-	string file_simul_param = "in_simulation.csv";
+	string file_simul_param = _DIR_IN + "in_simulation.csv";
 	
 	P.setup_for_simulation(file_startpop,
 						   file_STI,
@@ -122,8 +122,8 @@ int main(int argc, const char * argv[])
 	
 	// Scenario files
 	vector<string> file_scenario;
-	vectorFromCSVfile_string(file_scenario,
-							 "in_scenario.csv", 1);
+	string file_scen = _DIR_IN + "in_scenario.csv";
+	vectorFromCSVfile_string(file_scenario,file_scen.c_str() , 1);
 	
 	// Run & compare outcomes of all scenarios:
 	run_comp_interventions(nMC,

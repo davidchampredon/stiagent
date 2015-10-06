@@ -17,12 +17,12 @@ void CODECHECK_mandatory()
 	// Population
 	
 	Population P;
-	P.setup_for_simulation("startPopulation.csv",
-						   "in_STI.csv",
-						   "in_STI_SFincrease.csv",
-						   "in_HIVrebound.csv",
-						   "in_STItreatment.csv",
-						   "in_STI_vaccine.csv",
+	P.setup_for_simulation(_DIR_IN + "startPopulation.csv",
+						   _DIR_IN + "in_STI.csv",
+						   _DIR_IN + "in_STI_SFincrease.csv",
+						   _DIR_IN + "in_HIVrebound.csv",
+						  _DIR_IN +  "in_STItreatment.csv",
+						  _DIR_IN +  "in_STI_vaccine.csv",
 						   false);
 	
 	// Partnerships

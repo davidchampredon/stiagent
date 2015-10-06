@@ -15,6 +15,7 @@
 
 //  ==== Directories ====
 
+extern std::string _DIR_IN;		// all input files are saved in this folder
 extern std::string _DIR_OUT;	// all "*.out" files are saved in this folder
 extern std::string _DIR_CALIB;	// all calibration files are saved in this folder
 extern std::string _DIR_VIZINPUT;	// all input visualization files are saved in this folder

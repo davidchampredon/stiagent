@@ -56,15 +56,15 @@ int main(int argc, const char * argv[])
 	
 	
 		
-	
+	string _DIR_IN = "../inputs/";
 	
 	
 	// Clean all previous output files
 	// (some files are incremental, so can get huge)
-	system("./cleanout");
+//	system("./cleanout");
 	
 	
-	CODECHECK_mandatory();
+	if(0) CODECHECK_mandatory();
 	
 	
 	//	Intervention ii("in_treatment.csv");
@@ -74,7 +74,7 @@ int main(int argc, const char * argv[])
 	
 	// Switches to determine what will be done
 	// for this program execution
-	string main_switches_file = "main_switches.csv";
+	string main_switches_file = _DIR_IN + "main_switches.csv";
 	
 	bool doChecks		= (bool)(getParameterFromFile("doChecks", main_switches_file)); // "1" is Strongly advised
 	bool doTest			= (bool)(getParameterFromFile("doTest", main_switches_file));
@@ -99,7 +99,7 @@ int main(int argc, const char * argv[])
 	
 	// Mandatory Checks (some used in documentation)
 	
-	if (doChecks) CODECHECK_mandatory();
+	//if (doChecks) CODECHECK_mandatory();
 	
 	
 	if (!doTest)
@@ -118,12 +118,12 @@ int main(int argc, const char * argv[])
 		
 		bool debugInfo=true;
 		
-		P.setup_for_simulation("startPopulation.csv",
-							   "in_STI.csv",
-							   "in_STI_SFincrease.csv",
-							   "in_HIVrebound.csv",
-							   "in_STItreatment.csv",
-							   "in_STI_vaccine.csv",
+		P.setup_for_simulation(_DIR_IN + "startPopulation.csv",
+							   _DIR_IN + "in_STI.csv",
+							   _DIR_IN + "in_STI_SFincrease.csv",
+							   _DIR_IN + "in_HIVrebound.csv",
+							   _DIR_IN + "in_STItreatment.csv",
+							   _DIR_IN + "in_STI_vaccine.csv",
 							   debugInfo);
 		
 		
@@ -132,8 +132,8 @@ int main(int argc, const char * argv[])
 		// === Run simulation ===
 		// ======================
 		
-		double horizon	= getParameterFromFile("horizon_years", "in_simulation.csv");
-		double timeStep	= getParameterFromFile("timestep_days", "in_simulation.csv")/365.0;
+		double horizon	= getParameterFromFile("horizon_years", _DIR_IN + "in_simulation.csv");
+		double timeStep	= getParameterFromFile("timestep_days", _DIR_IN + "in_simulation.csv")/365.0;
 		
 		
 		if (doSingleRun)
@@ -144,11 +144,14 @@ int main(int argc, const char * argv[])
 			unsigned int iter_mc = 1;
 			int displayProgress = 11;
 			
-			string file_init_STI = "in_STI_initial_prevalence.csv";
+			string file_init_STI = _DIR_IN + "in_STI_initial_prevalence.csv";
 			
 			vector<string> file_intervention;
-			vectorFromCSVfile_string(file_intervention,
-									 "in_interv_baseline_wrapper.csv", 1);
+			string file_interv_base =_DIR_IN + "in_interv_baseline_wrapper.csv";
+			vectorFromCSVfile_string(file_intervention,file_interv_base.c_str(), 1);
+			
+			displayVector(file_intervention);
+			
 			file_intervention = trim(file_intervention);
 			
 			Simulation S = runSimulation_one(P,

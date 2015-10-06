@@ -266,7 +266,8 @@ Simulation	runSimulation_one(Population P_init,
 	Simulation S(horizon, timestep, P_init, 0);
 	S.set_MC_trial_iter(iter_mc);
 	
-	bool saveflag = (bool)(getParameterFromFile("save_trace_files", "in_simulation.csv"));
+	bool saveflag = (bool)(getParameterFromFile("save_trace_files",
+												_DIR_IN + "in_simulation.csv"));
 	S.set_save_trace_files(saveflag);
 	
 	// Calibration
@@ -292,7 +293,7 @@ Simulation	runSimulation_one(Population P_init,
 	filename_interventions = trim(filename_interventions);
 	vector<Intervention> I;
 	for (int i=0; i<filename_interventions.size(); i++){
-		Intervention tmp(filename_interventions[i]);
+		Intervention tmp(_DIR_IN+filename_interventions[i]);
 		I.push_back(tmp);		
 	}
 	S.set_intervention(I);
