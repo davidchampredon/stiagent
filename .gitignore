@@ -1,5 +1,6 @@
 *.out
 *.log
+*.pdf
 
 code_model/tphiv_*
 code_model/*.out
