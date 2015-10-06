@@ -1,5 +1,5 @@
 DIR.OUT <- "../outputs/"
-
+DIR.IN <- "../inputs/"
 
 source("analyze_simulation_FCT.R")
 require(plyr)
@@ -10,7 +10,7 @@ mc.Tp.extinct.before.interv <- function(intervFileName){
 	### EXTINCT BEFORE INTERVENTION STARTS
 	
   # retrieve prevalence time series
-	f <- read.csv(paste0("../",intervFileName),header=F)
+	f <- read.csv(paste0(DIR.IN,intervFileName),header=F)
 	prev <- read.simulation.file("prev_mc")
 	
 	# retrieve date of intervention start
@@ -33,7 +33,7 @@ mc.HIV.extinct.before.interv <- function(intervFileName){
   ### EXTINCT BEFORE INTERVENTION STARTS
   
   # retrieve prevalence time series
-  f <- read.csv(paste0("../",intervFileName),header=F)
+  f <- read.csv(paste0(DIR.IN, intervFileName),header=F)
   prev <- read.simulation.file("prev_mc")
   
   # retrieve date of intervention start

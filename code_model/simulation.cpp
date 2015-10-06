@@ -2584,17 +2584,18 @@ void Simulation::activate_intervention(int i)
 	stopif(!type_known, "Unknown intervention type!");
 	
 	
-	for (unsigned long uid=0; uid<_population.get_size(); uid++)
-	{
+	for (unsigned long uid=0; uid<_population.get_size(); uid++){
+		
 		// == Filter who is targeted by intervention ==
 		
+		Individual indiv = _population.getIndividual(uid);
 		bool indivIsTargeted = false;
 		
-		bool alreadyVacc = (_population.getIndividual(uid).get_STI_immunized(sti));
+		bool alreadyVacc = (indiv.get_STI_immunized(sti));
 		
-		if(doTreat_mass)	indivIsTargeted = _population.getIndividual(uid).STI_infected(sti); // Only STI infected indiv are targeted
+		if(doTreat_mass)	indivIsTargeted = indiv.STI_infected(sti); // Only STI infected indiv are targeted
 		
-		if(doTreat_symptom) indivIsTargeted = _population.getIndividual(uid).is_symptomatic(sti);
+		if(doTreat_symptom) indivIsTargeted = indiv.is_symptomatic(sti);
 		
 		if(doVacc_mass){
 			// everyone is targeted
@@ -2604,20 +2605,20 @@ void Simulation::activate_intervention(int i)
 		
 		if(doVacc_symptom){
 			// only symptomatic (for THAT STI) individuals
-			indivIsTargeted = _population.getIndividual(uid).is_symptomatic(sti) && !alreadyVacc;
+			indivIsTargeted = indiv.is_symptomatic(sti) && !alreadyVacc;
 		}
 		
 		if(doVacc_female){
 			// only (all) females
-			indivIsTargeted = (_population.getIndividual(uid).get_gender()==female) && !alreadyVacc;
+			indivIsTargeted = (indiv.get_gender()==female) && !alreadyVacc;
 		}
 		
 		if(doVacc_femaleYoung){
 			// only _young_ females
 			double young_age = 15.0;
 			
-			bool tmp1 = (_population.getIndividual(uid).get_gender()==female);
-			bool tmp2 = (_population.getIndividual(uid).get_age()<young_age);
+			bool tmp1 = (indiv.get_gender()==female);
+			bool tmp2 = (indiv.get_age()<young_age);
 			bool tmp3 = !alreadyVacc;
 			indivIsTargeted = tmp1 && tmp2 && tmp3;
 		}
@@ -2730,11 +2731,11 @@ void Simulation::update_cure(STIname sti)
 	/// (mostly when treatment duration has reached optimal duration
 	
 	for (unsigned long uid=0; uid<_population.get_size(); uid++){
-		if (_population.getIndividual(uid).isAlive() &&
-			_population.getIndividual(uid).STI_treated(sti) &&
-			_population.getIndividual(uid).get_STIduration(sti)>0){
-			cure_indiv(uid,sti);
-		}
+		Individual tmp = _population.getIndividual(uid);
+		if (tmp.isAlive() &&
+			tmp.STI_treated(sti) &&
+			tmp.get_STIduration(sti)>0) cure_indiv(uid,sti);
+		
 	}
 	
 }

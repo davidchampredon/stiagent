@@ -49,7 +49,7 @@ int main(int argc, const char * argv[])
 	
 	// STOPPED HERE (GLOBAL):
 	
-	// 2015-03-13:
+	// 2015-03-13:	
 	// ----------
 	// calibration analysis in progress
 	// see file "read_singleSimul_vs_target-NEW.R"
@@ -61,10 +61,10 @@ int main(int argc, const char * argv[])
 	
 	// Clean all previous output files
 	// (some files are incremental, so can get huge)
-//	system("./cleanout");
+	//	system("./cleanout");
 	
 	
-	if(0) CODECHECK_mandatory();
+	//	CODECHECK_mandatory();
 	
 	
 	//	Intervention ii("in_treatment.csv");

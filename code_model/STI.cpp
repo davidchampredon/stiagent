@@ -935,11 +935,6 @@ int positionSTIinVector(STIname s, vector<STI> v)
 	
 	string errmsg = "STI name <" + STInameString(s) + "> does not exist!" ;
 	stopif(i>=v.size(),errmsg);
-	
-//	if (i>=v.size()) {
-//		cout << "ERROR [positionSTIinVector]: STI name "<< s << " does not exist" << endl;
-//		exit(1);
-//	}
 
 	return i;
 }
