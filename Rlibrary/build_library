@@ -1,0 +1,6 @@
+rm -rf stiagent*
+Rscript setup_library.R
+cp Makevars stiagent/src 
+R CMD build stiagent
+R CMD check stiagent
+R CMD INSTALL -l ./lib stiagent

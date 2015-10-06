@@ -106,7 +106,7 @@ int main(int argc, const char * argv[])
 	{
 		
 		// Generate founding individuals
-		system("Rscript generateIndividuals.R > generateIndividuals.out");
+		//system("Rscript generateIndividuals.R > generateIndividuals.out");
 		
 		
 		// ======================
