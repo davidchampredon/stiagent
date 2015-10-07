@@ -34,7 +34,7 @@ class dcDataFrame
 	
 	vector<string>	_rowname;
 	vector<string>	_colname;
-	dcMatrix			_value;
+	dcMatrix		_value;
 
 
 
@@ -46,7 +46,10 @@ public:
     // ======================
 	
 	
-	dcDataFrame(){}
+	dcDataFrame(){
+		dcMatrix M(0,0);
+		_value = M;
+	}
 	
 	
 	dcDataFrame(vector<string> rowname, dcMatrix M, vector<string> colName)
@@ -65,11 +68,9 @@ public:
 			exit(1);
 		}
 		
-		
 		_rowname = rowname;
 		_value = M;
 		_colname = colName;
-		
 	}
 	
 	
@@ -157,8 +158,6 @@ public:
 			
 		}
 		
-		
-		
 		// Retrieve variable names = 1st column
 		vector<string> tmp_varname;
 		vectorFromCSVfile_string(tmp_varname, filename.c_str(), 1);
@@ -182,8 +181,6 @@ public:
 		if (headers) M.removeRow(0);
 		
 		_value = M;
-		
-
 	}
 	
 	

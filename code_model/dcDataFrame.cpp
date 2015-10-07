@@ -20,27 +20,26 @@ void dcDataFrame::addrow(string varname, vector<double> values)
 	// Add a row to the data frame
 	// Size of values MUST equal the nb of columns of dcMatrix _value
 	
-	if (values.size()!= _value.getNbCols() &&  _value.getNbCols()>0 )
+	if (values.size()!= _value.getNbCols() &&  _value.val.size()>0 )
 	{
-		cout << "ERROR dcDataFrame [addrow]:";
-		cout << "'values' vector size and dcMatrix nb columns 'value' do not match"<<endl;
+		cerr << "ERROR dcDataFrame [addrow]:";
+		cerr << "'values' vector size and dcMatrix nb columns 'value' do not match"<<endl;
 		exit(1);
 	}
 	
 	// If first insertion in empty data frame
 	// then create default headers
-	vector<string> tmp(0);
-	for (int j=0;j<values.size(); j++)
-	{
-		tmp.push_back("V"+int2string(j));
+	if(_colname.size()==0){
+		vector<string> tmp(0);
+		for (int j=0;j<values.size(); j++)
+			tmp.push_back("V"+int2string(j));
+		_colname = tmp;
 	}
-	_colname = tmp;
-	
 	
 	_rowname.push_back(varname);
 	_value.addRowVector(values);
-	
 }
+
 
 void dcDataFrame::addrow(string varname,double value)
 {
@@ -103,7 +102,7 @@ double	dcDataFrame::getValue(string rowname, string colname)
 		cout << endl << " ERROR [dcDataFrame::getValue]: value name '"<<colname<<"' does not exist!"<<endl;
 		exit(1);
 	}
-
+	
 	return getValue(rowname, j);
 }
 
@@ -158,10 +157,10 @@ void dcDataFrame::display()
 		for (int i=0; i<n; i++)
 		{
 			cout << _rowname[i] << sep;
-
+			
 			for (int j=0;j<ncol; j++)
 				cout <<  _value(i,j)<<"\t";
-				
+			
 			cout << endl;
 		}
 		
@@ -180,7 +179,7 @@ void dcDataFrame::saveToCSV(string filename, bool col_headers)
 	
 	unsigned int N = _rowname.size();
 	unsigned int M = _colname.size();
-
+	
 	ofstream f(filename);
 	
 	if (col_headers)
