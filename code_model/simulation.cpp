@@ -920,7 +920,7 @@ void Simulation::runAllEvents_horizon_obj(bool doSex,
 	// ===    Loop through time until horizon
 	// ===================================================
 	
-	int cnt = 0;
+//	int cnt = 0;
 	int t_i = 0;
 	int n_timesteps = (int)(_horizon/_timeStep);
 	

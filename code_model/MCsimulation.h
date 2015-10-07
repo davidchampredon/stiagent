@@ -18,7 +18,7 @@ class MCsimulation
 	/// Object storing all Monte Carlo trials of a simulation
 	
 	
-	unsigned int		_nMC;	// total number of MC iterations
+	unsigned long		_nMC;	// total number of MC iterations
 	vector<Simulation>	_simulation;
 	
 	double			_horizon;
@@ -49,14 +49,14 @@ public:
 				 int jobnum=1);
 	
 	
-	
+		
 	// ============================
 	// ==== GET FUNCTIONS =========
 	// ============================
 	
 	vector<Simulation>		get_simulation(){return _simulation;}
 	Simulation				get_simulation(int i){return _simulation[i];}
-	unsigned int			get_nMC() {return _nMC;}
+	unsigned long			get_nMC() {return _nMC;}
 	string					get_scenarioName() {return _scenarioName;}
 	
 	
@@ -65,9 +65,11 @@ public:
 	// ============================
 	
 	void	set_simulation(vector<Simulation> x){_simulation = x;}
-	void	set_nMC(unsigned int n) {_nMC=n;}
+	void	set_nMC(unsigned long n) {_nMC=n;}
 	void	set_scenarioName(string x) {_scenarioName = x;}
-	
+	void	set_horizon(double x){_horizon=x;}
+	void	set_timeStep(double x){_timeStep=x;}
+	void	set_schedule(vector<double> x) {_schedule=x;}
 	
 	// ============================
 	// ==== MISC   =========
@@ -139,7 +141,9 @@ Simulation	runSimulation_one_obj(Population P_init,
 								  double timestep,
 								  bool TraceNetwork,
 								  int displayProgress,
-								  unsigned int iter_mc);
+								  unsigned int iter_mc,
+								  string folder_inputs,
+								  string folder_calib);
 
 
 // Monte Carlo runs of the whole simulation
@@ -156,6 +160,22 @@ vector<Simulation>	runSimulationMC(unsigned int nMC,
 									bool TraceNetwork,
 									int displayProgress,
 									int jobnum=1);
+
+
+vector<Simulation>	runSimulationMC_obj(unsigned int nMC,
+										Population P_init,
+										string filename_init_STI_prev,
+										vector<string> filename_interventions,
+										double horizon_prtn,
+										double timestep_prtn,
+										double horizon,
+										double timestep,
+										bool TraceNetwork,
+										int displayProgress,
+										string folder_inputs,
+										string folder_calib,
+										int jobnum=1);
+
 
 
 

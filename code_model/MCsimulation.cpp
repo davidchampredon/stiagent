@@ -60,6 +60,9 @@ MCsimulation::MCsimulation(unsigned int nMC,
 
 
 
+
+
+
 // =============================================================================
 // =============================================================================
 // =============================================================================
@@ -385,8 +388,10 @@ Simulation	runSimulation_one_obj(Population P_init,
 								  double timestep,
 								  bool TraceNetwork,
 								  int displayProgress,
-								  unsigned int iter_mc // <- this is a _unique_ number (across all jobs)
-)
+								  unsigned int iter_mc, // <- this is a _unique_ number (across all jobs)
+								  string folder_inputs,
+								  string folder_calib
+								  )
 {
 	/// RUNS A SINGLE ITERATION FOR A MC SIMULATION
 	/// The random generator seed is reset in this function
@@ -396,7 +401,6 @@ Simulation	runSimulation_one_obj(Population P_init,
 	// Create Simulation object
 	Simulation S(horizon, timestep, P_init, 0);
 	S.set_MC_trial_iter(iter_mc);
-
 	S.set_save_trace_files(false);
 	
 	// Calibration
@@ -405,9 +409,9 @@ Simulation	runSimulation_one_obj(Population P_init,
 	string file_calib_targets	= "calibration_targets.csv";
 	string file_calib_weights	= "calibration_weights.csv";
 	
-	S.set_calibration_schedule(_DIR_CALIB+file_calib_times,
-							   _DIR_CALIB+file_calib_targets,
-							   _DIR_CALIB+file_calib_weights);
+	S.set_calibration_schedule(folder_calib+file_calib_times,
+							   folder_calib+file_calib_targets,
+							   folder_calib+file_calib_weights);
 	
 	// ======================
 	// ==== Intervention ====
@@ -416,7 +420,7 @@ Simulation	runSimulation_one_obj(Population P_init,
 	filename_interventions = trim(filename_interventions);
 	vector<Intervention> I;
 	for (int i=0; i<filename_interventions.size(); i++){
-		Intervention tmp(_DIR_IN+filename_interventions[i]);
+		Intervention tmp(folder_inputs+filename_interventions[i]);
 		I.push_back(tmp);
 	}
 	S.set_intervention(I);
@@ -455,8 +459,10 @@ Simulation	runSimulation_one_obj(Population P_init,
 	// (this is what we want, for example comparing 2
 	// intervention scenario with the _same_ seed)
 	force_seed_reset(iter_mc);
-	S.runAllEvents_horizon_obj(doSex,logIndivInfo,
-							   traceNetwork_prtn,displayProgress_prtn,
+	S.runAllEvents_horizon_obj(doSex,
+							   logIndivInfo,
+							   traceNetwork_prtn,
+							   displayProgress_prtn,
 							   iter_mc);
 	
 	cout << " ... Partnerships formed [iter MC #"<<iter_mc<<"]"<<endl;
@@ -487,9 +493,8 @@ Simulation	runSimulation_one_obj(Population P_init,
 							   displayProgress,
 							   iter_mc);
 	
-	S.save_incidence(iter_mc);
-	S.save_prevalence(iter_mc);
-	
+	//S.save_incidence(iter_mc);
+	//S.save_prevalence(iter_mc);
 	cout<<"DEBUG: runSimulation_one ["<< iter_mc<<"] COMPLETED!"<<endl;
 	
 	return S;
@@ -533,10 +538,60 @@ vector<Simulation>	runSimulationMC(unsigned int nMC,
 										TraceNetwork,
 										displayProgress,
 										(jobnum-1)*nMC+i  // <- this is a _unique_ number (across all jobs)
-										) );
+										)
+					  );
 	}
 	return(res);
 }
+
+
+
+
+vector<Simulation>	runSimulationMC_obj(unsigned int nMC,
+										Population P_init,
+										string filename_init_STI_prev,
+										vector<string> filename_interventions,
+										double horizon_prtn,
+										double timestep_prtn,
+										double horizon,
+										double timestep,
+										bool TraceNetwork,
+										int displayProgress,
+										string folder_inputs,
+										string folder_calib,
+										int jobnum)
+{
+	/// Run multiple iterations of a simulation (Monte Carlo)
+	
+	
+	// Display interventions files used:
+	if(jobnum==1){
+		cout<<endl<<"Intervention file(s) used: "<<endl;
+		for (int i=0; i<filename_interventions.size(); i++)
+			cout<<"file "<<i<<":"<<filename_interventions[i]<<endl;
+	}
+	
+	vector<Simulation> res;
+	
+	for(unsigned int i=1; i<= nMC; i++){
+		res.push_back(runSimulation_one_obj(P_init,
+											filename_init_STI_prev,
+											filename_interventions,
+											horizon_prtn,
+											timestep_prtn,
+											horizon,
+											timestep,
+											TraceNetwork,
+											displayProgress,
+											(jobnum-1)*nMC+i ,
+											folder_inputs,
+											folder_calib// <- this is a _unique_ number (across all jobs)
+											)
+					  );
+	}
+	return(res);
+}
+
 
 
 

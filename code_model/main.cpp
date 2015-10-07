@@ -172,14 +172,21 @@ int main(int argc, const char * argv[])
 			}
 			
 			if(doObj){
+				string folder_inputs = _DIR_IN;
+				string folder_calib = _DIR_CALIB;
 				Simulation Sobj = runSimulation_one_obj(P,
 														file_init_STI,
 														file_intervention,
-														horizon_prtn, timestep_prtn,
-														horizon, timeStep,
+														horizon_prtn,
+														timestep_prtn,
+														horizon,
+														timeStep,
 														TraceNetwork,
 														displayProgress,
-														iter_mc);
+														iter_mc,
+														folder_inputs,
+														folder_calib
+														);
 				dcDataFrame df = Sobj.get_df_sim();
 				df.display();
 			}
