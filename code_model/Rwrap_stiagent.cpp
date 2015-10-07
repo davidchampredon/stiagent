@@ -76,18 +76,50 @@ List rcpp_stiagent(List params) {
 	
 	file_intervention = trim(file_intervention);
 	
-	Simulation S = runSimulation_one(P,
-									 file_init_STI,
-									 file_intervention,
-									 horizon_prtn, timestep_prtn,
-									 horizon, timeStep,
-									 TraceNetwork,
-									 displayProgress,
-									 iter_mc);
+	Simulation Sobj = runSimulation_one_obj(P,
+											file_init_STI,
+											file_intervention,
+											horizon_prtn, timestep_prtn,
+											horizon, timeStep,
+											TraceNetwork,
+											displayProgress,
+											iter_mc);
+	dcDataFrame df_sim = Sobj.get_df_sim();
+	unsigned long ncol = df_sim.get_colname().size();
 	
-	double prevHIV = S.get_population().STI_prevalence(HIV);
 	
-	return List::create(Named("prevHIV") = prevHIV
-						);
+	// Translate the 'dcDataFrame' into a R list
+	// (convert to data frame in R, I don't know how to do it here in Rcpp):
+	Rcpp::List df_sim_R;
+	for(int j=0; j<ncol; j++)
+		df_sim_R.push_back(df_sim.get_value().extractColumn(j));
+
+	df_sim_R.attr("names") = df_sim.get_colname();
+	
+	
+	double prevHIV = Sobj.get_population().STI_prevalence(HIV);
+	
+	return List::create(Named("prevHIV") = prevHIV,
+						Named("df_sim") = df_sim_R);
 	
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

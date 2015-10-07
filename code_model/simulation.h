@@ -182,16 +182,16 @@ public:
 	double				get_timeStep(){return _timeStep;}
 	vector<double>		get_schedule(){return _schedule;}
 	
-	dcMatrix				get_STI_incidence(){return _STI_incidence;}
-	dcMatrix				get_STI_prevalence(){return _STI_prevalence;}
+	dcMatrix			get_STI_incidence(){return _STI_incidence;}
+	dcMatrix			get_STI_prevalence(){return _STI_prevalence;}
 	
 	
 	vector<STIname>		get_target_STIprevalence_names() {return _target_STIprevalence_names;}
 	vector<double>		get_target_STIprevalence() {return _target_STIprevalence;}
 	
 	
-	double			get_target_singleRatio_f() {return _target_singleRatio_f;}
-	double			get_target_singleRatio_m() {return _target_singleRatio_m;}
+	double				get_target_singleRatio_f() {return _target_singleRatio_f;}
+	double				get_target_singleRatio_m() {return _target_singleRatio_m;}
 	
 	
 	vector<double>			get_calibrationTime() {return _calibrationTime;}
@@ -219,7 +219,7 @@ public:
 	dcMatrix			get_target_HIV_prev_age_f() {return _target_HIV_prev_age_f;}
 	dcMatrix			get_target_HIV_prev_age_m() {return _target_HIV_prev_age_m;}
 	
-	
+	dcDataFrame			get_df_sim(){return _df_sim;}
 	
 	// =======================
 	// =======================

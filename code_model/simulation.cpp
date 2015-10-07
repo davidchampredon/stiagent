@@ -541,9 +541,12 @@ void Simulation::runAllEvents_timeStep_obj(int numTimeStep,
 		
 		v.push_back(_population.Reff_cum_mean(HIV));
 		v.push_back(_population.Reff_cum_mean(Tp));
+		
+		// Update data frame:
+		_df_sim.addrow(to_string(numTimeStep), v);
 	}
 	
-	_df_sim.addrow(to_string(numTimeStep), v);
+	
 	
 //
 //	
@@ -834,14 +837,14 @@ void Simulation::runAllEvents_horizon_obj(bool doSex,
 	
 	
 	// Trace files -----
-	string filename1		= _DIR_OUT + "simul_mc" + int2string(iter_mc) + ".out";
-	string filename2		= _DIR_OUT + "simul_indiv_mc" + int2string(iter_mc) +".out";
-	string fileDegreeDist	= _DIR_OUT + "degreeDist_mc" + int2string(iter_mc) +".out";
-	string filepop			= _DIR_OUT + "pop_mc"+ int2string(iter_mc);
-	
-	ofstream f(filename1.c_str(), ios::app);
-	ofstream ff(filename2.c_str(), ios::app);
-	ofstream fd(fileDegreeDist.c_str(),ios::app);
+//	string filename1		= _DIR_OUT + "simul_mc" + int2string(iter_mc) + ".out";
+//	string filename2		= _DIR_OUT + "simul_indiv_mc" + int2string(iter_mc) +".out";
+//	string fileDegreeDist	= _DIR_OUT + "degreeDist_mc" + int2string(iter_mc) +".out";
+//	string filepop			= _DIR_OUT + "pop_mc"+ int2string(iter_mc);
+//	
+//	ofstream f(filename1.c_str(), ios::app);
+//	ofstream ff(filename2.c_str(), ios::app);
+//	ofstream fd(fileDegreeDist.c_str(),ios::app);
 	// -----------------
 	
 	
@@ -902,9 +905,11 @@ void Simulation::runAllEvents_horizon_obj(bool doSex,
 		colnames.push_back("TpprevRisk9");
 		colnames.push_back("Reff_HIV");
 		colnames.push_back("Reff_Tp");
+		
+		_df_sim.set_colname(colnames);
 	}
 
-	_df_sim.set_colname(colnames);
+	
 	
 //	if (logIndivInfo)
 //		ff << "time,UID,alive,UIDpartner0, nSexP0, HIVdur,HIVinf"<<endl;
@@ -999,7 +1004,7 @@ void Simulation::runAllEvents_horizon_obj(bool doSex,
 		//
 		// Headers for degree file
 		// (Save in file just up to 3 concurrent partners)
-		if (t<1E-5 && _save_trace_files) fd<<"time,P0,P1,P2,P3"<<endl;
+//		if (t<1E-5 && _save_trace_files) fd<<"time,P0,P1,P2,P3"<<endl;
 		if(doSex && _save_trace_files)
 		{
 			vector<double> degDist = degreeDistribution(_population);

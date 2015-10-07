@@ -481,11 +481,11 @@ Simulation	runSimulation_one_obj(Population P_init,
 	// =================================
 	
 	doSex = true;
-	S.runAllEvents_horizon(doSex,
-						   logIndivInfo,
-						   TraceNetwork,
-						   displayProgress,
-						   iter_mc);
+	S.runAllEvents_horizon_obj(doSex,
+							   logIndivInfo,
+							   TraceNetwork,
+							   displayProgress,
+							   iter_mc);
 	
 	S.save_incidence(iter_mc);
 	S.save_prevalence(iter_mc);

@@ -201,7 +201,7 @@ public:
 	
 	vector<string>	get_rowname() {return _rowname;}
 	vector<string>	get_colname() {return _colname;}
-	dcMatrix			get_value() {return _value;}
+	dcMatrix		get_value() {return _value;}
 	
 	
 	double	getValue(string varname, string valuename);

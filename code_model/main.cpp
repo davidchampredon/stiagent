@@ -36,19 +36,6 @@
 int main(int argc, const char * argv[])
 {
 	
-	dcDataFrame X;
-	
-	vector<string> nn(5,"abc");
-	X.set_colname(nn);
-	
-	string a = "toto";
-	vector<double> v(5,1.0);
-	X.addrow(a, v);
-	
-	X.display();
-	exit(99);
-	
-	
 	bool doObj = true;
 	
 	system("date");
@@ -65,13 +52,13 @@ int main(int argc, const char * argv[])
 	
 	// STOPPED HERE (GLOBAL):
 	
-	// 2015-03-13:	
+	// 2015-03-13:
 	// ----------
 	// calibration analysis in progress
 	// see file "read_singleSimul_vs_target-NEW.R"
 	
 	
-		
+	
 	string _DIR_IN = "../inputs/";
 	
 	
@@ -171,6 +158,7 @@ int main(int argc, const char * argv[])
 			file_intervention = trim(file_intervention);
 			
 			Simulation S;
+			
 			if(!doObj){
 				S = runSimulation_one(P,
 									  file_init_STI,
@@ -192,11 +180,9 @@ int main(int argc, const char * argv[])
 														TraceNetwork,
 														displayProgress,
 														iter_mc);
+				dcDataFrame df = Sobj.get_df_sim();
+				df.display();
 			}
-			
-			
-			
-
 			
 			//cout<<"GLOBAL DISTANCE FROM TARGETS:"<<S.calibration_distance_targets()<<endl;
 			//displayVector(S.get_calibrationDistances());
@@ -222,22 +208,24 @@ int main(int argc, const char * argv[])
 			}
 			
 			// Save output files
-			S.get_population().saveToCSVFile(_DIR_OUT + "./last_population.out");
-			vectorToFile(S.get_population().census_AgeGap(), _DIR_OUT + "agegaps.out");
-			
-			double prevHIV = S.get_population().STI_prevalence(HIV);
-			cout << endl<<"HIV prevalence:"<<prevHIV<<endl;
-			
-			vector<double> agebreaks;
-			for(int i= 11;i<=70;i++)
-				agebreaks.push_back((double)(i));
-		
-			S.get_population().displayInfo(false);
-			//get_nursery().census_infected(s)
-			
-			cout<<endl<<"MTCT DEBUG:"<<endl;
-			cout<<"HIV->"<< S.get_nursery().census_infected(HIV)<<endl;
-			cout<<"Tp->" << S.get_nursery().census_infected(Tp)<<endl;
+			if(!doObj){
+				S.get_population().saveToCSVFile(_DIR_OUT + "./last_population.out");
+				vectorToFile(S.get_population().census_AgeGap(), _DIR_OUT + "agegaps.out");
+				
+				double prevHIV = S.get_population().STI_prevalence(HIV);
+				cout << endl<<"HIV prevalence:"<<prevHIV<<endl;
+				
+				vector<double> agebreaks;
+				for(int i= 11;i<=70;i++)
+					agebreaks.push_back((double)(i));
+				
+				S.get_population().displayInfo(false);
+				//get_nursery().census_infected(s)
+				
+				cout<<endl<<"MTCT DEBUG:"<<endl;
+				cout<<"HIV->"<< S.get_nursery().census_infected(HIV)<<endl;
+				cout<<"Tp->" << S.get_nursery().census_infected(Tp)<<endl;
+			}
 			
 		}
 		
@@ -289,7 +277,7 @@ int main(int argc, const char * argv[])
 													 jobnum);
 			// Store results in object
 			MCsimulation MCS(Smc);
-		
+			
 			
 			// Another simulation to compare with
 			
@@ -399,7 +387,7 @@ int main(int argc, const char * argv[])
 										);
 			
 			d.saveToCSV(_DIR_CALIB+"LHS_explore-singlerun.csv", true);
-
+			
 			coutline(80);
 			cout<<"DEBUG LHS_explore:";
 			d.display();
