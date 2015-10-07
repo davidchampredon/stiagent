@@ -16,4 +16,7 @@ Rlibrary/lib/*
 Rlibrary/stiagent.Rcheck/*
 Rlibrary/*.gz
 
+outputs/*.csv
+outputs/*.out
+
 SF_MC_timestamp.txt
