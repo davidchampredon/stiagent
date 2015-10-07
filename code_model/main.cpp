@@ -35,6 +35,22 @@
 
 int main(int argc, const char * argv[])
 {
+	
+	dcDataFrame X;
+	
+	vector<string> nn(5,"abc");
+	X.set_colname(nn);
+	
+	string a = "toto";
+	vector<double> v(5,1.0);
+	X.addrow(a, v);
+	
+	X.display();
+	exit(99);
+	
+	
+	bool doObj = true;
+	
 	system("date");
 	system("pwd");
 	
@@ -154,15 +170,33 @@ int main(int argc, const char * argv[])
 			
 			file_intervention = trim(file_intervention);
 			
-			Simulation S = runSimulation_one(P,
-											 file_init_STI,
-											 file_intervention,
-											 horizon_prtn, timestep_prtn,
-											 horizon, timeStep, 
-											 TraceNetwork,
-											 displayProgress,
-											 iter_mc);
-			S.displayInfo();
+			Simulation S;
+			if(!doObj){
+				S = runSimulation_one(P,
+									  file_init_STI,
+									  file_intervention,
+									  horizon_prtn, timestep_prtn,
+									  horizon, timeStep,
+									  TraceNetwork,
+									  displayProgress,
+									  iter_mc);
+				S.displayInfo();
+			}
+			
+			if(doObj){
+				Simulation Sobj = runSimulation_one_obj(P,
+														file_init_STI,
+														file_intervention,
+														horizon_prtn, timestep_prtn,
+														horizon, timeStep,
+														TraceNetwork,
+														displayProgress,
+														iter_mc);
+			}
+			
+			
+			
+
 			
 			//cout<<"GLOBAL DISTANCE FROM TARGETS:"<<S.calibration_distance_targets()<<endl;
 			//displayVector(S.get_calibrationDistances());

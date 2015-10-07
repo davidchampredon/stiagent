@@ -255,7 +255,7 @@ Simulation	runSimulation_one(Population P_init,
 							  bool TraceNetwork,
 							  int displayProgress,
 							  unsigned int iter_mc // <- this is a _unique_ number (across all jobs)
-							  )
+)
 {
 	/// RUNS A SINGLE ITERATION FOR A MC SIMULATION
 	/// The random generator seed is reset in this function
@@ -296,7 +296,7 @@ Simulation	runSimulation_one(Population P_init,
 	vector<Intervention> I;
 	for (int i=0; i<filename_interventions.size(); i++){
 		Intervention tmp(_DIR_IN+filename_interventions[i]);
-		I.push_back(tmp);		
+		I.push_back(tmp);
 	}
 	S.set_intervention(I);
 	
@@ -370,7 +370,128 @@ Simulation	runSimulation_one(Population P_init,
 	S.save_prevalence(iter_mc);
 	
 	cout<<"DEBUG: runSimulation_one ["<< iter_mc<<"] COMPLETED!"<<endl;
+	
+	return S;
+}
 
+
+
+Simulation	runSimulation_one_obj(Population P_init,
+								  string filename_init_STI_prev,
+								  vector<string> filename_interventions,
+								  double horizon_prtn,
+								  double timestep_prtn,
+								  double horizon,
+								  double timestep,
+								  bool TraceNetwork,
+								  int displayProgress,
+								  unsigned int iter_mc // <- this is a _unique_ number (across all jobs)
+)
+{
+	/// RUNS A SINGLE ITERATION FOR A MC SIMULATION
+	/// The random generator seed is reset in this function
+	/// with a unique seed value (iter_mc=[jobnum-1]+iMC)
+	
+	
+	// Create Simulation object
+	Simulation S(horizon, timestep, P_init, 0);
+	S.set_MC_trial_iter(iter_mc);
+
+	S.set_save_trace_files(false);
+	
+	// Calibration
+	// (file names are hard coded for now...)
+	string file_calib_times		= "calibration_times.csv";
+	string file_calib_targets	= "calibration_targets.csv";
+	string file_calib_weights	= "calibration_weights.csv";
+	
+	S.set_calibration_schedule(_DIR_CALIB+file_calib_times,
+							   _DIR_CALIB+file_calib_targets,
+							   _DIR_CALIB+file_calib_weights);
+	
+	// ======================
+	// ==== Intervention ====
+	// ======================
+	
+	filename_interventions = trim(filename_interventions);
+	vector<Intervention> I;
+	for (int i=0; i<filename_interventions.size(); i++){
+		Intervention tmp(_DIR_IN+filename_interventions[i]);
+		I.push_back(tmp);
+	}
+	S.set_intervention(I);
+	
+	
+	// Switches for trace files
+	bool logIndivInfo = false;
+	int displayProgress_prtn = 0;
+	
+	
+	// ========================================================
+	// === Pre-run to form partnerships first (no sex acts) ===
+	// ========================================================
+	
+	// Temporary set horizon and timestep
+	// for very long run to form couples only
+	
+	S.set_horizon(horizon_prtn); // long enough such that initial indiv are all > agemax (e.g. 80)
+	S.set_timeStep(timestep_prtn);
+	
+	bool doSex = false;
+	bool traceNetwork_prtn = false;
+	
+	// DEBUG ---
+	cout << endl<< "runSimulation_one ["<< iter_mc <<"]";
+	cout << endl<< "Forming partnerships only (no sex) during ";
+	cout << horizon_prtn <<" years..."<<endl;
+	// ---------
+	
+	
+	// IMPORTANT: iter_mc = fct(jobnum, MC trial)
+	// Makes sure the seed is different
+	// for each MC trial.
+	// However, the seed will be the same for a given
+	// Job and MC trial when 2 simulations are run
+	// (this is what we want, for example comparing 2
+	// intervention scenario with the _same_ seed)
+	force_seed_reset(iter_mc);
+	S.runAllEvents_horizon_obj(doSex,logIndivInfo,
+							   traceNetwork_prtn,displayProgress_prtn,
+							   iter_mc);
+	
+	cout << " ... Partnerships formed [iter MC #"<<iter_mc<<"]"<<endl;
+	
+	
+	// Reset to original parameters
+	S.set_horizon(horizon);
+	S.set_timeStep(timestep);
+	
+	
+	// =================================
+	// Seed STIs' initial prevalence
+	// =================================
+	
+	S.STI_set_initial_prevalence(filename_init_STI_prev);
+	cout << endl<<"Simulation has STI prevalence initialized from this file: ";
+	cout <<filename_init_STI_prev<<endl;
+	
+	
+	// =================================
+	// === STIs epidemics start ===
+	// =================================
+	
+	doSex = true;
+	S.runAllEvents_horizon(doSex,
+						   logIndivInfo,
+						   TraceNetwork,
+						   displayProgress,
+						   iter_mc);
+	
+	S.save_incidence(iter_mc);
+	S.save_prevalence(iter_mc);
+	
+	cout<<"DEBUG: runSimulation_one ["<< iter_mc<<"] COMPLETED!"<<endl;
+	
 	return S;
 }
 
@@ -391,7 +512,7 @@ vector<Simulation>	runSimulationMC(unsigned int nMC,
 {
 	/// Run multiple iterations of a simulation (Monte Carlo)
 	
-
+	
 	// Display interventions files used:
 	if(jobnum==1){
 		cout<<endl<<"Intervention file(s) used: "<<endl;

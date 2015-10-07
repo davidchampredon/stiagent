@@ -128,6 +128,20 @@ Simulation	runSimulation_one(Population P_init,
 							  unsigned int iter_mc);
 
 
+// same as "runSimulation_one" but no file written, objects only.
+// (used for R library wrap)
+Simulation	runSimulation_one_obj(Population P_init,
+								  string filename_init_STI_prev,
+								  vector<string> filename_interventions,
+								  double horizon_prtn,
+								  double timestep_prtn,
+								  double horizon,
+								  double timestep,
+								  bool TraceNetwork,
+								  int displayProgress,
+								  unsigned int iter_mc);
+
+
 // Monte Carlo runs of the whole simulation
 // Each MC trial simulation is stored in the output vector
 //

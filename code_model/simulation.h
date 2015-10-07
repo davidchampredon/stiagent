@@ -37,8 +37,8 @@ class Simulation
 
 	
 	// STI related
-	dcMatrix			_STI_incidence;		// rows=time ; columns = STI
-	dcMatrix			_STI_prevalence;	// rows=time ; columns = STI
+	dcMatrix		_STI_incidence;		// rows=time ; columns = STI
+	dcMatrix		_STI_prevalence;	// rows=time ; columns = STI
 	
 	
 	
@@ -46,15 +46,15 @@ class Simulation
 	vector<Intervention>	_intervention;
 	
 
+	// Data frames that record outputs
+	dcDataFrame		_df_sim;
+	
 	
 	// ===============================
 	// === TARGETS FOR CALIBRATION ===
 	// ===============================
 	
 	int				_nMC_calibration;	// Number of MC runs for the simulation; used for calibration purposes
-
-	
-	// ---- ((NEW STUFF))
 	
 	// Vector of times during the simulation
 	// when a calibration is expected
@@ -75,8 +75,6 @@ class Simulation
 	// Weighted Distances model from target (needs to be calculated)
 	vector< vector<double> >	_calibrationDistances;
 	
-	
-	// ---- ((END NEW STUFF))
 	
 	
 	
@@ -119,6 +117,8 @@ class Simulation
 public:
 	
 	// === CONSTRUCTOR ===
+	
+	Simulation (){}
 	
 	Simulation (double horizon, double timeStep, Population P, 
 				int nMC_calibration);
@@ -296,6 +296,10 @@ public:
 									  ofstream &f, ofstream &ff,
 									  bool logIndivInfo);
 	
+	void		runAllEvents_timeStep_obj(int numTimeStep,
+										  bool doSex,
+										  bool logIndivInfo);
+	
 	// Run all events until '_horizon'
 	// returns output to be calibrated
 	// One stochastic realization only
@@ -305,6 +309,11 @@ public:
 									 int displayProgress,
 									 int iter_mc=1);
 	
+	void		runAllEvents_horizon_obj(bool doSex,
+										 bool logIndivInfo,
+										 bool traceNetwork,
+										 int displayProgress,
+										 int iter_mc=1);
 
 	
 	 // ??? DEPRECATED ???
