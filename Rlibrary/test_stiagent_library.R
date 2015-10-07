@@ -2,7 +2,7 @@ library(stiagent,lib.loc = "./lib")
 
 
 # path to model input files:
-folder_inputs = "../inputs/"
+folder_inputs = "./test-inputs/"
 
 # run the model:
 x <- rcpp_stiagent(params = list(folder_inputs=folder_inputs))

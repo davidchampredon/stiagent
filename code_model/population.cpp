@@ -4297,7 +4297,7 @@ vector<double> Population::STI_CalculateProbaTransmission(unsigned long uid_infe
 	
 	// trace file of all transmission tentatives
 	
-	bool logTentativeInFile = true;
+	bool logTentativeInFile = false;
 	
 	string logTentativeInFile_name = _DIR_OUT + "transmission_details.out";
 	ifstream fcheck(logTentativeInFile_name.c_str());
