@@ -28,7 +28,7 @@ using namespace Rcpp;
 
 List dcDataFrameToRcppList(dcDataFrame df){
 	
-	/// Converts  dcDataFrame to a Rccp list
+	/// Converts a dcDataFrame to a Rccp list
 	
 	unsigned long ncol = df.get_colname().size();
 	
@@ -167,14 +167,15 @@ List stiagent_comp_interv(List params) {
 	unsigned int iter_mc	= getParameterFromFile("MCiter", _DIR_IN + "in_simulation.csv");
 	bool TraceNetwork		= false;
 	
-	int displayProgress = 11;
+	int displayProgress		= 0;
 	
 	string file_init_STI	= _DIR_IN + "in_STI_initial_prevalence.csv";
 	
-	vector<string> file_intervention;
-	string file_interv_base =_DIR_IN + "in_interv_baseline_wrapper.csv";
-	vectorFromCSVfile_string(file_intervention,file_interv_base.c_str(), 1);
-	file_intervention = trim(file_intervention);
+	// DELETE?
+	//vector<string> file_intervention;
+	//string file_interv_base =_DIR_IN + "in_interv_baseline_wrapper.csv";
+	//vectorFromCSVfile_string(file_intervention,file_interv_base.c_str(), 1);
+	//file_intervention = trim(file_intervention);
 	
 	vector<dcDataFrame> df_comp_interv;
 	
@@ -193,19 +194,26 @@ List stiagent_comp_interv(List params) {
 												_DIR_CALIB
 												);
 	
+	
+	std::vector<string> list_name;
 	unsigned long nsti = df_comp_interv.size();
 	
-	std::vector<string> stinames;
 	for(int i=0; i<nsti; i++)
-		stinames.push_back(STInameString(P.get_STI()[i].get_name()));
+		list_name.push_back(STInameString(P.get_STI()[i].get_name()));
 		
 	// Returns a list of lists:
 	Rcpp::List x;
 	
-	
+	// The response variable for each scenario:
 	for(int i=0; i<nsti; i++)
 		x.push_back(dcDataFrameToRcppList(df_comp_interv[i]));
-	x.attr("names") = stinames;
+	
+	// The name of each scenario:
+	x.push_back(trim(file_scenario));
+	list_name.push_back("scenarioName");
+	
+	// Name each list element:
+	x.attr("names") = list_name;
 	
 	return(x);
 }

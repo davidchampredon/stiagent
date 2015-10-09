@@ -472,7 +472,7 @@ void Simulation::runAllEvents_timeStep_obj(int numTimeStep,
 	// update incidence
 	if (doSex){
 		if (numTimeStep==0){
-			int n_sti = _population.get_STI().size();
+			unsigned long n_sti = _population.get_STI().size();
 			for (int j=0;j<n_sti; j++)
 				_STI_incidence(0,j) = 0.0;
 		}
@@ -494,7 +494,10 @@ void Simulation::runAllEvents_timeStep_obj(int numTimeStep,
 	
 	if(doSex)	// TO DO: do not impose no log file when no sex
 	{
-		// WARNING: ORDER MUST BE SAME AS DEFINED
+		//
+		// * * * * WARNING * * * *
+		//
+		// ORDER MUST BE SAME AS DEFINED
 		// BY HEADERS IN "run_allEvents_horizon_obj"
 		
 		v.push_back(t);
@@ -835,19 +838,6 @@ void Simulation::runAllEvents_horizon_obj(bool doSex,
 {
 	/// Run a simulation with all events until specified horizon
 	
-	
-	// Trace files -----
-//	string filename1		= _DIR_OUT + "simul_mc" + int2string(iter_mc) + ".out";
-//	string filename2		= _DIR_OUT + "simul_indiv_mc" + int2string(iter_mc) +".out";
-//	string fileDegreeDist	= _DIR_OUT + "degreeDist_mc" + int2string(iter_mc) +".out";
-//	string filepop			= _DIR_OUT + "pop_mc"+ int2string(iter_mc);
-//	
-//	ofstream f(filename1.c_str(), ios::app);
-//	ofstream ff(filename2.c_str(), ios::app);
-//	ofstream fd(fileDegreeDist.c_str(),ios::app);
-	// -----------------
-	
-	
 	int nSTI = _population.get_nSTImodelled();
 	_population.set_timeStep(_timeStep);
 	_nursery.set_STI(_population.get_STI());
@@ -855,13 +845,13 @@ void Simulation::runAllEvents_horizon_obj(bool doSex,
 	// Number of interventions
 	unsigned long n_intervention = _intervention.size();
 	
-	// DEBUG
-	if ( _MC_trial_iter==1){
-		cout << " -- Number of interventions:"<<n_intervention<<endl;
-		for (int i=0; i<n_intervention; i++) {
-			_intervention[i].displayInfo();
-		}
-	}
+//	// DEBUG
+//	if ( _MC_trial_iter==1){
+//		cout << " -- Number of interventions:"<<n_intervention<<endl;
+//		for (int i=0; i<n_intervention; i++) {
+//			_intervention[i].displayInfo();
+//		}
+//	}
 	
 	
 	// Set-up data frame that will hold simulation outputs
@@ -870,7 +860,11 @@ void Simulation::runAllEvents_horizon_obj(bool doSex,
 	if (doSex)
 	{
 		// Headers of the data frame
-		// WARNING: headers must be consistent with values writtten in "runAllEvents_timeStep"
+		//
+		//  * * * WARNING * * * *
+		// headers must be consistent with
+		// values writtten in "runAllEvents_timeStep"
+		//
 		
 		colnames.push_back("time");
 		colnames.push_back("nAlive");

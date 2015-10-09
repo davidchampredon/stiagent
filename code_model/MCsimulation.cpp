@@ -445,13 +445,14 @@ Simulation	runSimulation_one_obj(Population P_init,
 	bool traceNetwork_prtn = false;
 	
 	// DEBUG ---
-	cout << endl<< "runSimulation_one ["<< iter_mc <<"]";
-	cout << endl<< "Forming partnerships only (no sex) during ";
-	cout << horizon_prtn <<" years..."<<endl;
+//	cout << endl<< "runSimulation_one ["<< iter_mc <<"]";
+//	cout << endl<< "Forming partnerships only (no sex) during ";
+//	cout << horizon_prtn <<" years..."<<endl;
 	// ---------
 	
 	
-	// IMPORTANT: iter_mc = fct(jobnum, MC trial)
+	// * * * IMPORTANT * * *
+	// iter_mc = fct(jobnum, MC trial)
 	// Makes sure the seed is different
 	// for each MC trial.
 	// However, the seed will be the same for a given
@@ -465,9 +466,6 @@ Simulation	runSimulation_one_obj(Population P_init,
 							   displayProgress_prtn,
 							   iter_mc);
 	
-	cout << " ... Partnerships formed [iter MC #"<<iter_mc<<"]"<<endl;
-	
-	
 	// Reset to original parameters
 	S.set_horizon(horizon);
 	S.set_timeStep(timestep);
@@ -478,8 +476,9 @@ Simulation	runSimulation_one_obj(Population P_init,
 	// =================================
 	
 	S.STI_set_initial_prevalence(filename_init_STI_prev);
-	cout << endl<<"Simulation has STI prevalence initialized from this file: ";
-	cout <<filename_init_STI_prev<<endl;
+	
+//	cout << endl<<"Simulation has STI prevalence initialized from this file: ";
+//	cout <<filename_init_STI_prev<<endl;
 	
 	
 	// =================================
@@ -495,7 +494,7 @@ Simulation	runSimulation_one_obj(Population P_init,
 	
 	//S.save_incidence(iter_mc);
 	//S.save_prevalence(iter_mc);
-	cout<<"DEBUG: runSimulation_one ["<< iter_mc<<"] COMPLETED!"<<endl;
+//	cout<<"DEBUG: runSimulation_one ["<< iter_mc<<"] COMPLETED!"<<endl;
 	
 	return S;
 }
@@ -563,14 +562,6 @@ vector<Simulation>	runSimulationMC_obj(unsigned int nMC,
 {
 	/// Run multiple iterations of a simulation (Monte Carlo)
 	
-	
-	// Display interventions files used:
-	if(jobnum==1){
-		cout<<endl<<"Intervention file(s) used: "<<endl;
-		for (int i=0; i<filename_interventions.size(); i++)
-			cout<<"file "<<i<<":"<<filename_interventions[i]<<endl;
-	}
-	
 	vector<Simulation> res;
 	
 	for(unsigned int i=1; i<= nMC; i++){
@@ -583,9 +574,9 @@ vector<Simulation>	runSimulationMC_obj(unsigned int nMC,
 											timestep,
 											TraceNetwork,
 											displayProgress,
-											(jobnum-1)*nMC+i ,
+											(jobnum-1)*nMC+i ,// <- this is a _unique_ number (across all jobs)
 											folder_inputs,
-											folder_calib// <- this is a _unique_ number (across all jobs)
+											folder_calib
 											)
 					  );
 	}

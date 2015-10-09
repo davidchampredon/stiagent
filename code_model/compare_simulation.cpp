@@ -277,7 +277,7 @@ void	run_comp_interventions(unsigned int nMC,
 vector<dcDataFrame>	run_comp_interventions_obj(unsigned int nMC,
 											   Population P_init,
 											   string filename_init_STI_prev,
-											   vector<string> filename_intervention_wrapper,
+											   vector<string> scenario_list,
 											   double horizon_prtn,
 											   double timestep_prtn,
 											   double horizon,
@@ -292,21 +292,29 @@ vector<dcDataFrame>	run_comp_interventions_obj(unsigned int nMC,
 	/// Returns a data frame of scenario results for each STI
 	
 	// deals with eol character issues
-	filename_intervention_wrapper = trim(filename_intervention_wrapper);
-	unsigned long n_scenario = filename_intervention_wrapper.size();
+	scenario_list = trim(scenario_list);
+	unsigned long n_scenario = scenario_list.size();
+	
+	
+	// Display basic info:
+	coutline(100);
+	cout << endl << " Inputs folder: "<< folder_inputs << endl;
+	cout << endl << " Calibration folder: "<< folder_calib << endl;
+	
+	cout << endl << " Scenario list: "<<endl;
+	displayVector(scenario_list);
+	cout << endl << " Initial STI prevalence set from file: "<<filename_init_STI_prev<<endl;
+	coutline(100);
+	// ------------------
 	
 	vector<MCsimulation> scenario;
 	
 	for (int i=0; i<n_scenario; i++)
 	{
 		// retrieve relevant intervention wrapper
-		vector<string> interv_wrap;
-		string file_i = folder_inputs + filename_intervention_wrapper[i];
-		vectorFromCSVfile_string(interv_wrap, file_i.c_str(), 1);
-		
-		// DEBUG
-		//		cout<<"Running scenario #"<<i<<endl;
-		// -----
+		vector<string> scenario_i;
+		string file_i = folder_inputs + scenario_list[i];
+		vectorFromCSVfile_string(scenario_i, file_i.c_str(), 1);
 		
 		// run the MC simulations
 		MCsimulation tmp;
@@ -314,7 +322,7 @@ vector<dcDataFrame>	run_comp_interventions_obj(unsigned int nMC,
 		tmp = run_wrap_obj(nMC,
 						   P_init,
 						   filename_init_STI_prev,
-						   interv_wrap,
+						   scenario_i,
 						   horizon_prtn,
 						   timestep_prtn,
 						   horizon,
@@ -325,7 +333,7 @@ vector<dcDataFrame>	run_comp_interventions_obj(unsigned int nMC,
 						   folder_calib,
 						   jobnum);
 		
-		tmp.set_scenarioName(filename_intervention_wrapper[i].c_str());
+		tmp.set_scenarioName(scenario_list[i].c_str());
 		scenario.push_back(tmp);
 	}
 	

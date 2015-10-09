@@ -18,7 +18,9 @@ y <- stiagent_comp_interv(params = list(folder_inputs = folder_inputs,
 yy1 <- as.data.frame(y[[1]])
 
 # check if everything went well:
-msg <- ifelse(is.numeric(x[[1]]),"==> stiagent R library seems to work.","THERE IS A PROBLEM WITH stiagent LIBRARY")
+msg <- ifelse(is.numeric(x[[1]]),
+              "==> stiagent R library seems to work.",
+              "THERE IS A PROBLEM WITH stiagent LIBRARY")
 message(msg)
 t1 <- Sys.time()
 message(paste("time elapsed:",round(t1-t0,1),"sec"))
