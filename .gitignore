@@ -16,6 +16,8 @@ Rlibrary/lib/*
 Rlibrary/stiagent.Rcheck/*
 Rlibrary/*.gz
 
+inputs/~*
+
 outputs/*.csv
 outputs/*.out
 
