@@ -87,7 +87,7 @@ vector<double> MCsimulation::mean_prevalence_ts(STIname s)
 	
 	vector<double> prev;
 	
-	int n = _schedule.size();
+	unsigned long n = _schedule.size();
 	int pos_sti = positionSTIinVector(s, _simulation[0].get_population().get_STI());
 	
 	for (int i=0; i<n; i++)
@@ -123,7 +123,7 @@ vector<double> MCsimulation::mean_incidence(STIname s)
 	
 	vector<double> incid;
 	
-	int n = _schedule.size();
+	unsigned long n = _schedule.size();
 	int pos_sti = positionSTIinVector(s, _simulation[0].get_population().get_STI());
 	
 	for (int i=0; i<n; i++)
@@ -167,7 +167,7 @@ vector<double> MCsimulation::prevalence_final(STIname s)
 	
 	vector<double> res;
 	
-	int n = _schedule.size();
+	unsigned long n = _schedule.size();
 	int pos_sti = positionSTIinVector(s, _simulation[0].get_population().get_STI());
 	
 	for(int j=0;j<_nMC; j++)
@@ -183,7 +183,7 @@ vector<double> MCsimulation::cumul_incidence_final(STIname s)
 	/// Returns all MC trials of cumulative incidence at horizon for that STI
 	
 	vector<double> res;
-	int n = _schedule.size();
+	unsigned long n = _schedule.size();
 	
 	for(int j=0;j<_nMC; j++)
 	{

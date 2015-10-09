@@ -164,7 +164,7 @@ class Population
 	// ===== STI =====
 	
 	vector<STI>			_STI;				// STIs modelled ; template for each Individual's STI
-	int					_nSTImodelled;		// Number of STIs modelled in the population
+	unsigned long		_nSTImodelled;		// Number of STIs modelled in the population
 	dcMatrix				_STI_SFincrease;	// dcMatrix defining the increase factor of the susceptibility factor when infected with another STI
 	vector<double>		_RebHIV;			// HIV infectivity rebound due to STIs co-infections
 	
@@ -234,7 +234,7 @@ public:
 	
 	
 	Individual		getIndividual(unsigned long uid) {return _individual[uid];}
-	int				get_nSTImodelled() {return _nSTImodelled;}
+	unsigned long	get_nSTImodelled() {return _nSTImodelled;}
 	double			get_ageSexMin() {return _ageSexMin;}
 	dcMatrix			get_partnershipsMatrix() { return _partnershipsMatrix;}
 	

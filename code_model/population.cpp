@@ -190,8 +190,8 @@ void Population::initFromFile(string pathFile,
 	_all_UID_femaleUID	= females;
 	_all_UID_maleUID	= males;
 	
-	int nF = females.size();
-	int nM = males.size();
+	unsigned long nF = females.size();
+	unsigned long nM = males.size();
 	
 	// Integrity check:
 	string errmsg = "Number of females(" + to_string(nF) +")+males("+ to_string(nM) +") != total population("+ to_string(_size) +")!!!";
@@ -1267,7 +1267,7 @@ void Population::youthArrivals(double prd, bool save_trace_file)
 	*pow(1-_childMortality,4)
 	*pow(1-_childMortality*reducMortalityAfter5yrs,y-5);
 	
-	unsigned int N = census_alive();
+	unsigned long N = census_alive();
 	
 	// Expected number of new arrivals during the period
 	double lambda = rate*prd*(double)(N);
@@ -1364,8 +1364,8 @@ void Population::youthArrivals(double prd, bool save_trace_file)
 void Population::CSWrecruitment(double prd)
 {
 	// Retrieve the proportion of CSW in the population
-	unsigned int Ncsw = census_CSW().size();
-	unsigned int N = census_alive();
+	unsigned long Ncsw = census_CSW().size();
+	unsigned long N = census_alive();
 	double prop_csw = (Ncsw==0)?0:((double)(Ncsw)/N);
 	
 	// Effective recruitment rate
@@ -1385,8 +1385,8 @@ void Population::CSWrecruitment(double prd)
 	vector<unsigned long> STIprevN = census_STIinfected();
 	
 	// Widow prevalence
-	unsigned int Nw = census_widow();
-	unsigned int Ndiv = census_divorced();
+	unsigned long Nw = census_widow();
+	unsigned long Ndiv = census_divorced();
 	
 	
 	// DEBUG
@@ -2958,7 +2958,7 @@ void Population::formOnePartnershipFromFemale_rand(unsigned long uid_fem,
 	// Retrieve available males only
 	vector<unsigned long>  males_available = getUID_available(male);
 	
-	int nMa = males_available.size();
+	unsigned long nMa = males_available.size();
 	
 	// If no male is available, then finished
 	if (nMa==0) return;
@@ -3032,7 +3032,7 @@ void Population::formPartnerships(double prd, bool save_trace_file)
 	vector<unsigned long> uid_females_candidate = formUIDcandidateFemale(prd);
 	
 	// Number of those females
-	int nFc = uid_females_candidate.size();
+	unsigned long nFc = uid_females_candidate.size();
 	
 	if(save_trace_file) tracefile<<_simulationTime<<","<<nFc<<endl;
 	

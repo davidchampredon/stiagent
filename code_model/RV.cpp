@@ -89,7 +89,7 @@ int geometric(double p)
 	return dist(_RANDOM_GENERATOR);
 }
 
-int	binom(double p, int N)
+unsigned long	binom(double p, unsigned long N)
 {
 	stopif( (p<0 || p>1),
 		   "probability ("+to_string(p)+") not in [0;1]");
@@ -111,7 +111,7 @@ int poisson(double expectedValue)
 vector<unsigned int> multinomial(unsigned int N, vector<double> proba)
 {
 	// Retrieve the dimension that defines the random variables vector
-	int dim = proba.size();
+	unsigned long dim = proba.size();
 	
 	// DEBUG
 	//cout << "binom_dim:" <<dim << endl;
@@ -223,7 +223,7 @@ gsl_rng * GSL_generator(unsigned int seed)
 vector<unsigned int> multinomial_gsl(gsl_rng * r,unsigned int N, vector<double> proba)
 {
 	// Retrieve the dimension that defines the random variables vector
-	int dim = proba.size();
+	unsigned long dim = proba.size();
 	
 	// DEBUG
 	//cout << "binom_dim:" <<dim << endl;
