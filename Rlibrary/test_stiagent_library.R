@@ -1,3 +1,11 @@
+##################################################################
+######
+######    MINIMAL TEST FOR 'stiagent' LIBRARY
+######
+######
+##################################################################
+
+
 library(stiagent,lib.loc = "./lib")
 
 t0 <- Sys.time()
@@ -5,12 +13,13 @@ t0 <- Sys.time()
 folder_inputs = "./test-inputs/"
 folder_calib = "../calibration/"
 
-# run the model:
+# simply run the model:
 x <- stiagent_runsim(params = list(folder_inputs = folder_inputs,
                                    folder_calib = folder_calib
                                    )
                      )
 
+# run the model several times for scenario comparison:
 y <- stiagent_comp_interv(params = list(folder_inputs = folder_inputs,
                                         folder_calib = folder_calib,
                                         jobnum = 1)
