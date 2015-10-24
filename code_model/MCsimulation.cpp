@@ -15,7 +15,7 @@
 MCsimulation::MCsimulation(vector<Simulation> S)
 {
 	_nMC = S.size();
-	stopif(_nMC==0,"Simulation vector is empty!");
+	stopif(_nMC==0,"Simulation vector is empty! (basic constructor)");
 	_simulation = S;
 	
 	_horizon	= S[0].get_horizon();
@@ -50,7 +50,7 @@ MCsimulation::MCsimulation(unsigned int nMC,
 										   jobnum);
 	
 	_nMC = S.size();
-	stopif(_nMC==0,"Simulation vector is empty!");
+	stopif(_nMC==0,"Simulation vector is empty! (after running simulations...)");
 	_simulation = S;
 	
 	_horizon	= S[0].get_horizon();
@@ -594,12 +594,8 @@ double	average_distance_target(vector<Simulation> Simul)
 	/// Typically used for MC
 	
 	double s = 0.0;
-	
 	for (int i=0; i<Simul.size(); i++)
-	{
-		//s += Simul[i].calc_distanceFromAllTargets(); // <-- OLDER STUFF
 		s += Simul[i].calibration_distance_targets();
-	}
 	
 	return s/Simul.size();
 }

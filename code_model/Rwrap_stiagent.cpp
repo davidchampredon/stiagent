@@ -122,8 +122,40 @@ List stiagent_runsim(List params) {
 
 // [[Rcpp::export]]
 List stiagent_comp_interv(List params) {
+	///
+	/// Run several scenarios and compare their outcomes.
+	/// Returns a R list with size the number of STI modeled.
+	/// Each element of the list is itself a list storing the
+	/// outcome values for all scenarios.
+	///
+	/// For example, if HIV and Tp are the two STI modeled and
+	/// 3 scenarios are defined,the output list will look like
+	/// this in R:
+	///
+	/// x <- stiagent_comp_interv(params)  # <== call this function in R
+	///
+	/// x
+	///  |_ HIV
+	///  |     |_ prev_final0 : 0.031
+	///  |     |_ prev_final1 : 0.036
+	///  |     |_ prev_final2 : 0.023
+	///  |     |_ cuminc_final0 : 0.12
+	///  |     |_ cuminc_final1 : 0.00
+	///  |     |_ cuminc_final2 : 0.04
+	///  |     |_ ...etc...
+	///  |
+	///  |_ Tp
+	///        |_ prev_final0 : 0.22
+	///        |_ prev_final1 : 0.07
+	///        |_ prev_final2 : 0.0
+	///        |_ cuminc_final0 : 0.87
+	///        |_ cuminc_final1 : 0.23
+	///        |_ cuminc_final2 : 0.11
+	///        |_ ...etc...
+	///
 	
 	
+	// Folders where parameters are saved:
 	string _DIR_IN		= params["folder_inputs"]; //../inputs/";
 	string _DIR_CALIB	= params["folder_calib"];
 	int jobnum			= params["jobnum"];

@@ -217,6 +217,8 @@ void	run_comp_interventions(unsigned int nMC,
 	
 	int n_scenario = filename_intervention_wrapper.size();
 	
+	cout << "DEBUG:::"<<n_scenario<<endl;
+	
 	vector<MCsimulation> scenario;
 	
 	for (int i=0; i<n_scenario; i++){
@@ -295,12 +297,10 @@ vector<dcDataFrame>	run_comp_interventions_obj(unsigned int nMC,
 	scenario_list = trim(scenario_list);
 	unsigned long n_scenario = scenario_list.size();
 	
-	
 	// Display basic info:
 	coutline(100);
 	cout << endl << " Inputs folder: "<< folder_inputs << endl;
 	cout << endl << " Calibration folder: "<< folder_calib << endl;
-	
 	cout << endl << " Scenario list: "<<endl;
 	displayVector(scenario_list);
 	cout << endl << " Initial STI prevalence set from file: "<<filename_init_STI_prev<<endl;
@@ -345,7 +345,7 @@ vector<dcDataFrame>	run_comp_interventions_obj(unsigned int nMC,
 	vector<dcDataFrame> D;
 	
 	Population pop0 = scenario[0].get_simulation(0).get_population();
-	int n_sti = pop0.get_nSTImodelled();
+	unsigned long n_sti = pop0.get_nSTImodelled();
 	
 	for(int s=0; s<n_sti; s++){
 		STIname stiname = pop0.get_STI()[s].get_name();

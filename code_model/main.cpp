@@ -335,19 +335,19 @@ int main(int argc, const char * argv[])
 			// Simulate with several Monte Carlo iterations
 			// (test environment: will be serial execution - for parallel, see Makefile)
 			
-			unsigned int nMC		= getParameterFromFile("MCiter", "in_simulation.csv");
-			double horizon_prtn		= getParameterFromFile("horizon_prtn_years", "in_simulation.csv");
-			double timestep_prtn	= getParameterFromFile("timestep_prtn_days", "in_simulation.csv")/365.0;
+			unsigned int nMC		= getParameterFromFile("MCiter", _DIR_IN+"in_simulation.csv");
+			double horizon_prtn		= getParameterFromFile("horizon_prtn_years", _DIR_IN+"in_simulation.csv");
+			double timestep_prtn	= getParameterFromFile("timestep_prtn_days", _DIR_IN+"in_simulation.csv")/365.0;
 			bool TraceNetwork		= false;
 			int	displayProgress		= 11;
-			string file_init_STI	= "in_STI_initial_prevalence.csv";
+			string file_init_STI	= _DIR_IN + "in_STI_initial_prevalence.csv";
 			int	jobnum				= 1;
 			
 			// Scenario files files
 			
 			vector<string> file_scenario;
-			vectorFromCSVfile_string(file_scenario,
-									 "in_scenario.csv", 1);
+			string scen_fname =_DIR_IN+"in_scenario.csv";
+			vectorFromCSVfile_string(file_scenario, scen_fname.c_str(), 1);
 			
 			cout<<endl<<"Scenario files:";
 			displayVector(file_scenario);

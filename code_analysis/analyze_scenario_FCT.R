@@ -241,8 +241,13 @@ calc.diff <- function(d, colname.raw, colname.diff, n.scen, relative=FALSE){
 
 select.simulations <- function(){
   ### SELECT SIMULATIONS WHERE NO STI GOES EXTINCT
-  d.hiv <- read.scenario.sti("HIV",intervFilename = "interv_base_HIV.csv", remove.extinct = TRUE)
-  d.tp <- read.scenario.sti("Tp",intervFilename = "interv_base_Tp.csv", remove.extinct = TRUE)
+  d.hiv <- read.scenario.sti(stiname="HIV",
+                             intervFilename = "interv_base_HIV.csv",
+                             remove.extinct = TRUE)
+  
+  d.tp <- read.scenario.sti(stiname="Tp",
+                            intervFilename = "interv_base_Tp.csv",
+                            remove.extinct = TRUE)
   
   select.sim <- which(d.tp$iMC %in% d.hiv$iMC)
   d.hiv <- subset(d.hiv,d.hiv$iMC %in% d.tp$iMC[select.sim])
