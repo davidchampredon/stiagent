@@ -29,6 +29,7 @@ using namespace Rcpp;
 List dcDataFrameToRcppList(dcDataFrame df){
 	
 	/// Converts a dcDataFrame to a Rccp list
+	/// (helper function)
 	
 	unsigned long ncol = df.get_colname().size();
 	
@@ -44,15 +45,40 @@ List dcDataFrameToRcppList(dcDataFrame df){
 	return rcpplist;
 }
 
-
-// commented line below is necessary to export the function defined just after.
+// WARNING:
+// commented line below (rcpp export) is necessary
+// to export the function defined just after.
 
 // [[Rcpp::export]]
 List stiagent_runsim(List params) {
 	
+	/// Run one Monte-Carlo simulation
+	/// of the STIAGENT model,
+	/// given inputs parameter values
+	/// in both 'inputs' and 'calibration' folders
+	
 	
 	string _DIR_IN		= params["folder_inputs"]; //../inputs/";
 	string _DIR_CALIB	= params["folder_calib"];
+	string scenario_file= params["scenario_file"];
+
+	// ID of the current MC.
+	// Used when several MC specified _and_
+	// several scenarios that must be compared
+	// hence must use same seed for ith MC iteration.
+	//
+	// For example ('seed=mc_id'):
+	// Scen 1, MC 1  ==> seed=1
+	// Scen 1, MC 2  ==> seed=2
+	// Scen 1, MC 3  ==> seed=3
+	//
+	// Scen 2, MC 1  ==> seed=1  (<--same seed as scen 1, MC 1)
+	// Scen 2, MC 2  ==> seed=2
+	// Scen 3, MC 3  ==> seed=3
+	//
+	// etc...
+	//
+	unsigned int MC_id	= params["MC_id"];
 	
 	
 	// ======================
@@ -61,7 +87,6 @@ List stiagent_runsim(List params) {
 	
 	// Initialize empty Population object
 	Population P(0);
-	
 	bool debugInfo=true;
 	
 	P.setup_for_simulation(_DIR_IN + "startPopulation.csv",
@@ -82,18 +107,23 @@ List stiagent_runsim(List params) {
 	double timeStep			= getParameterFromFile("timestep_days", _DIR_IN + "in_simulation.csv")/365.0;
 	double horizon_prtn		= getParameterFromFile("horizon_prtn_years", _DIR_IN + "in_simulation.csv");
 	double timestep_prtn	= getParameterFromFile("timestep_prtn_days", _DIR_IN + "in_simulation.csv")/365.0;
-	unsigned int iter_mc	= getParameterFromFile("MCiter", _DIR_IN + "in_simulation.csv");
+//	unsigned int iter_mc	= getParameterFromFile("MCiter", _DIR_IN + "in_simulation.csv");
 	bool TraceNetwork		= false;
 	
 	int displayProgress = 11;
 	
 	string file_init_STI	= _DIR_IN + "in_STI_initial_prevalence.csv";
 	
+	// Scenario
+	// (includes all interventions that will
+	//  be done during this simulation)
 	vector<string> file_intervention;
-	string file_interv_base =_DIR_IN + "in_interv_baseline_wrapper.csv";
+	string file_interv_base =_DIR_IN + scenario_file;
 	vectorFromCSVfile_string(file_intervention,file_interv_base.c_str(), 1);
 	file_intervention = trim(file_intervention);
 	
+	
+	// Run the simulation:
 	Simulation Sobj = runSimulation_one_obj(P,
 											file_init_STI,
 											file_intervention,
@@ -102,20 +132,18 @@ List stiagent_runsim(List params) {
 											horizon, timeStep,
 											TraceNetwork,
 											displayProgress,
-											iter_mc,
+											MC_id,
 											_DIR_IN,
 											_DIR_CALIB);
-	dcDataFrame df_sim = Sobj.get_df_sim();
-	
-	Rcpp::List df_sim_R = dcDataFrameToRcppList(df_sim);
+	// Store result in R object:
+	dcDataFrame df_sim		= Sobj.get_df_sim();
+	Rcpp::List df_sim_R		= dcDataFrameToRcppList(df_sim);
 	
 	// Outputs:
-	double prevHIV = Sobj.get_population().STI_prevalence(HIV);
+	//double prevHIV = Sobj.get_population().STI_prevalence(HIV);
 	
-	return List::create(Named("prevHIV") = prevHIV,
-						Named("df_sim") = df_sim_R);
+	return List::create(Named("df_sim") = df_sim_R);
 }
-
 
 
 
@@ -124,15 +152,17 @@ List stiagent_runsim(List params) {
 List stiagent_comp_interv(List params) {
 	///
 	/// Run several scenarios and compare their outcomes.
-	/// Returns a R list with size the number of STI modeled.
+	/// Returns an R list with size the number of STI modeled.
 	/// Each element of the list is itself a list storing the
 	/// outcome values for all scenarios.
 	///
-	/// For example, if HIV and Tp are the two STI modeled and
+	/// For example, if HIV and Tp are the two STIs modeled and
 	/// 3 scenarios are defined,the output list will look like
 	/// this in R:
 	///
 	/// x <- stiagent_comp_interv(params)  # <== call this function in R
+	///
+	/// then structure of 'x' is:
 	///
 	/// x
 	///  |_ HIV
