@@ -312,8 +312,7 @@ public:
 	void		runAllEvents_horizon_obj(bool doSex,
 										 bool logIndivInfo,
 										 bool traceNetwork,
-										 int displayProgress,
-										 int iter_mc=1);
+										 int displayProgress);
 
 	
 	 // ??? DEPRECATED ???

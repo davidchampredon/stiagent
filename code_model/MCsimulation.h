@@ -116,7 +116,6 @@ public:
 
 
 // One stochastic run of the whole simulation
-// Each MC trial simulation is stored in the output vector
 //
 Simulation	runSimulation_one(Population P_init,
 							  string filename_init_STI_prev,
@@ -127,7 +126,7 @@ Simulation	runSimulation_one(Population P_init,
 							  double timestep,
 							  bool TraceNetwork,
 							  int displayProgress,
-							  unsigned int iter_mc);
+							  unsigned int mc_id);
 
 
 // same as "runSimulation_one" but no file written, objects only.
@@ -141,7 +140,7 @@ Simulation	runSimulation_one_obj(Population P_init,
 								  double timestep,
 								  bool TraceNetwork,
 								  int displayProgress,
-								  unsigned int iter_mc,
+								  unsigned int mc_id,
 								  string folder_inputs,
 								  string folder_calib);
 

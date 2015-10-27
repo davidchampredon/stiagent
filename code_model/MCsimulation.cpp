@@ -388,7 +388,7 @@ Simulation	runSimulation_one_obj(Population P_init,
 								  double timestep,
 								  bool TraceNetwork,
 								  int displayProgress,
-								  unsigned int iter_mc, // <- this is a _unique_ number (across all jobs)
+								  unsigned int mc_id, // <- this is a _unique_ number (across all jobs)
 								  string folder_inputs,
 								  string folder_calib
 								  )
@@ -400,7 +400,7 @@ Simulation	runSimulation_one_obj(Population P_init,
 	
 	// Create Simulation object
 	Simulation S(horizon, timestep, P_init, 0);
-	S.set_MC_trial_iter(iter_mc);
+	S.set_MC_trial_iter(mc_id);
 	S.set_save_trace_files(false);
 	
 	// Calibration
@@ -452,19 +452,18 @@ Simulation	runSimulation_one_obj(Population P_init,
 	
 	
 	// * * * IMPORTANT * * *
-	// iter_mc = fct(jobnum, MC trial)
+	// mc_id = fct(jobnum, MC trial)
 	// Makes sure the seed is different
 	// for each MC trial.
 	// However, the seed will be the same for a given
 	// Job and MC trial when 2 simulations are run
 	// (this is what we want, for example comparing 2
 	// intervention scenario with the _same_ seed)
-	force_seed_reset(iter_mc);
+	force_seed_reset(mc_id);
 	S.runAllEvents_horizon_obj(doSex,
 							   logIndivInfo,
 							   traceNetwork_prtn,
-							   displayProgress_prtn,
-							   iter_mc);
+							   displayProgress_prtn);
 	
 	// Reset to original parameters
 	S.set_horizon(horizon);
@@ -489,12 +488,7 @@ Simulation	runSimulation_one_obj(Population P_init,
 	S.runAllEvents_horizon_obj(doSex,
 							   logIndivInfo,
 							   TraceNetwork,
-							   displayProgress,
-							   iter_mc);
-	
-	//S.save_incidence(iter_mc);
-	//S.save_prevalence(iter_mc);
-//	cout<<"DEBUG: runSimulation_one ["<< iter_mc<<"] COMPLETED!"<<endl;
+							   displayProgress);
 	
 	return S;
 }
