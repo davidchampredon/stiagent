@@ -833,12 +833,11 @@ void Simulation::runAllEvents_horizon(bool doSex,
 void Simulation::runAllEvents_horizon_obj(bool doSex,
 										  bool logIndivInfo,
 										  bool traceNetwork,
-										  int displayProgress,
-										  int iter_mc)
+										  int displayProgress)
 {
 	/// Run a simulation with all events until specified horizon
 	
-	int nSTI = _population.get_nSTImodelled();
+	unsigned long nSTI = _population.get_nSTImodelled();
 	_population.set_timeStep(_timeStep);
 	_nursery.set_STI(_population.get_STI());
 	

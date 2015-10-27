@@ -290,7 +290,7 @@ vector<dcDataFrame>	run_comp_interventions_obj(unsigned int nMC,
 											   string folder_inputs,
 											   string folder_calib)
 {
-	/// Run several scenario and compare their outcomes
+	/// Run several scenarios and compare their outcomes
 	/// Returns a data frame of scenario results for each STI
 	
 	// deals with eol character issues
