@@ -185,6 +185,8 @@ public:
 	dcMatrix			get_STI_incidence(){return _STI_incidence;}
 	dcMatrix			get_STI_prevalence(){return _STI_prevalence;}
 	
+	vector<double>		get_STI_prevalence_final();
+	vector<double>		get_STI_cumIncidence_final();
 	
 	vector<STIname>		get_target_STIprevalence_names() {return _target_STIprevalence_names;}
 	vector<double>		get_target_STIprevalence() {return _target_STIprevalence;}

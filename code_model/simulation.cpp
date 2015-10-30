@@ -52,6 +52,37 @@ Simulation::Simulation(double horizon,
 
 
 
+vector<double> Simulation::get_STI_prevalence_final(){
+	/// Return final prevalence for all STIs
+	
+	dcMatrix M = _STI_prevalence;
+	unsigned int n = M.getNbRows();
+	vector<double> x = M.extractRow(n-1);
+	
+	return x;
+}
+
+
+vector<double> Simulation::get_STI_cumIncidence_final(){
+	/// DESACTIVATED BECAUSE RESULT NOT CONSISTENT WITH PREVALENCE
+	/// === LOOK AT THIS WHEN HAVE TIME ----
+	vector<double> x; x.push_back(-9E9);
+	return x;
+	
+	/// Return final cumulative incidence for all STIs
+	
+//	dcMatrix M = _STI_incidence;
+//	unsigned int ncol = M.getNbCols();
+//	
+//	// Sum incidence for each STI to get cumulative inc:
+//	vector<double> x;
+//	for(unsigned int j=0; j<ncol; j++)
+//		x.push_back(M.sumColumn(j));
+//	
+//	return x;
+}
+
+
 void Simulation::STI_set_initial_prevalence(string filename){
 	_population.STI_set_initial_prevalence(filename);
 }
@@ -201,6 +232,9 @@ double Simulation::STI_cumul_incidence(STIname s,int time_i)
 	
 	return sum;
 }
+
+
+
 
 
 void Simulation::runAllEvents_timeStep(int numTimeStep,

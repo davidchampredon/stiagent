@@ -7,7 +7,7 @@ library(dplyr)
 library(plyr)
 library(ggplot2)
 library(reshape2)
-library(stiagent,lib.loc = "../Rlibrary//lib")
+library(stiagent,lib.loc = "../Rlibrary/lib")
 
 t0 <- Sys.time()
 
@@ -29,41 +29,39 @@ if(T){
 
 
 # run in parallel using snowfall:
-library(snowfall)
-
-n.mc <- 4
-n.cpu <- 2
-sfInit(parallel = TRUE, cpu = n.cpu)
-sfLibrary(stiagent,lib.loc = "../Rlibrary//lib")
-
-stiagent_runsim_snowWrap <- function(i){
-    # snowfall wrap 
-    x <- stiagent_runsim(params = list(folder_inputs = folder_inputs,
-                                       folder_calib = folder_calib,
-                                       scenario_file = scen.file,
-                                       MC_id = i))
-    return(x)
-}
-
-### Parallel execution:
-sfExportAll()
-idx.apply <- 1:n.mc
-system.time(res <- sfSapply(idx.apply, stiagent_runsim_snowWrap, simplify = F))
-sfStop()
-
-
+# library(snowfall)
+# 
+# n.mc <- 4
+# n.cpu <- 2
+# sfInit(parallel = TRUE, cpu = n.cpu)
+# sfLibrary(stiagent,lib.loc = "../Rlibrary//lib")
+# 
+# stiagent_runsim_snowWrap <- function(i){
+#     # snowfall wrap 
+#     x <- stiagent_runsim(params = list(folder_inputs = folder_inputs,
+#                                        folder_calib = folder_calib,
+#                                        scenario_file = scen.file,
+#                                        MC_id = i))
+#     return(x)
+# }
+# 
+# ### Parallel execution:
+# sfExportAll()
+# idx.apply <- 1:n.mc
+# system.time(res <- sfSapply(idx.apply, stiagent_runsim_snowWrap, simplify = F))
+# sfStop()
 
 
 
-if(FALSE){
-    # run the model several times for scenario comparison:
-    system.time(
-        allres <- stiagent_comp_interv(params = list(folder_inputs = folder_inputs,
-                                                     folder_calib = folder_calib,
-                                                     jobnum = 1)
-        )
+
+
+# run the model several times for scenario comparison:
+system.time(
+    allres <- stiagent_comp_interv(params = list(folder_inputs = folder_inputs,
+                                                 folder_calib = folder_calib,
+                                                 jobnum = 1)
     )
-}
+)
 
 ###############################################################
 ###   Reformat result in data frame (from list of lists...)
@@ -165,6 +163,7 @@ g.reldiff <- g.reldiff + facet_wrap(~response,scales = "free_y")
 g.reldiff <- g.reldiff + ggtitle("Relative Difference of Mean Values")
 plot(g.reldiff)
 
+save.image(file = "simscen.RData")
 
 # ===================================
 t1 <- Sys.time()

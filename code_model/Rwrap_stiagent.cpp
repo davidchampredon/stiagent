@@ -139,10 +139,35 @@ List stiagent_runsim(List params) {
 	dcDataFrame df_sim		= Sobj.get_df_sim();
 	Rcpp::List df_sim_R		= dcDataFrameToRcppList(df_sim);
 	
-	// Outputs:
-	//double prevHIV = Sobj.get_population().STI_prevalence(HIV);
 	
-	return List::create(Named("df_sim") = df_sim_R);
+	// =============
+	//    Outputs
+	// =============
+
+	Population POP = Sobj.get_population();
+	
+	unsigned long nSTI = POP.get_nSTImodelled();
+	
+	vector<double> prev_final;
+	vector<double> cuminc_mtct_final;
+	vector<string> stiname_str;
+	for(unsigned long i=0; i<nSTI; i++){
+		STIname stiname = POP.get_STI()[i].get_name();
+		stiname_str.push_back(STInameString(stiname));
+		cuminc_mtct_final.push_back(Sobj.get_nursery().census_infected(stiname));
+	}
+	
+	prev_final = Sobj.get_STI_prevalence_final();
+
+	
+	
+	// R List storing all outputs:
+	//
+	return List::create(Named("df_sim") = df_sim_R,
+						Named("prev_final") = prev_final,
+						Named("cuminc_mtct_final")= cuminc_mtct_final,
+						Named("popsize_alive") = POP.census_alive(),
+						Named("STInames") = stiname_str);
 }
 
 
