@@ -2,10 +2,7 @@ library(ggplot2)
 library(tidyr)
 
 
-# x <- summ.scen
-
 plot.comp.scen <- function(x){
-	
 	### PLOT COMPARISON OF OUTCOMES B/W SCENARIOS
 	###
 	
@@ -21,7 +18,6 @@ plot.comp.scen <- function(x){
 	g <- g + ggtitle("Mean of outcomes")
 	g <- g + xlab("Scenario") + ylab("")
 	plot(g)
-	
 	
 	### Difference with 'baseline':
 	g.diff <- ggplot(x.nobase) + geom_bar(aes(x=scen ,y=diff.baseline, fill=sti),

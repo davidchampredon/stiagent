@@ -3,6 +3,8 @@ source("run_one_scenario.R")
 source("reformat_obj.R")
 source("plot_comp_scen.R")
 
+library(parallel)
+cpumax <- parallel::detectCores()
 
 t0 <- as.numeric(Sys.time())
 
@@ -19,46 +21,15 @@ scenario_file[[1]] <- "in_scenario_baseline.csv"
 scenario_file[[2]] <- "in_scenario_vaxMass.csv"
 scenario_file[[3]] <- "in_scenario_TrSympt.csv"
 
-### run in parallel using snowfall:
-n.mc <- 4
-n.cpu <- 4
+ps <- read.csv("prm_simul.csv",header = FALSE)
+n.mc <- ps[ps[,1]=="mc_iter",2]
+n.cpu <- ps[ps[,1]=="mc_iter",2]
+if (n.cpu==0) n.cpu <- cpumax
+if (n.cpu<0) n.cpu <- max(1,cpumax-n.cpu)
 
 
 ### Run each scenario
 ###
-
-# all.scen <- list()
-# 
-# for(i in 1:length(scenario_file)){
-# 	all.scen[[i]] <- stiagent_runsim_one_scen(folder_inputs,
-# 									 folder_calib,
-# 									 scenario_file[[i]],
-# 									 n.mc,
-# 									 n.cpu,
-# 									 path.stiagent.lib)
-# }
-
-
-# res1 <- stiagent_runsim_one_scen(folder_inputs,
-# 								 folder_calib,
-# 								 scenario_file1,
-# 								 n.mc,
-# 								 n.cpu,
-# 								 path.stiagent.lib)
-# 
-# res2 <- stiagent_runsim_one_scen(folder_inputs,
-# 								 folder_calib,
-# 								 scenario_file2,
-# 								 n.mc,
-# 								 n.cpu,
-# 								 path.stiagent.lib)
-# 
-# res3 <- stiagent_runsim_one_scen(folder_inputs,
-# 								 folder_calib,
-# 								 scenario_file3,
-# 								 n.mc,
-# 								 n.cpu,
-# 								 path.stiagent.lib)
 
 all.scen <- lapply(X = scenario_file, 
 				   FUN = stiagent_runsim_one_scen,
@@ -67,8 +38,6 @@ all.scen <- lapply(X = scenario_file,
 				   n.mc=n.mc,
 				   n.cpu=n.cpu,
 				   path.stiagent.lib=path.stiagent.lib)
-
-# all.scen <- list(res1,res2,res3)
 
 
 ### Calculate summary statistics for all scenario
