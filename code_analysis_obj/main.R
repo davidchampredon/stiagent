@@ -18,12 +18,12 @@ folder_calib = "../calibration/"
 # that will be run during this simulation:
 scenario_file <- list()
 scenario_file[[1]] <- "in_scenario_baseline.csv"
-scenario_file[[2]] <- "in_scenario_vaxMass.csv"
+scenario_file[[2]] <- "in_scenario_VaxMass.csv"
 scenario_file[[3]] <- "in_scenario_TrSympt.csv"
 
 ps <- read.csv("prm_simul.csv",header = FALSE)
 n.mc <- ps[ps[,1]=="mc_iter",2]
-n.cpu <- ps[ps[,1]=="mc_iter",2]
+n.cpu <- ps[ps[,1]=="ncpu",2]
 if (n.cpu<=0) n.cpu <- max(1,cpumax-n.cpu)
 
 
