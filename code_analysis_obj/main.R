@@ -24,8 +24,7 @@ scenario_file[[3]] <- "in_scenario_TrSympt.csv"
 ps <- read.csv("prm_simul.csv",header = FALSE)
 n.mc <- ps[ps[,1]=="mc_iter",2]
 n.cpu <- ps[ps[,1]=="mc_iter",2]
-if (n.cpu==0) n.cpu <- cpumax
-if (n.cpu<0) n.cpu <- max(1,cpumax-n.cpu)
+if (n.cpu<=0) n.cpu <- max(1,cpumax-n.cpu)
 
 
 ### Run each scenario
