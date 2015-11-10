@@ -19,6 +19,7 @@ plot.comp.scen <- function(x){
 										  position=position_dodge(width=0.3)) 
 	g <- g + facet_wrap(~response,scales = "free_y")
 	g <- g + ggtitle("Mean of outcomes")
+	g <- g + xlab("Scenario") + ylab("")
 	plot(g)
 	
 	
@@ -28,6 +29,7 @@ plot.comp.scen <- function(x){
 										  stat="identity")
 	g.diff <- g.diff + facet_wrap(~response,scales = "free_y")
 	g.diff <- g.diff + ggtitle("Difference of mean of outcomes")
+	g.diff <- g.diff + xlab("Scenario") + ylab("")
 	plot(g.diff)
 	
 	g.diff2 <- ggplot(x.nobase) + geom_bar(aes(x=scen ,y=diff.baseline, fill=response),
@@ -35,6 +37,7 @@ plot.comp.scen <- function(x){
 										  stat="identity")
 	g.diff2 <- g.diff2 + facet_wrap(~sti,scales = "free_y")
 	g.diff2 <- g.diff2 + ggtitle("Difference of mean of outcomes")
+	g.diff2<- g.diff2 + xlab("Scenario") + ylab("")
 	plot(g.diff2)
 	
 	### Relative difference with 'baseline':
@@ -43,6 +46,7 @@ plot.comp.scen <- function(x){
 											 stat="identity")
 	g.reldiff <- g.reldiff + facet_wrap(~response)
 	g.reldiff <- g.reldiff + ggtitle("Relative difference of mean of outcomes")
+	g.reldiff <- g.reldiff + xlab("Scenario") + ylab("")
 	plot(g.reldiff)
 	
 	g.reldiff2 <- ggplot(x.nobase) + geom_bar(aes(x=scen, y=reldiff.baseline, fill=response),
@@ -50,5 +54,6 @@ plot.comp.scen <- function(x){
 											 stat="identity")
 	g.reldiff2 <- g.reldiff2 + facet_wrap(~sti)
 	g.reldiff2 <- g.reldiff2 + ggtitle("Relative difference of mean of outcomes")
+	g.reldiff2 <- g.reldiff2 + xlab("Scenario") + ylab("")
 	plot(g.reldiff2)
 }
