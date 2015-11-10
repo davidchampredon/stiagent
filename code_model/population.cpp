@@ -264,13 +264,6 @@ void Population::setup_for_simulation(string file_startpopulation,
 	// Save files for external processing (in R)
 	STI_save_all_infectivityCurves("infectivityCurve");
 	save_death_hazard(_DIR_OUT + "hazard_death.out");
-	
-	// DEBUG INFO
-	if (debugInfo)
-	{
-		//		displayInfo(false);
-		saveToCSVFile("pop0.out");
-	}
 }
 
 
