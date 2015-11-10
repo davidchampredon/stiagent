@@ -558,6 +558,20 @@ vector<Simulation>	runSimulationMC_obj(unsigned int nMC,
 	
 	vector<Simulation> res;
 	
+	if(displayProgress>0){
+		coutline(80);
+		cout << endl << "Simulation parameters:"<<endl;
+		cout << " Monte-Carlo iterations: " << nMC <<endl;
+		cout << "Horizon: " << horizon <<endl;
+		cout << "Time step: " << timestep <<endl;
+		cout << endl;
+		coutline(80);
+	}
+	
+	// DEBUG
+	
+	
+	
 	for(unsigned int i=1; i<= nMC; i++){
 		res.push_back(runSimulation_one_obj(P_init,
 											filename_init_STI_prev,

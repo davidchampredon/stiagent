@@ -39,11 +39,6 @@ Simulation::Simulation(double horizon,
 	_STI_prevalence.resize(1,_population.get_STI().size());
 	
 	_save_trace_files = false;
-	
-	// DEBUG
-	cout << endl << "Simulation parameters:"<<endl;
-	cout << "Horizon: " << _horizon <<endl;
-	cout << "timeStep: " << _timeStep <<endl;
 }
 
 
@@ -1163,13 +1158,6 @@ void Simulation::set_calibration_schedule(string filename_calibrationTime,
 	_calibrationTargetType.clear();
 	_calibrationWeights.clear();
 	_calibrationDistances.clear();
-	
-	
-	
-	coutline(80);
-	cout<< "Setting calibration schedule from these files:"<<endl;
-	cout << filename_calibrationTime<<endl<<filename_all_calib_target<<endl<<filename_weight_target;
-	
 	
 	// read calbration times from the file
 	vectorFromCSVfile(_calibrationTime, filename_calibrationTime.c_str(), 1);

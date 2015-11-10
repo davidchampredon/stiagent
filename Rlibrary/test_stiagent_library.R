@@ -22,15 +22,10 @@ scen.file <- "in_scenario_baseline.csv"
 x <- stiagent_runsim(params = list(folder_inputs = folder_inputs,
                                    folder_calib = folder_calib,
                                    scenario_file = scen.file,
-                                   MC_id = 1)
+                                   MC_id = 1,
+								   displayProgress=1)
                      )
 
-# run the model several times for scenario comparison:
-# y <- stiagent_comp_interv(params = list(folder_inputs = folder_inputs,
-#                                         folder_calib = folder_calib,
-#                                         jobnum = 1)
-# )
-# yy1 <- as.data.frame(y[[1]])
 
 print(x)
 

@@ -61,7 +61,8 @@ List stiagent_runsim(List params) {
 	string _DIR_IN		= params["folder_inputs"]; //../inputs/";
 	string _DIR_CALIB	= params["folder_calib"];
 	string scenario_file= params["scenario_file"];
-
+	int displayProgress	= params["displayProgress"];
+	
 	// ID of the current MC.
 	// Used when several MC specified _and_
 	// several scenarios that must be compared
@@ -107,10 +108,9 @@ List stiagent_runsim(List params) {
 	double timeStep			= getParameterFromFile("timestep_days", _DIR_IN + "in_simulation.csv")/365.0;
 	double horizon_prtn		= getParameterFromFile("horizon_prtn_years", _DIR_IN + "in_simulation.csv");
 	double timestep_prtn	= getParameterFromFile("timestep_prtn_days", _DIR_IN + "in_simulation.csv")/365.0;
-//	unsigned int iter_mc	= getParameterFromFile("MCiter", _DIR_IN + "in_simulation.csv");
-	bool TraceNetwork		= false;
 	
-	int displayProgress = 11;
+
+	bool TraceNetwork		= false;
 	
 	string file_init_STI	= _DIR_IN + "in_STI_initial_prevalence.csv";
 	
