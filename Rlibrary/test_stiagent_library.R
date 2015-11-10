@@ -32,12 +32,13 @@ x <- stiagent_runsim(params = list(folder_inputs = folder_inputs,
 # )
 # yy1 <- as.data.frame(y[[1]])
 
+print(x)
 
 t1 <- Sys.time()
 message(paste("time elapsed:",round(t1-t0,1),"sec"))
 
 # check if everything went well:
-msg <- ifelse(is.numeric(x[[1]]),
+msg <- ifelse(length(x)>0,
               "==> stiagent R library seems to work.",
               "THERE IS A PROBLEM WITH stiagent LIBRARY")
 message(paste0(rep("=",40)))
