@@ -165,7 +165,7 @@ class Population
 	
 	vector<STI>			_STI;				// STIs modelled ; template for each Individual's STI
 	unsigned long		_nSTImodelled;		// Number of STIs modelled in the population
-	dcMatrix				_STI_SFincrease;	// dcMatrix defining the increase factor of the susceptibility factor when infected with another STI
+	dcMatrix			_STI_SFincrease;	// dcMatrix defining the increase factor of the susceptibility factor when infected with another STI
 	vector<double>		_RebHIV;			// HIV infectivity rebound due to STIs co-infections
 	
 	vector< vector<unsigned long> > _secondary_cases; // Number of all secondary cases for every STIs (size of vector increases as simulation runs)
@@ -212,11 +212,8 @@ public:
 					   string STI_treatment_filename,
 					   string STI_vaccine_filename);
 	
-	
 	void initPartnershipDuration();
 	void initSingleDuration();
-	
-	
 	
 	void setup_for_simulation(string file_startpopulation,
 							  string file_STI_features,
@@ -225,6 +222,8 @@ public:
 							  string file_STI_treatment,
 							  string file_STI_vaccine,
 							  bool debugInfo);
+	
+	void create_initial_population(unsigned long size, double female_ratio, double prop_csw);
 	
 	
 	
@@ -236,7 +235,7 @@ public:
 	Individual		getIndividual(unsigned long uid) {return _individual[uid];}
 	unsigned long	get_nSTImodelled() {return _nSTImodelled;}
 	double			get_ageSexMin() {return _ageSexMin;}
-	dcMatrix			get_partnershipsMatrix() { return _partnershipsMatrix;}
+	dcMatrix		get_partnershipsMatrix() { return _partnershipsMatrix;}
 	
 	double			get_simulationTime() { return _simulationTime;}
 	
@@ -788,6 +787,7 @@ public:
 	int				STI_find_index_position(STIname);
 	void			STI_save_all_infectivityCurves(string filerootname);
 	
+	vector< vector<double> > get_infectivityCurve(STIname sti, Gender g);
     
     // Discordant partnership
     

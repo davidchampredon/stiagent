@@ -97,6 +97,7 @@ int main(int argc, const char * argv[])
 	cout<<"doSingleRun= "	<< doSingleRun<<endl;
 	cout<<"doMCRun= "		<< doMCRun<<endl;
 	cout<<"doCalibration= "	<< doCalibration<<endl;
+	cout<<"doMultiScenario= "<< doMultiScenario<<endl;
 	cout<<"doSensi= "		<< doSensi<<endl;
 	coutline(80);
 	
@@ -189,6 +190,13 @@ int main(int argc, const char * argv[])
 														);
 				dcDataFrame df = Sobj.get_df_sim();
 				df.display();
+				
+				// infectivity curve:
+				vector< vector<double> >IC;
+				IC = Sobj.get_population().get_infectivityCurve(HIV, male);
+				cout << endl << "Infectivity curve:";
+				displayVector(IC);
+				
 			}
 			
 			//cout<<"GLOBAL DISTANCE FROM TARGETS:"<<S.calibration_distance_targets()<<endl;

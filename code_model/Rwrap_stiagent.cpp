@@ -148,7 +148,7 @@ List stiagent_runsim(List params) {
 	
 	unsigned long nSTI = POP.get_nSTImodelled();
 	
-	vector<double> prev_final;
+	
 	vector<double> cuminc_mtct_final;
 	vector<string> stiname_str;
 	for(unsigned long i=0; i<nSTI; i++){
@@ -157,17 +157,40 @@ List stiagent_runsim(List params) {
 		cuminc_mtct_final.push_back(Sobj.get_nursery().census_infected(stiname));
 	}
 	
+	vector<double> prev_final;
 	prev_final = Sobj.get_STI_prevalence_final();
 
 	
+	// infectivity curves:
+	Rcpp::List IC;
+	vector<std::string> fm;
+	fm.push_back("female"); fm.push_back("male");
 	
+	for(int i=0; i<nSTI;i++){
+		STIname stiname = POP.get_STI()[i].get_name();
+
+		Rcpp:List tmp_ic;
+		tmp_ic.push_back(POP.get_infectivityCurve(stiname, female));
+		tmp_ic.push_back(POP.get_infectivityCurve(stiname, male));
+		tmp_ic.attr("names") = fm;
+		IC.push_back(tmp_ic);
+	}
+	IC.attr("names") = stiname_str;
+
+	
+	
+	// =========================================================================
+	// =========================================================================
+	//
 	// R List storing all outputs:
 	//
 	return List::create(Named("df_sim") = df_sim_R,
 						Named("prev_final") = prev_final,
 						Named("cuminc_mtct_final")= cuminc_mtct_final,
 						Named("popsize_alive") = POP.census_alive(),
-						Named("STInames") = stiname_str);
+						Named("STInames") = stiname_str,
+						Named("infCurves") = IC
+						);
 }
 
 

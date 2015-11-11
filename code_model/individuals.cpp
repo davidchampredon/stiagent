@@ -1019,8 +1019,8 @@ double Individual::TRE(STIname sti)
 		double tmp2 = 1-TMS;
 		res = tmp1+tmp2;
 		
-		// DEBUG
-		if(1){
+		// DEBUG -------------------------------
+		if(0){
 			string fname = _DIR_OUT + "treat_attempts.out";
 			ofstream f(fname,ios::app);
 			
@@ -1030,6 +1030,7 @@ double Individual::TRE(STIname sti)
 			f <<adherence<<",";
 			f <<_STI[i_sti].TREstar(t)<<",";
 		}
+		// -------------------------------------
 	}
 	return res;
 }

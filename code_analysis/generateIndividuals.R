@@ -299,6 +299,6 @@ message("Initial individuals generated... ")
 
 
 # DEBUG
-pop0 = read.csv("pop0.out")
+# pop0 = read.csv("pop0.out")
 
 

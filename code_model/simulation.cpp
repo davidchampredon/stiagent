@@ -3103,25 +3103,26 @@ void Simulation::activate_intervention(int i)
 		}
 	} // end loop on individuals
 	
-	// Log information
-	string filename = _DIR_OUT + "intervention.out";
-	ofstream ff(filename.c_str(),ios::app);
-	ifstream ff2(filename.c_str());
-	bool isempty = (ff2.peek() == std::ifstream::traits_type::eof());
-	
-	if (isempty){
-		// headers
-		ff << "iMC, time, type, n_reached, n_targeted"<<endl;
+	// Log information DEBUG
+	if(false){
+		string filename = _DIR_OUT + "intervention.out";
+		ofstream ff(filename.c_str(),ios::app);
+		ifstream ff2(filename.c_str());
+		bool isempty = (ff2.peek() == std::ifstream::traits_type::eof());
+		
+		if (isempty){
+			// headers
+			ff << "iMC, time, type, n_reached, n_targeted"<<endl;
+		}
+		
+		// data (must be consistent with headers above)
+		ff << _MC_trial_iter << ",";
+		ff << _population.get_simulationTime() << ",";
+		ff << interv_type << ",";
+		ff << cnt << ",";
+		ff << cnt2 ;//<< ",";
+		ff << endl;
 	}
-	
-	// data (must be consistent with headers above)
-	ff << _MC_trial_iter << ",";
-	ff << _population.get_simulationTime() << ",";
-	ff << interv_type << ",";
-	ff << cnt << ",";
-	ff << cnt2 ;//<< ",";
-	ff << endl;
-	
 	
 	if(_MC_trial_iter==1 && false){
 		cout << "DEBUG_TREATMENT time_"<< _population.get_simulationTime()<< " ; prop recv ";
