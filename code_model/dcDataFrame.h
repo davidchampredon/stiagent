@@ -13,7 +13,7 @@
 #include "dcTools.h"
 #include "dcMatrix.h"
 
-#endif /* defined(__LocalSTI__dcDataFrame__) */
+
 
 
 using namespace std;
@@ -49,6 +49,25 @@ public:
 	dcDataFrame(){
 		dcMatrix M(0,0);
 		_value = M;
+	}
+	
+	dcDataFrame(vector<double> v, string header){
+		dcMatrix M(v);
+		_value = M;
+		_colname.push_back(header);
+		
+		for(unsigned long i=0; i<v.size(); i++) _rowname.push_back(to_string(i));
+	}
+
+	dcDataFrame(vector<unsigned long> v, string header){
+		
+		vector<double> x;
+		for(int i=0; i<v.size(); i++) x.push_back((double)(v[i]));
+		dcMatrix M(x);
+		_value = M;
+		_colname.push_back(header);
+		
+		for(unsigned long i=0; i<v.size(); i++) _rowname.push_back(to_string(i));
 	}
 	
 	
@@ -188,8 +207,9 @@ public:
 	
 	
 	void addrow(string varname, vector<double> values);
-	void addrow(string varname,double value);
+	void addrow(string varname, double value);
 	
+	void addcol(string colname, vector<double> values);
 	
 	// ==== SET FUNCTIONS ====
 	
@@ -249,3 +269,4 @@ void thetest(dcDataFrame& d);
 //
 //}
 //
+#endif /* defined(__LocalSTI__dcDataFrame__) */

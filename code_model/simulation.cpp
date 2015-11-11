@@ -580,33 +580,6 @@ void Simulation::runAllEvents_timeStep_obj(int numTimeStep,
 	
 	
 	
-//
-//	
-//	if (logIndivInfo)
-//	{
-//		for (int uid=0; uid<_population.get_size(); uid++){
-//			ff << t << ",";
-//			ff << _population.getIndividual(uid).get_UID() << ",";
-//			ff << _population.getIndividual(uid).isAlive() << ",";
-//			
-//			if (_population.getIndividual(uid).get_nCurrSexPartner()>0)
-//			{
-//				ff << _population.getIndividual(uid).getPartnerUID(0);
-//			}
-//			ff<< ",";
-//			
-//			// TO DO: awkward:
-//			if (_population.getIndividual(uid).get_UID_n_sexAct_period().size()>0 &&
-//				_population.getIndividual(uid).get_UID_sexAct_period()[0]== _population.getIndividual(uid).getPartnerUID(0))
-//			{
-//				ff << _population.getIndividual(uid).get_UID_n_sexAct_period()[0];
-//			}
-//			ff<< ",";
-//			
-//			ff << _population.getIndividual(uid).get_STIduration()[0] << ",";
-//			ff << _population.getIndividual(uid).STI_IC()[0];
-//			ff << endl;
-//		}
 	
 }
 

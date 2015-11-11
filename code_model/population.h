@@ -12,6 +12,7 @@
 
 #include "individuals.h"
 #include "dcTools.h"
+#include "dcDataFrame.h"
 
 
 class Population
@@ -541,8 +542,6 @@ public:
 	
 
 	
-	
-	
 	// ===============================
 	// ===    Parameters Update    ===
 	// ===============================
@@ -859,8 +858,13 @@ public:
 	void			displayInfo_SexActs_Pairs_lastPeriod();
 	void			displayInfo_STI_SFincrease();
 	
+	// retrieve all UIDs:
+	vector<unsigned long> getUIDs();
+	
 	unsigned long	getUIDfemale(unsigned long uid1, unsigned long uid2); // retrieves the UID female of a given pair
 	unsigned long	getUIDmale(unsigned long uid1, unsigned long uid2); // retrieves the UID male of a given pair
+	
+	dcDataFrame		export_to_dataframe();
 	
 	// === Output Files
 	

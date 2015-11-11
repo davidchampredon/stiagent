@@ -50,6 +50,23 @@ void dcDataFrame::addrow(string varname,double value)
 
 
 
+void dcDataFrame::addcol(string colname, vector<double> values){
+	
+	if (values.size()!= _value.getNbRows() &&  _value.val.size()>0 ){
+		cerr << "ERROR dcDataFrame [addcol]:";
+		cerr << "'values' vector size and dcMatrix nb rows 'value' do not match"<<endl;
+		exit(1);
+	}
+	
+	// If first insertion in empty data frame
+	// then create default headers
+	if(_colname.size()==0) _colname.push_back("V1");
+
+	_colname.push_back(colname);
+	_value.addColVector(values);
+}
+
+
 // =======================
 // ==== SET FUNCTIONS ====
 // =======================

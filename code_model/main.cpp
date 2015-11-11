@@ -50,6 +50,7 @@ int main(int argc, const char * argv[])
 	// ------------------------------------------
 	
 	
+	
 	string _DIR_IN = "../inputs/";
 	
 	
@@ -109,7 +110,7 @@ int main(int argc, const char * argv[])
 		
 		bool debugInfo=true;
 		
-		unsigned long founder_size = 500;
+		unsigned long founder_size = 100;
 		double founder_femprop = 0.5;
 		double founder_cswprop = 0.01;
 		
@@ -181,6 +182,10 @@ int main(int argc, const char * argv[])
 														);
 				dcDataFrame df = Sobj.get_df_sim();
 				df.display();
+				
+				cout << "==== DEBUG: population"<<endl;
+				dcDataFrame export_pop = Sobj.get_population().export_to_dataframe();
+				export_pop.display();
 			}
 			
 			//cout<<"GLOBAL DISTANCE FROM TARGETS:"<<S.calibration_distance_targets()<<endl;

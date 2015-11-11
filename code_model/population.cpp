@@ -5468,6 +5468,172 @@ void Population::displayInfo_STI_SFincrease()
 	
 }
 
+vector<unsigned long> Population::getUIDs(){
+	
+	vector<unsigned long> x;
+	
+	for(unsigned long i=0; i<_size; i++){
+		unsigned long u =_individual[i].get_UID();
+		
+		x.push_back(u);
+		displayVector(x);
+	}
+	return x;
+}
+
+
+
+dcDataFrame Population::export_to_dataframe(){
+	
+	
+	// Initialize data frame:
+	vector<unsigned long> uid = getUIDs();
+	dcDataFrame df(uid,"uid");
+	
+	// Retrieve all requested data:
+	
+	vector<double> isalive;
+	for(unsigned long i=0; i<_size; i++) isalive.push_back(_individual[i].isAlive());
+
+	vector<double> gender;
+	for(unsigned long i=0; i<_size; i++) gender.push_back(_individual[i].get_gender());
+
+	vector<double> dateinpop;
+	for(unsigned long i=0; i<_size; i++) dateinpop.push_back(_individual[i].get_dateInPopulation());
+
+	vector<double> age;
+	for(unsigned long i=0; i<_size; i++) age.push_back(_individual[i].get_age());
+	
+	vector<double> riskgrp;
+	for(unsigned long i=0; i<_size; i++) riskgrp.push_back(_individual[i].get_riskGroup());
+	
+	vector<double> nCurrPartn;
+	for(unsigned long i=0; i<_size; i++) nCurrPartn.push_back(_individual[i].get_nCurrSexPartner());
+	
+	vector<double> nCurrMaxPartn;
+	for(unsigned long i=0; i<_size; i++) nCurrMaxPartn.push_back(_individual[i].get_nMaxCurrSexPartner());
+	
+	vector<double> nLifetimePartner;
+	for(unsigned long i=0; i<_size; i++) nLifetimePartner.push_back(_individual[i].get_nLifetimePartner());
+	
+	vector<double> nCurrSpouse;
+	for(unsigned long i=0; i<_size; i++) nCurrSpouse.push_back(_individual[i].get_nCurrSpouse());
+	
+	vector<double> nLifetimeSpouse;
+	for(unsigned long i=0; i<_size; i++) nLifetimeSpouse.push_back(_individual[i].get_nLifetimeSpouse());
+	
+	vector<double> circum;
+	for(unsigned long i=0; i<_size; i++) circum.push_back(_individual[i].get_isCircum());
+	
+	vector<double> singleDur;
+	for(unsigned long i=0; i<_size; i++) singleDur.push_back(_individual[i].get_singleDuration());
+	
+	vector<double> age1sex;
+	for(unsigned long i=0; i<_size; i++) age1sex.push_back(_individual[i].get_ageFirstSex());
+	
+	vector<double> age1partner;
+	for(unsigned long i=0; i<_size; i++) age1partner.push_back(_individual[i].get_ageFirstPartner());
+	
+	vector<double> age1spouse;
+	for(unsigned long i=0; i<_size; i++) age1spouse.push_back(_individual[i].get_ageFirstSpouse());
+	
+	vector<double> everVisitCSW;
+	for(unsigned long i=0; i<_size; i++) everVisitCSW.push_back(_individual[i].get_ever_visited_CSW());
+	
+	vector<double> isPregnant;
+	for(unsigned long i=0; i<_size; i++) isPregnant.push_back(_individual[i].get_isPregnant());
+	
+	vector<double> gestDur;
+	for(unsigned long i=0; i<_size; i++) gestDur.push_back(_individual[i].get_gestationDuration());
+	
+	vector<double> nChild;
+	for(unsigned long i=0; i<_size; i++) nChild.push_back(_individual[i].get_nChildBorn());
+	
+	
+	// Construct the data frame:
+	
+	df.addcol("isalive", isalive);
+	df.addcol("gender", gender);
+	df.addcol("age", age);
+	df.addcol("riskgroup", riskgrp);
+	df.addcol("nCurrPartn", nCurrPartn);
+	df.addcol("nCurrMaxPartn", nCurrMaxPartn);
+	df.addcol("nCurrSpouse", nCurrSpouse);
+	df.addcol("nLifetimePartner", nLifetimePartner);
+	df.addcol("nLifetimeSpouse", nLifetimeSpouse);
+	df.addcol("circum", circum);
+	df.addcol("singleDur", singleDur);
+	df.addcol("age1sex", age1sex);
+	df.addcol("age1partner", age1partner);
+	df.addcol("age1spouse", age1spouse);
+	df.addcol("everVisitCSW", everVisitCSW);
+	df.addcol("isPregnant", isPregnant);
+	df.addcol("gestDur", gestDur);
+	df.addcol("nChild", nChild);
+
+	
+	int maxNumberPartners = 5;
+	
+	for (int p=0; p<maxNumberPartners; p++)
+	{
+		vector<double> uid_p;
+		
+		for(unsigned long i=0; i<_size; i++){
+			
+			unsigned long tmp = 0;
+			if (_individual[i].get_nCurrSexPartner()>p){
+				tmp =  _individual[i].getPartnerUID(p);
+			}
+			uid_p.push_back(tmp);
+		}
+		string header = "UIDpartner" + to_string(p+1);
+		df.addcol(header, uid_p);
+	}
+	
+	// ==== DATA ====
+
+//		
+//		for (int p=0; p<maxNumberPartners; p++)
+//		{
+//			if (_individual[i].get_nCurrSexPartner()>p)
+//			{
+//				f << _individual[i].getPartnerUID(p);
+//			}
+//			f << ",";
+//		}
+//		
+//		for (int p=0; p<maxNumberPartners; p++)
+//		{
+//			if (_individual[i].get_nCurrSexPartner()>p)
+//			{
+//				f << _individual[i].getPartnershipDuration()[p];
+//			}
+//			
+//			f<<",";
+//		}
+//		
+//		// STIs data
+//		for (int sti=0; sti<_STI.size(); sti++)
+//			f << _individual[i].get_STIduration()[sti] <<",";
+//		
+//		for (int sti=0; sti<_STI.size(); sti++)
+//			f << _individual[i].get_STIsymptom()[sti] <<",";
+//		
+//		// Vaccination data
+//		for (int sti=0; sti<_STI.size(); sti++){
+//			f << _individual[i].get_STI_immunized()[sti];
+//			if (sti<_STI.size()-1) f << ",";
+//		}
+//		
+//		f << endl;
+//	}
+//	
+//	
+	return df;
+}
+
+
+
 
 
 void Population::saveToCSVFile(string pathFile)
