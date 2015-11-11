@@ -1,6 +1,6 @@
-size,500
-proportionFemales,0.5
-proportionCSW,0.01
+founder_size,500
+founder_femprop,0.5
+founder_cswprop,0.01
 maxConcPartners,5
 minSexAge,12
 maxSexAge,60

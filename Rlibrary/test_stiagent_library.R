@@ -13,6 +13,11 @@ t0 <- Sys.time()
 folder_inputs = "./test-inputs/"
 folder_calib = "../calibration/"
 
+# founder population
+founder.size <- 100
+founder.fem.prop <- 0.5
+founder.csw.prop <- 0.01
+
 # scenario 
 # (includes intervention filenames 
 #  that will be done during this simualtion)
@@ -21,6 +26,9 @@ scen.file <- "in_scenario_baseline.csv"
 # simply run the model:
 x <- stiagent_runsim(params = list(folder_inputs = folder_inputs,
                                    folder_calib = folder_calib,
+								   founder_size = founder.size,
+								   founder_femprop = founder.fem.prop,
+								   founder_cswprop = founder.csw.prop,
                                    scenario_file = scen.file,
                                    MC_id = 1,
 								   displayProgress=1)

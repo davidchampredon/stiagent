@@ -17,7 +17,12 @@ void CODECHECK_mandatory()
 	// Population
 	
 	Population P;
-	P.setup_for_simulation(_DIR_IN + "startPopulation.csv",
+	unsigned long founder_size = 500;
+	double founder_femprop = 0.5;
+	double founder_cswprop = 0.01;
+	P.setup_for_simulation(founder_size,
+						   founder_femprop,
+						   founder_cswprop,
 						   _DIR_IN + "in_STI.csv",
 						   _DIR_IN + "in_STI_SFincrease.csv",
 						   _DIR_IN + "in_HIVrebound.csv",

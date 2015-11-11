@@ -14,6 +14,10 @@ path.stiagent.lib <- "../Rlibrary/lib"
 folder_inputs = "../inputs/"
 folder_calib = "../calibration/"
 
+
+### Founder population parameters:
+founder_file <- "in_populationFeatures.csv"
+
 # Scenario file defining interventions
 # that will be run during this simulation:
 scenario_file <- list()
@@ -34,6 +38,7 @@ all.scen <- lapply(X = scenario_file,
 				   FUN = stiagent_runsim_one_scen,
 				   folder_inputs=folder_inputs,
 				   folder_calib=folder_calib,
+				   founder_file = founder_file,
 				   n.mc=n.mc,
 				   n.cpu=n.cpu,
 				   path.stiagent.lib=path.stiagent.lib)

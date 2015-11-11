@@ -234,7 +234,7 @@ vector<unsigned int> multinomial_gsl(gsl_rng * r,unsigned int N, vector<double> 
 	{
 		if (dim==0 || N==0)
 		{
-			cout << endl << "ERROR [multinomial]: can't generate with dimension=0"<<endl;
+			cout << endl << "ERROR [multinomial_gsl]: can't generate with dimension=0"<<endl;
 			if (dim==0) cout << "size of proba vector = 0 !"<<endl;
 			if (N==0) cout << "N = 0 !"<<endl;
 			exit(1);

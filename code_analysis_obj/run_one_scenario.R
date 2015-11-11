@@ -7,6 +7,7 @@ library(snowfall)
 
 stiagent_runsim_one_scen <- function(folder_inputs,
                                      folder_calib,
+									 founder_file,
                                      scenario_file,
                                      n.mc,
                                      n.cpu,
@@ -19,6 +20,8 @@ stiagent_runsim_one_scen <- function(folder_inputs,
 	message(rep("=",80))
 	message()
 	message("  STIAGENT started...")
+	message()
+	message(paste("  Founder pop file :",founder_file))
 	message()
 	message(paste("  Scenario defined in file: ",scenario_file))
 	message()
@@ -33,6 +36,11 @@ stiagent_runsim_one_scen <- function(folder_inputs,
 	message()
 	message(rep("=",80))
 	
+	ff <- read.csv(paste0(folder_inputs,founder_file),header = F)
+	founder.size <- ff[ff[,1]=="founder_size",2]
+	founder.fem.prop <- ff[ff[,1]=="founder_femprop",2]
+	founder.csw.prop <- ff[ff[,1]=="founder_cswprop",2]
+
 	
     #### Initialize snowfall (parallel execution)
     sfInit(parallel = TRUE, cpu = n.cpu)
@@ -48,6 +56,9 @@ stiagent_runsim_one_scen <- function(folder_inputs,
         x <- stiagent_runsim(params = list(folder_inputs = folder_inputs,
                                            folder_calib = folder_calib,
                                            scenario_file = scenario_file,
+        								   founder_size = founder.size,
+        								   founder_femprop = founder.fem.prop,
+        								   founder_cswprop = founder.csw.prop,
         								   displayProgress = displayProgress,
                                            MC_id = i))
         return(x)

@@ -50,29 +50,16 @@ void Population::STI_setAllParameters(string filename)
 	
 	_nSTImodelled = stiName.size();
 	
-	// Save the STI names that are modeled
-	// (used outside C++)
-	vector<string> stiname_string;
-	for (int i=0; i<stiName.size(); i++)
-		stiname_string.push_back(STInameString(stiName[i]));
-	vectorToFile(stiname_string, _DIR_OUT+"stinames.out");
-	
-	// END NEW STUFF
-	
-	
 	// Construct the population level template '_STI'
 	
 	_STI.resize(_nSTImodelled);
 	
-	for (int s=0; s<_nSTImodelled; s++)
-	{
+	for (int s=0; s<_nSTImodelled; s++){
 		// Construct each STI (infectious period, proba symptomatic, etc)
 		// from 'filename'
-		
 		STI tmp(stiName[s], filename);
 		_STI[s] = tmp;
 	}
-	
 	_secondary_cases.resize(_nSTImodelled);
 }
 
@@ -91,6 +78,9 @@ void Population::initFromFile(string pathFile,
 							  string _STI_SFincrease_filename,
 							  string RebHIV_filename)
 {
+	
+	/// WARNING ===> MAYBE BE OBSOLETE WITH R WRAPPING
+	
 	
 	/// INITIALIZE POPULATION FROM A CSV FILE
 	/// WHICH WAS GENERATED OUTSIDE C++ (SEE 'generateIndividuals.R')
@@ -219,22 +209,39 @@ void Population::initFromFile2(string pathFile,
 							   string STI_treatment_filename,
 							   string STI_vaccine_filename){
 	
+	/// WARNING ===> MAYBE BE OBSOLETE WITH R WRAPPING
+	
 	/// INITIALIZE POPULATION FROM FILE
 	/// AND LOAD STI TREATMENT & VACCINE PARAMETERS
 	
 	initFromFile( pathFile,  STI_filename,
 				 _STI_SFincrease_filename,RebHIV_filename);
 	
-	for (int s=0; s<_nSTImodelled; s++)
-	{
+	for (int s=0; s<_nSTImodelled; s++){
 		_STI[s].load_treatment_param(_STI[s].get_name(), STI_treatment_filename);
 		_STI[s].load_vaccine_param(_STI[s].get_name(), STI_vaccine_filename);
 	}
 }
 
 
+void Population::set_and_check_UID(){
+	
+	// retrieves the UIDs of all males and females
+	_all_UID_femaleUID	= getUID(female);
+	_all_UID_maleUID	= getUID(male);
+	
+	unsigned long nF = _all_UID_femaleUID.size();
+	unsigned long nM = _all_UID_maleUID.size();
+	
+	// Integrity check:
+	string errmsg = "Number of females(" + to_string(nF) +")+males("+ to_string(nM) +") != total population("+ to_string(_size) +")!!!";
+	stopif (nF+nM != _size,errmsg);
+}
 
-void Population::setup_for_simulation(string file_startpopulation,
+
+void Population::setup_for_simulation(unsigned long founder_size,
+									  double founder_female_ratio,
+									  double founder_prop_csw,
 									  string file_STI_features,
 									  string file_STI_SFincrease,
 									  string file_STI_HIVrebound,
@@ -242,6 +249,53 @@ void Population::setup_for_simulation(string file_startpopulation,
 									  string file_STI_vaccine,
 									  bool debugInfo)
 {
+	/// SET UP THE INITIAL POPULATION
+	/// SO THAT A SIMULATION CAN BE LAUNCHED
+	/// WITH THIS POPULATION AS THE STARTING POINT
+	
+	
+	// Set all parameters of this population
+	setAllParameters();
+
+	// Set all STIs parameters
+	STI_setAllParameters(file_STI_features);
+	set_STI_SFincrease(file_STI_SFincrease);
+	set_RebHIV_fromFile(file_STI_HIVrebound);
+	
+	// Set treatment and vaccine parameters for each STI:
+	for (int s=0; s<_nSTImodelled; s++){
+		_STI[s].load_treatment_param(_STI[s].get_name(), file_STI_treatment);
+		_STI[s].load_vaccine_param(_STI[s].get_name(), file_STI_vaccine);
+	}
+	
+	// Founder ppopulation: no partnerships, no STIs.
+	// Reminder:
+	// - The simulation will first run to form parnterships
+	// according to the partnership rules
+	// - Then STI will be introduced and the epidemic will start
+	
+	create_founder_population(founder_size,
+							  founder_female_ratio,
+							  founder_prop_csw);
+	
+	set_and_check_UID();
+	
+	// update the list of UIDs of females
+	// that could potentially become pregnant
+	set_UID_pot_preg(pregnantPotentialFemales());
+}
+
+
+void Population::setup_for_simulation_old(string file_startpopulation,
+									  string file_STI_features,
+									  string file_STI_SFincrease,
+									  string file_STI_HIVrebound,
+									  string file_STI_treatment,
+									  string file_STI_vaccine,
+									  bool debugInfo)
+{
+	/// --- DELETE WHEN SURE ---
+	
 	/// SET UP THE INITIAL POPULATION
 	/// SO THAT A SIMULATION CAN BE LAUNCHED
 	/// WITH THIS POPULATION AS THE STARTING POINT
@@ -267,7 +321,7 @@ void Population::setup_for_simulation(string file_startpopulation,
 }
 
 
-void Population::create_initial_population(unsigned long size, double female_ratio, double prop_csw){
+void Population::create_founder_population(unsigned long size, double female_ratio, double prop_csw){
 	
 	/// CREATE THE INITIAL POPULATION
 	/// BASED ON POPULATION PARAMETERS (must be already set)
@@ -280,7 +334,7 @@ void Population::create_initial_population(unsigned long size, double female_rat
 
 	// Genders:
 	unsigned long n_fem = (unsigned long) (size * female_ratio);
-	unsigned long n_mal = size - n_fem;
+	//unsigned long n_mal = size - n_fem;
 	vector<Gender> g;
 	for(unsigned long i=0; i<n_fem; i++) g.push_back(female);
 	for(unsigned long i=n_fem; i<size; i++) g.push_back(female);
@@ -290,55 +344,107 @@ void Population::create_initial_population(unsigned long size, double female_rat
 	for(unsigned long i=0; i<size; i++)
 		age.push_back(_ageSexMin + uniform01()*(_ageSexMax-_ageSexMin));
 	
-	// Risk group
-	vector<unsigned int> rskgrp;
-	unsigned int prsk = _propRiskGroup.size();
+	// -- Risk groups --
 	
-	// csw:
+	vector<unsigned int> rskgrp;
+	
+	// csw first (because we know firsts are females and csw must be females):
 	unsigned long n_csw = (unsigned long) (n_fem * female_ratio);
 	_CSWriskGroup = 9;
 	for(unsigned long i=0; i<n_csw; i++)
 		rskgrp.push_back(_CSWriskGroup);
 	
+	// Draw risk group values according
+	// to the pre-specified risk group proportions:
+	gsl_rng * r = GSL_generator(_RANDOM_SEED);
+	vector<unsigned int> rsk_n = multinomial_gsl(r, size-n_csw, _propRiskGroup);
+	vector<unsigned int> rsk_tmp;
 	
-	unsigned int k = n_csw;
+	for(unsigned int i=0; i<rsk_n.size(); i++)
+		for(unsigned int j=0; j<rsk_n[i]; j++)
+			rsk_tmp.push_back(i);
+	// Shuffle all risk group values
+	// bc they are ordered and thus want to avoid
+	// having all same values for females:
+	random_shuffle(rsk_tmp.begin(), rsk_tmp.end());
+	// Finally, add the (shuffled) risk groups to the
+	// first ones created (for CSW):
+	for(unsigned int i=0; i<rsk_tmp.size(); i++) rskgrp.push_back(rsk_tmp[i]);
 	
-	// STOPPED HERE: DEFINE RISK GROUP WITH multinomial_gsl
 	
-	for(unsigned int i=0; i<prsk; i++)
-	{
-//		unsigned int nrsk = (unsigned int)(_propRiskGroup[i]*(size-n_csw));
-//		for(int j=k; j<nrsk; j++) rskgrp.push_back(i);
-//		
-		
+	// Maximum number of concurrent sex partners:
+	vector<unsigned int> maxCurrSexPartners;
+	
+	for(unsigned long i=0; i<size; i++){
+		double p_maxPrtn = proba_nMaxCurrSexPartner(g[i],rskgrp[i]);
+		stopif((p_maxPrtn<=0 || p_maxPrtn>=1),
+			   "'_nMaxCurrSexPartner_param' are not properly set because p_maxPrtn is <0 or >1");
+		double mxp = g[i]==_CSWriskGroup?999:(1+geometric(p_maxPrtn));
+		maxCurrSexPartners.push_back(mxp);
 	}
-		
-//	_maxRiskGroup
+	
+	// Proportion circumcised:
+	double pc = _proportion_circum;
+	vector<double> isCircum;
+	// females are not circumcised:
+	for(unsigned int i=0; i<n_fem;i++) isCircum.push_back(0);
+	// follow the pre-specified circumcision proportion for males:
+	for(unsigned int i=n_fem; i<size;i++)
+		isCircum.push_back(uniform01()<pc?1:0);
 	
 	
-	//CSW:
+	// Other variables are here for legacy. TO DO: clean this up!
+	vector<unsigned int> nLifetimePartner(size,0);
+	vector<unsigned int> nLifetimeSpouse(size,0);
+	vector<unsigned int> isDivorced(size,0);
+	vector<unsigned int> isWidow(size,0);
 
 	
+	// == Create population ==
 	
+	// No STIs in founding population
+	// (will be explictly introduced once
+	// the partnership dynamics have reached some kind of equilibrium):
+	vector<double>		stiDuration(_nSTImodelled,0.0);
+	vector<bool>		stiSymptom(_nSTImodelled,false);
 	
-//"","maxPartner","riskGroup","nLifetimePartner","nLifetimeSpouse","isDivorced","isWidow","isCircumcised"
+	_individual.clear();
+	for (int i=0; i<_size; i++){
+		// Individual is created
+		// no STIs or partners yet
+		
+		Individual tmp(uid[i],
+					   g[i],
+					   age[i],
+					   maxCurrSexPartners[i],
+					   rskgrp[i],
+					   nLifetimePartner[i],
+					   isWidow[i], isDivorced[i], isCircum[i],
+					   stiDuration,
+					   stiSymptom,
+					   _STI,_RebHIV);
+		
+		_individual.push_back(tmp);
+	}
 	
+	// No partnerships (because founder population)
+	_partnershipsMatrix.resize(0, 0);
+	_totalNumberPartnerships = 0;
+	_totalNumberSpousalPartnerships = 0;
+
 }
 
 
 
 
-void Population::initSingleDuration()
-{
+void Population::initSingleDuration(){
 	
-	for (int i=0; i<_size; i++)
-	{
+	for (int i=0; i<_size; i++){
 		int nConc = _individual[i].get_nCurrSexPartner();
 		
 		double duration = 0;
 		
-		if(nConc==0)
-		{
+		if(nConc==0){
 			double age	= _individual[i].get_age();
 			double unif = uniform01();
 			duration = (age-_ageSexMin)*unif;
@@ -638,15 +744,6 @@ void Population::set_Population_features(string filename)
 	// Define age limits of sexual activity
 	_ageSexMin = getParameterFromFile("minSexAge", filename);
 	_ageSexMax = getParameterFromFile("maxSexAge", filename);
-	
-	//	// Define parameters driving the maximum number of concurrent partners
-	//	_nMaxCurrSexPartner_param_f.resize(2);
-	//	_nMaxCurrSexPartner_param_f[0] = getParameterFromFile("nMaxCurrSexPartner_Female_1", filename);
-	//	_nMaxCurrSexPartner_param_f[1] = getParameterFromFile("nMaxCurrSexPartner_Female_2", filename);
-	//	_nMaxCurrSexPartner_param_m.resize(2);
-	//	_nMaxCurrSexPartner_param_m[0] = getParameterFromFile("nMaxCurrSexPartner_Male_1", filename);
-	//	_nMaxCurrSexPartner_param_m[1] = getParameterFromFile("nMaxCurrSexPartner_Male_2", filename);
-	
 }
 
 
@@ -666,14 +763,10 @@ void Population::set_Demographic_parameters(string filename)
 	
 }
 
+
 void Population::set_Formation_parameters(string filename)
 {
 	_formation_MaxRate = getParameterFromFile("formation_MaxRate", filename);
-	
-	// DELETE:
-	//	_formation_meanAge_female = getParameterFromFile("formation_meanAge_female", filename);
-	//	_formation_varAge_female = getParameterFromFile("formation_varAge_female", filename);
-	// ------
 	
 	_formation_age_fullstart	= getParameterFromFile("formation_age_fullstart", filename);		// Age when female is fully age-attractive
 	_formation_age_pivot		= getParameterFromFile("formation_age_pivot", filename);			// Parameter representing age where female is half age-attractive (logistic fct)
@@ -681,15 +774,11 @@ void Population::set_Formation_parameters(string filename)
 	_formation_age_fmin			= getParameterFromFile("formation_age_fmin", filename);
 	
 	_formation_agegap_mean	= getParameterFromFile("formation_agegap_mean", filename);
-	//	_formation_agegap_var	= getParameterFromFile("formation_agegap_var", filename);
 	_formation_agegap_fmin	= getParameterFromFile("formation_agegap_fmin", filename);
 	
 	_formation_agegap_shape.push_back(getParameterFromFile("_formation_agegap_shape_1", filename)); //min age gap
 	_formation_agegap_shape.push_back(getParameterFromFile("_formation_agegap_shape_2", filename)); // "a"
 	_formation_agegap_shape.push_back(getParameterFromFile("_formation_agegap_shape_3", filename)); // "d"
-	
-	//	_formation_correl_Age_AgeGap = getParameterFromFile("formation_correl_Age_AgeGap", filename);
-	//	_formation_shapeAge = getParameterFromFile("formation_shapeAge", filename);
 	
 	vector<double> tmp(0);
 	tmp.push_back(getParameterFromFile("formation_RiskGroup_1", filename));
@@ -704,6 +793,7 @@ void Population::set_Formation_parameters(string filename)
 	_formation_STIsymptom_f = getParameterFromFile("formation_STIsymptom_f", filename);
 	_formation_STIsymptom_m = getParameterFromFile("formation_STIsymptom_m", filename);
 }
+
 
 void Population::set_SpousalProgress_parameters(string filename)
 {
@@ -746,8 +836,6 @@ void Population::set_Dissolution_parameters(string filename)
 	tmp.push_back(getParameterFromFile("dissolution_PartnerDeficit_1", filename));
 	tmp.push_back(getParameterFromFile("dissolution_PartnerDeficit_2", filename));
 	_dissolution_PartnerDeficit = tmp;
-	
-	//_dissolution_ageConcPartn		= getParameterFromFile("dissolution_ageConcPartn", filename);
 }
 
 
@@ -763,12 +851,10 @@ void Population::set_SexualActivity_parameters(string param_sexActivity_file)
 	/// (does not include CSW because managed seperately)
 	
 	_propRiskGroup.clear();
-	for (int i=0; i<=_maxRiskGroup; i++)
-	{
+	for (int i=0; i<=_maxRiskGroup; i++){
 		string s = "_propRiskGroup_" + int2string(i);
 		_propRiskGroup.push_back(getParameterFromFile(s,param_sexActivity_file));
 	}
-	
 	
 	// Maximum rate of sexual intercourse
 	set_sexActMaxRate(getParameterFromFile("_sexAct_maxRate_male",param_sexActivity_file),
@@ -778,10 +864,6 @@ void Population::set_SexualActivity_parameters(string param_sexActivity_file)
 	_nMaxCurrSexPartner_param_f.clear();
 	_nMaxCurrSexPartner_param_f.push_back(getParameterFromFile("_nMaxCurrSexPartner_Female_1", param_sexActivity_file));
 	_nMaxCurrSexPartner_param_f.push_back(getParameterFromFile("_nMaxCurrSexPartner_Female_2", param_sexActivity_file));
-	
-	//DEBUG
-	//	cout << " DEBUG **** _nMaxCurrSexPartner_param_f";
-	//	displayVector(_nMaxCurrSexPartner_param_f);
 	
 	_nMaxCurrSexPartner_param_m.clear();
 	_nMaxCurrSexPartner_param_m.push_back(getParameterFromFile("_nMaxCurrSexPartner_Male_1", param_sexActivity_file));

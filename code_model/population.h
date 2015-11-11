@@ -215,7 +215,10 @@ public:
 	void initPartnershipDuration();
 	void initSingleDuration();
 	
-	void setup_for_simulation(string file_startpopulation,
+	
+	void setup_for_simulation(unsigned long founder_size,
+							  double founder_female_ratio,
+							  double founder_prop_csw,
 							  string file_STI_features,
 							  string file_STI_SFincrease,
 							  string file_STI_HIVrebound,
@@ -223,7 +226,17 @@ public:
 							  string file_STI_vaccine,
 							  bool debugInfo);
 	
-	void create_initial_population(unsigned long size, double female_ratio, double prop_csw);
+	void set_and_check_UID();
+	
+	void setup_for_simulation_old(string file_startpopulation,
+							  string file_STI_features,
+							  string file_STI_SFincrease,
+							  string file_STI_HIVrebound,
+							  string file_STI_treatment,
+							  string file_STI_vaccine,
+							  bool debugInfo);
+	
+	void create_founder_population(unsigned long size, double female_ratio, double prop_csw);
 	
 	
 	

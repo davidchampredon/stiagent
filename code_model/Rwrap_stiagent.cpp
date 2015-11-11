@@ -58,11 +58,21 @@ List stiagent_runsim(List params) {
 	/// in both 'inputs' and 'calibration' folders
 	
 	
+	// Unpack parameters:
+	//
 	string _DIR_IN		= params["folder_inputs"]; //../inputs/";
 	string _DIR_CALIB	= params["folder_calib"];
 	string scenario_file= params["scenario_file"];
 	int displayProgress	= params["displayProgress"];
 	
+	unsigned long founder_size	= params["founder_size"];
+	double founder_femprop		= params["founder_femprop"];
+	double founder_cswprop		= params["founder_cswprop"];
+	
+	
+	// ==============================================
+	// === Important comment ===
+	//
 	// ID of the current MC.
 	// Used when several MC specified _and_
 	// several scenarios that must be compared
@@ -90,7 +100,9 @@ List stiagent_runsim(List params) {
 	Population P(0);
 	bool debugInfo=true;
 	
-	P.setup_for_simulation(_DIR_IN + "startPopulation.csv",
+	P.setup_for_simulation(founder_size,
+						   founder_femprop,
+						   founder_cswprop,
 						   _DIR_IN + "in_STI.csv",
 						   _DIR_IN + "in_STI_SFincrease.csv",
 						   _DIR_IN + "in_HIVrebound.csv",
@@ -198,6 +210,10 @@ List stiagent_runsim(List params) {
 
 // [[Rcpp::export]]
 List stiagent_comp_interv(List params) {
+	
+	///  ---- WARNING: MAYBE BE OBSOLETE (2015-11-11) ----
+	///  ---- TO DO: check if really needed now that new code does better...
+	
 	///
 	/// Run several scenarios and compare their outcomes.
 	/// Returns an R list with size the number of STI modeled.
@@ -238,6 +254,9 @@ List stiagent_comp_interv(List params) {
 	string _DIR_CALIB	= params["folder_calib"];
 	int jobnum			= params["jobnum"];
 	
+	unsigned long founder_size	= params["founder_size"];
+	double founder_femprop		= params["founder_femprop"];
+	double founder_cswprop		= params["founder_cswprop"];
 	
 	// ======================
 	// === Initialization ===
@@ -248,7 +267,9 @@ List stiagent_comp_interv(List params) {
 	
 	bool debugInfo=true;
 	
-	P.setup_for_simulation(_DIR_IN + "startPopulation.csv",
+	P.setup_for_simulation(founder_size,
+						   founder_femprop,
+						   founder_cswprop,
 						   _DIR_IN + "in_STI.csv",
 						   _DIR_IN + "in_STI_SFincrease.csv",
 						   _DIR_IN + "in_HIVrebound.csv",

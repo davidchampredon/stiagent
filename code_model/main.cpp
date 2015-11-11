@@ -50,21 +50,8 @@ int main(int argc, const char * argv[])
 	// ------------------------------------------
 	
 	
-	// STOPPED HERE (GLOBAL):
-	
-	// 2015-03-13:
-	// ----------
-	// calibration analysis in progress
-	// see file "read_singleSimul_vs_target-NEW.R"
-	
-	
-	
 	string _DIR_IN = "../inputs/";
 	
-	
-	// Clean all previous output files
-	// (some files are incremental, so can get huge)
-	//	system("./cleanout");
 	
 	
 	//	CODECHECK_mandatory();
@@ -122,15 +109,19 @@ int main(int argc, const char * argv[])
 		
 		bool debugInfo=true;
 		
-		P.setup_for_simulation(_DIR_IN + "startPopulation.csv",
+		unsigned long founder_size = 500;
+		double founder_femprop = 0.5;
+		double founder_cswprop = 0.01;
+		
+		P.setup_for_simulation(founder_size,
+							   founder_femprop,
+							   founder_cswprop,
 							   _DIR_IN + "in_STI.csv",
 							   _DIR_IN + "in_STI_SFincrease.csv",
 							   _DIR_IN + "in_HIVrebound.csv",
 							   _DIR_IN + "in_STItreatment.csv",
 							   _DIR_IN + "in_STI_vaccine.csv",
 							   debugInfo);
-		
-		
 		
 		// ======================
 		// === Run simulation ===
@@ -190,13 +181,6 @@ int main(int argc, const char * argv[])
 														);
 				dcDataFrame df = Sobj.get_df_sim();
 				df.display();
-				
-				// infectivity curve:
-				vector< vector<double> >IC;
-				IC = Sobj.get_population().get_infectivityCurve(HIV, male);
-				cout << endl << "Infectivity curve:";
-				displayVector(IC);
-				
 			}
 			
 			//cout<<"GLOBAL DISTANCE FROM TARGETS:"<<S.calibration_distance_targets()<<endl;

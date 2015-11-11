@@ -1,4 +1,10 @@
 #############################################
+
+
+### THIS FILE SHOULD BE OBSOLETE:
+### TO DO: CLEAN-UP!
+
+
 ### GENERATE INDIVIDUAL OF A POPULATION
 ### TO BE USED IN C++ CODE
 #############################################
