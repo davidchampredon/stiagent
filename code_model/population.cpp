@@ -261,10 +261,70 @@ void Population::setup_for_simulation(string file_startpopulation,
 	// that could potentially become pregnant
 	set_UID_pot_preg(pregnantPotentialFemales());
 	
-	// Save files for external processing (in R)
-	STI_save_all_infectivityCurves("infectivityCurve");
-	save_death_hazard(_DIR_OUT + "hazard_death.out");
+	// TO DO: maybe delete, or put outside this function
+	// it is a nuisance for R wrapping...
+	// save_death_hazard(_DIR_OUT + "hazard_death.out");
 }
+
+
+void Population::create_initial_population(unsigned long size, double female_ratio, double prop_csw){
+	
+	/// CREATE THE INITIAL POPULATION
+	/// BASED ON POPULATION PARAMETERS (must be already set)
+	
+	_size = size;
+	
+	// Create UIDs:
+	vector<unsigned long> uid;
+	for(unsigned long i=0; i<size; i++) uid.push_back(i);
+
+	// Genders:
+	unsigned long n_fem = (unsigned long) (size * female_ratio);
+	unsigned long n_mal = size - n_fem;
+	vector<Gender> g;
+	for(unsigned long i=0; i<n_fem; i++) g.push_back(female);
+	for(unsigned long i=n_fem; i<size; i++) g.push_back(female);
+	
+	// Ages:
+	vector<double> age;
+	for(unsigned long i=0; i<size; i++)
+		age.push_back(_ageSexMin + uniform01()*(_ageSexMax-_ageSexMin));
+	
+	// Risk group
+	vector<unsigned int> rskgrp;
+	unsigned int prsk = _propRiskGroup.size();
+	
+	// csw:
+	unsigned long n_csw = (unsigned long) (n_fem * female_ratio);
+	_CSWriskGroup = 9;
+	for(unsigned long i=0; i<n_csw; i++)
+		rskgrp.push_back(_CSWriskGroup);
+	
+	
+	unsigned int k = n_csw;
+	
+	// STOPPED HERE: DEFINE RISK GROUP WITH multinomial_gsl
+	
+	for(unsigned int i=0; i<prsk; i++)
+	{
+//		unsigned int nrsk = (unsigned int)(_propRiskGroup[i]*(size-n_csw));
+//		for(int j=k; j<nrsk; j++) rskgrp.push_back(i);
+//		
+		
+	}
+		
+//	_maxRiskGroup
+	
+	
+	//CSW:
+
+	
+	
+	
+//"","maxPartner","riskGroup","nLifetimePartner","nLifetimeSpouse","isDivorced","isWidow","isCircumcised"
+	
+}
+
 
 
 
@@ -4946,6 +5006,29 @@ void Population::STI_save_all_infectivityCurves(string filerootname)
 		string name_i = filerootname + "_" + STInameString(_STI[i].get_name()) + ".out";
 		_STI[i].check_infectivityCurve(name_i);
 	}
+}
+
+vector< vector<double> > Population::get_infectivityCurve(STIname stiname, Gender g){
+	
+	/// Get infectivity curve for a given STI.
+	///
+	/// first vector returned: times (at which IC is calculated)
+	/// second vector: infectivity curve values
+
+	
+	vector< vector<double> > x(2);
+	
+	// Time unit is years
+	double tmax = 80;
+	double dt = 2.0/365.0;
+	
+	int sti_i = positionSTIinVector(stiname, _STI);
+	
+	for(double t=0.0; t<=tmax; t+=dt){
+		x[0].push_back(t);
+		x[1].push_back(_STI[sti_i].infectivityCurve(t, g));
+	}
+	return x;
 }
 
 
