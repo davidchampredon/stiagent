@@ -1702,14 +1702,10 @@ double Population::death_hazard(unsigned long uid)
 	
 	
 	// Death is forced if above max age
-	if (age >= _maxAge)
-	{
-		hazard = 999.99;
-	}
+	if (age >= _maxAge)	hazard = 999.99;
 	
 	if (age < _maxAge)
 	{
-		//DELETE WHEN SURE (2014-12-16) HIVduration = _individual[uid].get_STIduration()[HIV];
 		HIVduration = _individual[uid].get_STIduration(HIV);
 		
 		hazard = weibull_hazard(age,_deathParam_Weibull_shape,_deathParam_Weibull_scale);
