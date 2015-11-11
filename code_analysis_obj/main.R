@@ -59,5 +59,6 @@ dev.off()
 
 t1 <- as.numeric(Sys.time())
 save.image(file = "main.RData")
-message(paste("time elapsed:",round((t1-t0)/60,1),"minutes"))
+message()
+message(paste("|=== time elapsed:",round((t1-t0)/60,1),"minutes ===|"))
 
