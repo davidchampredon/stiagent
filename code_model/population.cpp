@@ -5474,9 +5474,7 @@ vector<unsigned long> Population::getUIDs(){
 	
 	for(unsigned long i=0; i<_size; i++){
 		unsigned long u =_individual[i].get_UID();
-		
 		x.push_back(u);
-		displayVector(x);
 	}
 	return x;
 }
@@ -5552,6 +5550,7 @@ dcDataFrame Population::export_to_dataframe(){
 	
 	// Construct the data frame:
 	
+	df.addcol("dateinpop", dateinpop);
 	df.addcol("isalive", isalive);
 	df.addcol("gender", gender);
 	df.addcol("age", age);
@@ -5572,63 +5571,60 @@ dcDataFrame Population::export_to_dataframe(){
 	df.addcol("nChild", nChild);
 
 	
+	// Partnerships:
+	
 	int maxNumberPartners = 5;
 	
 	for (int p=0; p<maxNumberPartners; p++)
 	{
 		vector<double> uid_p;
+		vector<double> prtn_dur;
+		//
 		
 		for(unsigned long i=0; i<_size; i++){
 			
 			unsigned long tmp = 0;
+			double tmp_dur = 0;
 			if (_individual[i].get_nCurrSexPartner()>p){
-				tmp =  _individual[i].getPartnerUID(p);
+				tmp		= _individual[i].getPartnerUID(p);
+				tmp_dur	= _individual[i].getPartnershipDuration()[p];
 			}
 			uid_p.push_back(tmp);
+			prtn_dur.push_back(tmp_dur);
 		}
 		string header = "UIDpartner" + to_string(p+1);
 		df.addcol(header, uid_p);
+		header = "durPrtn" + to_string(p+1);
+		df.addcol(header, prtn_dur);
 	}
 	
-	// ==== DATA ====
+	// STI
+	
+	for (int sti=0; sti<_STI.size(); sti++){
+		
+		vector<double> sti_dur;
+		vector<double> sti_sympt;
+		vector<double> sti_treat;
+		vector<double> sti_immun;
+		
+		string stiname = STInameString(_STI[sti].get_name());
+		
+		for(unsigned long i=0; i<_size; i++){
+			sti_dur.push_back(_individual[i].get_STIduration()[sti]);
+			sti_sympt.push_back(_individual[i].get_STIsymptom()[sti]);
+			sti_immun.push_back(_individual[i].get_STI_immunized()[sti]);
+			sti_treat.push_back(_individual[i].get_STItreatDuration()[sti]);
+		}
+		string header = stiname + "duration";
+		df.addcol(header, sti_dur);
+		header = stiname + "sympt";
+		df.addcol(header, sti_sympt);
+		header = stiname + "treat";
+		df.addcol(header, sti_treat);
+		header = stiname + "immun";
+		df.addcol(header, sti_immun);
+	}
 
-//		
-//		for (int p=0; p<maxNumberPartners; p++)
-//		{
-//			if (_individual[i].get_nCurrSexPartner()>p)
-//			{
-//				f << _individual[i].getPartnerUID(p);
-//			}
-//			f << ",";
-//		}
-//		
-//		for (int p=0; p<maxNumberPartners; p++)
-//		{
-//			if (_individual[i].get_nCurrSexPartner()>p)
-//			{
-//				f << _individual[i].getPartnershipDuration()[p];
-//			}
-//			
-//			f<<",";
-//		}
-//		
-//		// STIs data
-//		for (int sti=0; sti<_STI.size(); sti++)
-//			f << _individual[i].get_STIduration()[sti] <<",";
-//		
-//		for (int sti=0; sti<_STI.size(); sti++)
-//			f << _individual[i].get_STIsymptom()[sti] <<",";
-//		
-//		// Vaccination data
-//		for (int sti=0; sti<_STI.size(); sti++){
-//			f << _individual[i].get_STI_immunized()[sti];
-//			if (sti<_STI.size()-1) f << ",";
-//		}
-//		
-//		f << endl;
-//	}
-//	
-//	
 	return df;
 }
 

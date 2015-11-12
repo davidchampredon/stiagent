@@ -52,7 +52,7 @@ List dcDataFrameToRcppList(dcDataFrame df){
 // [[Rcpp::export]]
 List stiagent_runsim(List params) {
 	
-	/// Run one Monte-Carlo simulation
+	/// Run ONE SINGLE Monte-Carlo iteration
 	/// of the STIAGENT model,
 	/// given inputs parameter values
 	/// in both 'inputs' and 'calibration' folders
@@ -89,6 +89,8 @@ List stiagent_runsim(List params) {
 	//
 	// etc...
 	//
+	// Hence, it is *NOT* the nuber of Monte Carlo iterations!!!!
+	
 	unsigned int MC_id	= params["MC_id"];
 	
 	
@@ -147,10 +149,7 @@ List stiagent_runsim(List params) {
 											MC_id,
 											_DIR_IN,
 											_DIR_CALIB);
-	// Store result in R object:
-	dcDataFrame df_sim		= Sobj.get_df_sim();
-	Rcpp::List df_sim_R		= dcDataFrameToRcppList(df_sim);
-	
+
 	
 	// =============
 	//    Outputs
@@ -160,6 +159,14 @@ List stiagent_runsim(List params) {
 	
 	unsigned long nSTI = POP.get_nSTImodelled();
 	
+	// data frame of time series:
+	dcDataFrame df_sim		= Sobj.get_df_sim();
+	Rcpp::List df_sim_R		= dcDataFrameToRcppList(df_sim);
+
+	// Detailed population:
+	dcDataFrame pop_last	= POP.export_to_dataframe();
+	Rcpp::List pop_last_R	= dcDataFrameToRcppList(pop_last);
+
 	
 	vector<double> cuminc_mtct_final;
 	vector<string> stiname_str;
@@ -201,7 +208,8 @@ List stiagent_runsim(List params) {
 						Named("cuminc_mtct_final")= cuminc_mtct_final,
 						Named("popsize_alive") = POP.census_alive(),
 						Named("STInames") = stiname_str,
-						Named("infCurves") = IC
+						Named("infCurves") = IC,
+						Named("population") = pop_last_R
 						);
 }
 

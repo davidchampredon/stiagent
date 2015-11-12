@@ -16,7 +16,7 @@ folder_calib = "../calibration/"
 # founder population
 founder.size <- 100
 founder.fem.prop <- 0.5
-founder.csw.prop <- 0.01
+founder.csw.prop <- 0.02
 
 # scenario 
 # (includes intervention filenames 
@@ -30,12 +30,11 @@ x <- stiagent_runsim(params = list(folder_inputs = folder_inputs,
 								   founder_femprop = founder.fem.prop,
 								   founder_cswprop = founder.csw.prop,
                                    scenario_file = scen.file,
-                                   MC_id = 1,
+                                   MC_id = 1,  # <-- MC id (*not* number of MC iterations!!!)
 								   displayProgress=1)
                      )
 
 
-print(x)
 
 t1 <- Sys.time()
 message(paste("time elapsed:",round(t1-t0,1),"sec"))
