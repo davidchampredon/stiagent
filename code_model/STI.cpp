@@ -323,8 +323,8 @@ void STI::load_vaccine_param(STIname sti_name, string filename)
 
 	// Vaccine Reduction Effect on susceptibility
 	// when no immunity is provided
-	double vacc_SF_reduc = getParameterFromFile(sti_string+"_suscepFactor_reduc", filename);
-	set_vacc_SF_reduction(vacc_SF_reduc);
+	double vacc_SF_reduc = getParameterFromFile(sti_string+"_vacc_waneRate", filename);
+	set_vacc_waneRate(vacc_SF_reduc);
 }
 
 

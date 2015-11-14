@@ -279,6 +279,7 @@ public:
 	// =======================
 	
 	void	vaccinate_indiv(unsigned long uid, STIname stiname);
+	void	update_vacc(STIname stiname);
 
 //	void	vaccinate_all(STIname stiname);
 //

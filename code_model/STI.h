@@ -123,7 +123,7 @@ class STI
 	// --- Vaccine ---
 	double			_proba_vaccineFailure;		// Probability the vaccine forthat STI does not trigger immune response
 	double			_VRE;						// Vaccine Reduction Effect on infectivity curve
-	double			_vacc_SF_reduction;			// Vaccine Reduction Effect on susceptibility
+	double			_vacc_waneRate;				// Immunity exponential waning rate
 	
 public:
 	
@@ -171,7 +171,7 @@ public:
 	// Vaccine:
 	double			get_proba_vaccineFailure() {return _proba_vaccineFailure;}
 	double			get_VRE() {return _VRE;}
-	double			get_vacc_SF_reduction(){return _vacc_SF_reduction;}
+	double			get_vacc_waneRate(){return _vacc_waneRate;}
 	
 	// === SET FUNCTIONS ===
 	
@@ -201,7 +201,7 @@ public:
 
 	void			set_proba_vaccineFailure(double x) {_proba_vaccineFailure = x;}
 	void			set_VRE(double x) {_VRE = x;}
-	void			set_vacc_SF_reduction(double x) {_vacc_SF_reduction=x;}
+	void			set_vacc_waneRate(double x) {_vacc_waneRate=x;}
 	
 	// === INFECTIVITY ===
 	

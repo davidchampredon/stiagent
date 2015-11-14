@@ -296,15 +296,16 @@ void Simulation::runAllEvents_timeStep(int numTimeStep,
 	if (debugflag) cout << "STI_update_naturalClearance"<<endl;
 	_population.STI_update_naturalClearance();
 	
-	// STI Treatment
+	// STI Treatment and vaccine waning:
 	for (int sti=0; sti<_population.get_STI().size(); sti++){
-		update_cure(_population.get_STI()[sti].get_name());
+		STIname stiname = _population.get_STI()[sti].get_name();
+		update_cure(stiname);
+		update_vacc(stiname);
 	}
-	
 	
 	// Deaths
 	if (debugflag) cout << "deathEvents"<<endl;
-	_population.deathEvents(_timeStep,false /*_save_trace_files*/); //force not write trace file because huge!
+	_population.deathEvents(_timeStep,false /*_save_trace_files*/); // <-- force not write trace file because huge!
 	
 	
 	// update incidence
@@ -445,10 +446,8 @@ void Simulation::runAllEvents_timeStep_obj(int numTimeStep,
 	if (debugflag) cout << "CSW cessation"<<endl;
 	_population.CSWcessation(_timeStep);
 	
-	
 	// Resets variables at the start of this period
 	if (doSex) _population.reset_sexActs();
-	
 	
 	// Partnerships formation and dissolution
 	if (debugflag) cout << "dissolve partnerships"<<endl;
@@ -487,10 +486,14 @@ void Simulation::runAllEvents_timeStep_obj(int numTimeStep,
 	if (debugflag) cout << "STI_update_naturalClearance"<<endl;
 	_population.STI_update_naturalClearance();
 	
-	// STI Treatment
+	// STI Treatment and vaccine waning:
 	for (int sti=0; sti<_population.get_STI().size(); sti++){
-		update_cure(_population.get_STI()[sti].get_name());
+		STIname stiname = _population.get_STI()[sti].get_name();
+		update_cure(stiname);
+		update_vacc(stiname);
 	}
+	
+	// STI Vaccination
 	
 	
 	// Deaths
@@ -973,7 +976,6 @@ void Simulation::runAllEvents_horizon_obj(bool doSex,
 								  logIndivInfo);
 		
 		// Record STI prevalences
-		
 		if (doSex)
 		{
 			vector<double> tmp;
@@ -982,16 +984,10 @@ void Simulation::runAllEvents_horizon_obj(bool doSex,
 				STIname stiname = _population.get_STI()[s].get_name();
 				
 				if (t==0) _STI_prevalence(t_i,s) = _population.STI_prevalence(stiname);
-				if (t>0)
-				{
-					tmp.push_back(_population.STI_prevalence(stiname));
-				}
+				if (t>0) tmp.push_back(_population.STI_prevalence(stiname));
 			}
 			
 			if (t>0) _STI_prevalence.addRowVector(tmp);
-			
-			// DEBUG
-			//_STI_prevalence.display();
 		}
 		
 		
@@ -1008,8 +1004,6 @@ void Simulation::runAllEvents_horizon_obj(bool doSex,
 			tmp.push_back(t);
 			
 			for (int i=0;i<=3;i++) tmp.push_back(degDist[i]);
-			
-//			vectorToCSVFile_Row(tmp, fileDegreeDist);
 		}
 		
 		
@@ -2976,7 +2970,7 @@ void Simulation::activate_intervention(int i)
 	stopif(_intervention[i].get_annCvgRate()<=0, "Proportion of intervention must be positive");
 	
 	// retrieve intervention features
-	double target_dt = _intervention[i].get_annCvgRate()*_timeStep;
+	double target_dt	= _intervention[i].get_annCvgRate()*_timeStep;
 	STIname sti			= _intervention[i].get_stiname();
 	string interv_type	= _intervention[i].get_type();
 	
@@ -3026,7 +3020,7 @@ void Simulation::activate_intervention(int i)
 			bool indivIsTargeted	= false;
 			
 			bool isSymptomatic		= indiv.get_STIsymptom()[sti_i];
-			bool alreadyVacc		= indiv.get_STI_immunized()[sti_i];  // slow code: get_STI_immunized(sti);
+			bool alreadyVacc		= indiv.get_STI_vacc()[sti_i];  
 			
 			if(doTreat_mass)	indivIsTargeted = indiv.get_STIduration()[sti_i]>0; // slow code: indiv.STI_infected(sti);
 			if(doTreat_symptom) indivIsTargeted = indiv.get_STIsymptom()[sti_i]; // slow code: is_symptomatic(sti);
@@ -3176,11 +3170,8 @@ void Simulation::update_cure(STIname sti)
 //		if (tmp.isAlive() &&
 //			tmp.STI_treated(sti) &&
 //			tmp.get_STIduration(sti)>0) cure_indiv(uid,sti);
-//		
-//	}
-	
-	
 }
+
 
 
 // ===================================================================
@@ -3197,6 +3188,30 @@ void Simulation::vaccinate_indiv(unsigned long uid, STIname stiname)
 	_population.vaccinate_indiv(uid, stiname);
 }
 
+void Simulation::update_vacc(STIname stiname){
+	/// Update immunity provided by vaccination
+	
+	int sti_i = positionSTIinVector(stiname, _population.get_STI());
+	
+	for (unsigned long uid=0; uid<_population.get_size(); uid++){
+		
+		Individual tmp = _population.getIndividual(uid);
+		
+		if (tmp.isAlive() && tmp.get_STI_vacc()[sti_i]){
+			// time since vaccination:
+			double tv = _simulationTime - tmp.get_STI_vacc_time()[sti_i];
+			// waning rate:
+			double w = _population.get_STI()[sti_i].get_vacc_waneRate();
+			// immunity:
+			double imm = exp(-tv * w);
+			// update the value of waning immunity:
+			_population.getIndividual(uid).set_STI_immunity(sti_i, imm);
+			
+			//DEBUG
+			//cout <<_simulationTime << " --> UID "<<uid<< " imm = "<< imm <<endl;
+		}
+	}
+}
 
 
 
