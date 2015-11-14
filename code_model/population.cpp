@@ -4419,8 +4419,8 @@ double Population::STI_coInfection_oddsRatio(unsigned long uid, int sti)
 }
 
 
-vector<double> Population::STI_CalculateProbaTransmission(unsigned long uid_infect,
-														  unsigned long uid_suscep)
+vector<double> Population::STI_CalcProbaTransmission(unsigned long uid_infect,
+													 unsigned long uid_suscep)
 {
 	/// CALCULATE THE PROBABILITY OF TRANSMISSION
 	/// FOR EVERY STI MODELLED
@@ -4464,9 +4464,9 @@ vector<double> Population::STI_CalculateProbaTransmission(unsigned long uid_infe
 		// is not vaccinated against this STI
 		
 		if ( _individual[uid_infect].get_STIduration()[sti]>0 &&
-			_individual[uid_suscep].get_STIduration()[sti]==0 &&
-			!_individual[uid_suscep].get_STI_immunized()[sti])
-		{
+			 _individual[uid_suscep].get_STIduration()[sti]==0 &&
+			!_individual[uid_suscep].get_STI_immunized()[sti]){
+			
 			// Infectivity for this individual and this sti
 			double infectivity = _individual[uid_infect].STI_IC()[sti];
 			
@@ -4483,7 +4483,8 @@ vector<double> Population::STI_CalculateProbaTransmission(unsigned long uid_infe
 			vector<int> nSexType(3);
 			
 			// Sex act type is recorded only with males.
-			// Find position of female in the list of all male's sex partners
+			// Find position of female in the list of
+			// all male's sex partners:
 			int p_position = 0;
 			while (UID_sexpartners_of_male[p_position] != uid_female) p_position++;
 			stopif(p_position > UID_sexpartners_of_male.size(),
@@ -4598,8 +4599,8 @@ vector<unsigned long>  Population::STI_transmissions(double timeStep,
 		
 		if ( _individual[uid].get_nSexActs_period() > 0 &&
 			_individual[uid].isAlive() &&
-			_individual[uid].get_gender()==male)
-		{
+			_individual[uid].get_gender()==male){
+			
 			// Retrieve UIDs of sex partners during this period
 			vector<unsigned long> UIDsexpartners = _individual[uid].get_UID_sexAct_period();
 			
@@ -4626,8 +4627,8 @@ vector<unsigned long>  Population::STI_transmissions(double timeStep,
 					// of transmission probability.
 					// (not really max, bc value is either 0 or strictly positive proba)
 					
-					vector<double> probaTransm_to	= STI_CalculateProbaTransmission(uid, uid_p);
-					vector<double> probaTransm_from = STI_CalculateProbaTransmission(uid_p, uid);
+					vector<double> probaTransm_to	= STI_CalcProbaTransmission(uid, uid_p);
+					vector<double> probaTransm_from = STI_CalcProbaTransmission(uid_p, uid);
 					
 					vector<double> probaTransm = max_vector(probaTransm_to, probaTransm_from);
 					
@@ -6304,7 +6305,7 @@ void Population::vaccinate_indiv(unsigned long uid, STIname stiname)
 	_individual[uid].set_STI_immunized(i_sti, vaxSuccess);
 	
 	// if immunization not successful,
-	// but acheive reduction in susceptibility:
+	// but achieve reduction in susceptibility:
 	if(!vaxSuccess){
 		double prev_value = _individual[uid].get_STIsusceptFactor(stiname);
 		double vaxSFR = _STI[i_sti].get_vacc_SF_reduction();

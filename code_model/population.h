@@ -769,7 +769,7 @@ public:
 	void			STI_set_initial_prevalence(string filename); // Set inital prevalence for the Population
 	
 	
-	vector<double>	STI_CalculateProbaTransmission(unsigned long uid_infect, 
+	vector<double>	STI_CalcProbaTransmission(unsigned long uid_infect, 
 												   unsigned long uid_suscep);
 	
 	void			STI_acquire(STIname stiname, unsigned long uid,

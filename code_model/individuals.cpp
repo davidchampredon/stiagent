@@ -90,8 +90,7 @@ Individual::Individual(unsigned long uid, Gender g, double age, int maxSexPartne
 	string errmsg = "STI initialization not coherent!";
 	stopif(nSTI != STIdurations.size(),errmsg);
 	
-	for (int i=0; i<nSTI; i++)
-	{
+	for (int i=0; i<nSTI; i++){
 		set_STIduration(i,STIdurations[i]);
 		set_STIsymptom(i, STIsymptoms[i]);
 	}
@@ -500,7 +499,6 @@ void Individual::update_STIsusceptFactor()
 	int n = _STI.size();
 	
 	// susceptibility factor = 1.00 by default (multiplicative factor)
-	
 	_STIsusceptFactor.resize(n,1.00);
 	
 	// If circumcised, then susceptibility
@@ -516,8 +514,6 @@ void Individual::update_STIsusceptFactor()
 		if(_STI_vacc[i] && !_STI_immunized[i])
 			_STIsusceptFactor[i]=_STIsusceptFactor[i]*_STI[i].get_vacc_SF_reduction();
 	}
-	
-	
 }
 
 
@@ -587,8 +583,7 @@ void Individual::STI_initializeAll(vector<STI> STItemplate)
 
 void Individual::set_STIduration(int sti, double duration)
 {
-	if (sti >= _STI.size())
-	{
+	if (sti >= _STI.size()){
 		cout << " ERROR [STI_setDuration]: number of STIs ("<< _STI.size()<<") defined is smaller than "<<sti<<endl;
 		exit(1);
 	}
@@ -603,26 +598,19 @@ void Individual::set_STIduration(STIname stiname, double duration)
 	int ss=-99;
 	
 	// Search for the STI name
-	
-	for (int s=0; s<_STI.size(); s++)
-	{
-		if (_STI[s].get_name()==stiname)
-		{
+	for (int s=0; s<_STI.size(); s++){
+		if (_STI[s].get_name()==stiname){
 			found = true;
 			ss = s;
 		}
 	}
-	
-	if (!found)
-	{
-		cout<<endl<<"ERROR [STI_setDuration]: STI name not found: "<<stiname<<endl;
-		exit(1);
-	}
+	string errmsg = "ERROR [STI_setDuration]: STI name not found: " + STInameString(stiname);
+	stopif(!found,errmsg);
 	
 	// Set the duration value to the relevant STI
-	
 	_STIduration[ss] = duration;
 }
+
 
 void Individual::set_STIsymptom(int sti_index, bool isSymptomatic)
 {
@@ -632,7 +620,6 @@ void Individual::set_STIsymptom(int sti_index, bool isSymptomatic)
 
 void Individual::set_STIsymptom(STIname stiname, bool isSymptomatic)
 {
-	
 	int i_sti = positionSTIinVector(stiname, _STI);
 	_STIsymptom[i_sti] = isSymptomatic;
 }
