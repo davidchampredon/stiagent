@@ -1,3 +1,5 @@
+source("plot_ts.R")
+source("plot_pop.R")
 
 plot.ts <- function(sim){
 	
@@ -45,8 +47,33 @@ plot.ts <- function(sim){
 		plot.proportion.timeseries(sim,varname=paste0("HIVprevRisk",c(0,1,2)),
 								   title="HIV by risk group"),
 		plot.proportion.timeseries(sim,varname=paste0("TpprevRisk",c(0,1,2)),
-								   title="Tp by risk group")
+								   title="Tp by risk group"),
+		plot.prev.risk(sim, stiname="HIV"),
+		plot.prev.risk(sim, stiname="Tp")
 	)
 	dev.off()
 	
+}
+
+
+
+plot.pop.all <- function(sim){
+	pdf("plot_pop.pdf",width=20,height=12)
+	
+	plot.durPrtn.rskgrp(sim)
+	plot.prtn.distrib(sim)
+	grid.arrange(
+		plot.lifePtrn(sim),
+		plot.curr.life.prtn(sim),
+		plot.everVisitCSW(sim)
+	)
+	
+	plot.stipos.age(sim,stiname="HIV",excl.csw=TRUE)
+	plot.stipos.age(sim,stiname="Tp",excl.csw=TRUE)
+	
+	grid.arrange(ncol=2,
+				 plot.stipos.prtn(sim,stiname="HIV",excl.csw=TRUE),
+				 plot.stipos.prtn(sim,stiname="Tp",excl.csw=TRUE)
+	)
+	dev.off()
 }

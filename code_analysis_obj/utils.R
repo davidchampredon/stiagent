@@ -43,6 +43,7 @@ get.timeseries <- function(sim){
 			D[[i]]$tmp <- c(0,pmax(0,diff(D[[i]][,stinames[k]])))
 			names(D[[i]])[length(names(D[[i]]))] <- paste0("inc",stinames[k])
 		}
+		
 	}	
 	return(dplyr::rbind_all(D))
 }

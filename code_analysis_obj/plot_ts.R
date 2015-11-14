@@ -141,6 +141,22 @@ plot.proportion.timeseries <- function(sim,varname,
 }
 
 
+plot.prev.risk <- function(sim, stiname){
+	DF.all <- get.timeseries(sim)
+	DF.all$time2 <- round(DF.all$time)
+	z <- paste0(stiname,"prevRisk",c(0,1,2,9))
+	DF0 <- DF.all[,c("time2","mc",z)]
+	
+	DF <- ddply(DF0,c("time2",z),function(x,ind){apply(x[,ind],MARGIN = 2, FUN = mean)},z )
+	DF2 <- gather(DF,key=time2)
+	names(DF2)[2]<-"var"  # <- change that
+	
+	g <- ggplot(DF2)+geom_step(aes(x=time2,y=value,fill=var,colour=var))
+	g <- g + scale_colour_brewer(palette = "Reds")
+	g <- g + ggtitle(paste(stiname,"prevalence by risk group"))+xlab("")+ylab("")
+	return(g)
+}
+
 
 
 

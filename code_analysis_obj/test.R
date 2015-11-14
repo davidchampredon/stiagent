@@ -9,6 +9,7 @@ t0 <- as.numeric(Sys.time())
 source("run_one_scenario.R")
 source("plot_sim.R")
 
+
 library(gridExtra)
 library(parallel)
 cpumax <- parallel::detectCores()
@@ -33,7 +34,7 @@ scenario_file <-  "in_scenario_test.csv"
 ps <- read.csv("prm_simul.csv",header = FALSE)
 n.mc <- ps[ps[,1]=="mc_iter",2]
 n.cpu <- ps[ps[,1]=="ncpu",2]
-if (n.cpu<=0) n.cpu <- max(1,cpumax-n.cpu)
+if (n.cpu<=0) n.cpu <- max(1,cpumax+n.cpu)
 
 
 
@@ -45,21 +46,24 @@ sim <- stiagent_runsim_one_scen(folder_inputs,
 								folder_calib,
 								founder_file,
 								scenario_file,
-								n.mc = 5,
+								n.mc = 12,
 								n.cpu,
 								path.stiagent.lib,
 								displayProgress=0)
 
 
 #################################################################
-### Plots
+### Plots (plot_sim.R)
 #################################################################
 
 # plot time series:
 plot.ts(sim)
 
+# plot population:
+plot.pop.all(sim)
+
 # -----------------------------------------------------------------
 
 t1 <- as.numeric(Sys.time())
-message(paste("----- Time elapsed:",round((t1-t0)/60,1)),"minutes -----")
+message(paste("----- Time elapsed:",round((t1-t0)/60,1))," minutes -----")
 save.image(file = "test.RData")
