@@ -46,7 +46,7 @@ sim <- stiagent_runsim_one_scen(folder_inputs,
 								folder_calib,
 								founder_file,
 								scenario_file,
-								n.mc = 12,
+								n.mc = 3,
 								n.cpu,
 								path.stiagent.lib,
 								displayProgress=0)
