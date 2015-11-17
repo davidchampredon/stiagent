@@ -783,8 +783,9 @@ public:
 	
 	double			STI_coInfection_oddsRatio(unsigned long uid, int sti); // odds ratio for a given individual, to STI 'sti'
 
-	double			STI_probaMTCT(STIname sti, double stiduration);		// probability of mother-to-child transmission
-	
+	double			STI_proba_MTCT(STIname sti, double stiduration);		// probability of mother-to-child transmission
+	void			set_STI_MTCT(unsigned long uid, vector<bool> mtct);
+	void			set_STI_MTCT(unsigned long uid, STIname stiname, bool mtct);
 	
 	// Terminate STIs that have reached the max duration
 	// before immune system clearance, accros the whole population

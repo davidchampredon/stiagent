@@ -93,6 +93,7 @@ Individual::Individual(unsigned long uid, Gender g, double age, int maxSexPartne
 	for (int i=0; i<nSTI; i++){
 		set_STIduration(i,STIdurations[i]);
 		set_STIsymptom(i, STIsymptoms[i]);
+		_STI_MTCT.push_back(false);
 	}
 	set_RebHIV(templateRebHIV);
 }
@@ -617,6 +618,12 @@ void Individual::set_STIsymptom(STIname stiname, bool isSymptomatic)
 {
 	int i_sti = positionSTIinVector(stiname, _STI);
 	_STIsymptom[i_sti] = isSymptomatic;
+}
+
+void Individual::set_STI_MTCT(STIname stiname, bool mtct)
+{
+	int i_sti = positionSTIinVector(stiname, _STI);
+	_STI_MTCT[i_sti] = mtct;
 }
 
 

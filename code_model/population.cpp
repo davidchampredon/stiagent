@@ -4689,13 +4689,19 @@ vector<unsigned long>  Population::STI_transmissions(double timeStep,
 
 
 
-double Population::STI_probaMTCT(STIname sti, double stiduration)
+double Population::STI_proba_MTCT(STIname sti, double stiduration)
 {
-	// TO DO: do not hard code
-	double proba = 0.0;
+	/// Calculate the actual probability of MTCT
+	double proba = _STI[positionSTIinVector(sti, _STI)].get_proba_MTCT();
+	// special case for syphilis
+	// where mtct is believed to
+	// decrease with time.
+	if (sti==Tp) proba = proba/(1.0+exp(3.0*(stiduration-2.0)));
 	
-	if (sti==HIV)	proba = 0.30;
-	if (sti==Tp)	proba = 0.90/(1.0+exp(3.0*(stiduration-2.0)));
+	// DEBUG
+	cout << STInameString(sti)<<"_"<< stiduration << " DEBUG MTCT PROBA: "<<proba<<endl;
+	// =====
+	
 	return proba;
 }
 
@@ -6329,6 +6335,15 @@ void Population::set_STI_immunity(unsigned long uid, STIname stiname, double imm
 	
 	int sti_i = positionSTIinVector(stiname, _STI);
 	_individual[uid].set_STI_immunity(sti_i, immunity);
+}
+
+
+void Population::set_STI_MTCT(unsigned long uid, vector<bool> mtct){
+	_individual[uid].set_STI_MTCT(mtct);
+}
+
+void Population::set_STI_MTCT(unsigned long uid, STIname stiname, bool mtct){
+	_individual[uid].set_STI_MTCT(stiname, mtct);
 }
 
 

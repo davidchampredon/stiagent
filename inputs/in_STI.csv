@@ -22,6 +22,7 @@ HIV_clearance_duration,999.99
 HIV_proba_symptomatic_female,0
 HIV_proba_symptomatic_male,0
 HIV_circum_SF_reduction,0.5
+HIV_proba_MTCT,0.30
 ,
 HSV2_probaMaxSexTransm,0.1
 HSV2_reduc_probaTrans_loRisk,0.9
@@ -35,6 +36,7 @@ HSV2_recurrence_freq,12
 HSV2_recurrence_duration,0.08
 HSV2_minInfectiousness,0.1
 HSV2_circum_SF_reduction,0.8
+HSV2_proba_MTCT,0.30
 ,
 HPV_probaMaxSexTransm,0.1
 HPV_reduc_probaTrans_loRisk,0.9
@@ -46,6 +48,7 @@ HPV_infectious_weeks,32
 HPV_proba_recurrence,0.2
 HPV_minInfectiousness,0.1
 HPV_circum_SF_reduction,0.7
+HPV_proba_MTCT,0.30
 ,
 Ct_probaMaxSexTransm,0.2
 Ct_reduc_probaTrans_loRisk,0.9
@@ -61,6 +64,7 @@ Ct_shape_a_symptom,1.1
 Ct_shape_b_symptom,1.8
 Ct_minInfectiousness,0
 Ct_circum_SF_reduction,1
+Ct_proba_MTCT,0.30
 ,
 Ng_probaMaxSexTransm,0.49
 Ng_reduc_probaTrans_loRisk,0.9
@@ -73,6 +77,7 @@ Ng_minInfectiousness,0
 Ng_shape_a,1.5
 Ng_shape_b,4
 Ng_circum_SF_reduction,1
+Ng_proba_MTCT,0.30
 ,
 Tp_probaMaxSexTransm,0.40
 Tp_reduc_probaTrans_loRisk,0.9
@@ -101,6 +106,7 @@ Tp_shape_b2c,1.8
 Tp_shape_aEL,1.5
 Tp_shape_bEL,4
 Tp_circum_SF_reduction,1
+Tp_proba_MTCT,0.90
 ,
 Hd_probaMaxSexTransm,0.5
 Hd_reduc_probaTrans_loRisk,0.9
@@ -116,6 +122,7 @@ Hd_shape_a_symptom,1.1
 Hd_shape_b_symptom,1.4
 Hd_minInfectiousness,0.1
 Hd_circum_SF_reduction,0.6
+Hd_proba_MTCT,0.30
 ,
 Bv_probaMaxSexTransm,0.5
 Bv_reduc_probaTrans_loRisk,0.9
@@ -126,6 +133,7 @@ Bv_latent_weeks,3
 Bv_infectious_weeks,16
 Bv_minInfectiousness,0.1
 Bv_circum_SF_reduction,1
+Bv_proba_MTCT,0.30
 ,
 Tv_latent_weeks,3
 Tv_infectious_weeks,-99
@@ -149,6 +157,7 @@ Tv_shape1_male_asympt,2
 Tv_shape2_male_asympt,5
 Tv_shape1_male_sympt,2
 Tv_shape2_male_sympt,4
+Tv_proba_MTCT,0.30
 ,
 Cv_latent_weeks,3
 Cv_infectious_weeks,16
@@ -159,3 +168,4 @@ Cv_proba_symptomatic_female,0.1
 Cv_proba_symptomatic_male,0.1
 Cv_minInfectiousness,0.1
 Cv_circum_SF_reduction,1
+Cv_proba_MTCT,0.30

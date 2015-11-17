@@ -110,27 +110,26 @@ vector<bool> Simulation::MTCT(unsigned long uid)
 	/// (vector size = number of STIs modelled)
 	/// ('true' = transmission to child)
 	
-	// Log file for all attempts of MTCT
-	string filename=_DIR_OUT+"mtct_attempts.out";
-	ofstream mtctlog(filename.c_str(),ios::app);
+	
+	// MTCT at previous time step
+	vector<bool> prev_mtct = _population.getIndividual(uid).get_STI_MTCT();
 	
 	// Loop through all STIs
-	int nsti = _population.get_STI().size();
-	vector<bool> mtct(nsti,false);
+	unsigned long nsti = _population.get_STI().size();
+	vector<bool> mtct = prev_mtct;
 	
 	for (int i=0; i<nsti; i++)
 	{
 		STIname stiname = _population.get_STI()[i].get_name();
-		double stiduration = _population.getIndividual(uid).get_STIduration()[i];
 		
-		// retrieve proba MTCT
-		double proba = _population.STI_probaMTCT(stiname, stiduration);
-		
-		// Draw if transmission occurs
-		mtct[i] = (uniform01()<proba? true:false);
-		
-		// log event
-		if(_save_trace_files) mtctlog << STInameString(stiname)<<"," << mtct[i]<<endl;
+		if(!prev_mtct[i])
+		{
+			double stiduration = _population.getIndividual(uid).get_STIduration()[i];
+			// retrieve proba MTCT
+			double proba = _population.STI_proba_MTCT(stiname, stiduration);
+			// Draw if transmission occurs
+			mtct[i] = (uniform01()<proba? true:false);		
+		}
 	}
 	return mtct;
 }
@@ -189,6 +188,10 @@ void Simulation::update_pregnancies(double timestep)
 		double gest = _population.getIndividual(uid_preg[i]).get_gestationDuration();
 		double age_mother = _population.getIndividual(uid_preg[i]).get_age();
 		
+		// Mother-to-child STI transmission
+		vector<bool> sti_mtct = MTCT(uid_preg[i]);
+		_population.set_STI_MTCT(uid_preg[i],sti_mtct);
+
 		// increase pregnancy if birth not soon enough
 		if (gest < 0.75-timestep){
 			increment_gestationDuration(uid_preg[i],timestep);
@@ -196,8 +199,6 @@ void Simulation::update_pregnancies(double timestep)
 		
 		// trigger child birth if close to gestation period
 		if (gest >= 0.75-timestep){
-			// Mother-to-child STI transmission
-			vector<bool> sti_mtct = MTCT(uid_preg[i]);
 			Individual child;
 			_nursery.add_child(child,
 							   uid_preg[i],

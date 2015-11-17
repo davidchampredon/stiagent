@@ -238,26 +238,22 @@ void STI::load_common_param(STIname sti_name, string filename)
 	/// LOAD PARAMETERS THAT ARE DEFINED
 	/// IN ALL STIs
 	
-	
 	string sti_string = STInameString(sti_name);
 	
 	_proba_symptomatic_female	= getParameterFromFile(sti_string + "_proba_symptomatic_female",filename);
 	_proba_symptomatic_male		= getParameterFromFile(sti_string + "_proba_symptomatic_male",filename);
 	
-	if (sti_name != HIV)
-	{
-		_latentDuration	= getParameterFromFile(sti_string + "_latent_weeks",filename)/52.0;
+	if (sti_name != HIV){
+		_latentDuration		= getParameterFromFile(sti_string + "_latent_weeks",filename)/52.0;
 		_infectiousDuration	= getParameterFromFile(sti_string + "_infectious_weeks",filename)/52.0; //not used for Tv
 		_minInfectiousness	= getParameterFromFile(sti_string + "_minInfectiousness", filename);
 	}
-	
 	_probaMaxSexTransm		= getParameterFromFile(sti_string + "_probaMaxSexTransm",filename); 
 	_probaSexTransm_SAT[1]	= getParameterFromFile(sti_string + "_reduc_probaTrans_loRisk",filename); // Reduction factor in transmission when no condom, low risk sex
 	
+	_proba_MTCT				= getParameterFromFile(sti_string + "_proba_MTCT",filename);
+	_circum_SF_reduction	= getParameterFromFile(sti_string + "_circum_SF_reduction",filename) ;
 	_naturalClearanceDuration = getParameterFromFile(sti_string + "_clearance_duration",filename);
-	
-	_circum_SF_reduction = getParameterFromFile(sti_string + "_circum_SF_reduction",filename) ;
-	
 }
 
 

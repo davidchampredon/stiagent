@@ -104,6 +104,8 @@ class STI
 	
 	vector<double>	_HIVparam;				// Specific parameters for HIV
 	
+	double			_proba_MTCT;				// probability of mother to child transmission ("vertical")
+	
 	// --- Infectivity Curve shape parameters ---
 	vector<double>	_shape_param;			// Shape parameters for infectivity curve (size depends on STI)
 	double			_asymptom_IC_reduc;		// Reduction factor of the Infectivity Curve when infection is asymptomatic
@@ -158,6 +160,7 @@ public:
 
 	double			get_probaMaxSexTransm() {return _probaMaxSexTransm;}
 	vector<double>	get_probaSexTransm_SAT() {return _probaSexTransm_SAT;}
+	double			get_proba_MTCT() {return _proba_MTCT;}
 	
 	double			get_naturalClearanceDuration() {return _naturalClearanceDuration;}
 	
