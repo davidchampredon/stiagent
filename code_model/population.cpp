@@ -5609,6 +5609,7 @@ dcDataFrame Population::export_to_dataframe(){
 		vector<double> sti_sympt;
 		vector<double> sti_treat;
 		vector<double> sti_immun;
+		vector<double> sti_vacc_date;
 		
 		string stiname = STInameString(_STI[sti].get_name());
 		
@@ -5617,6 +5618,7 @@ dcDataFrame Population::export_to_dataframe(){
 			sti_sympt.push_back(_individual[i].get_STIsymptom()[sti]);
 			sti_immun.push_back(_individual[i].get_STI_immunity()[sti]);
 			sti_treat.push_back(_individual[i].get_STItreatDuration()[sti]);
+			sti_vacc_date.push_back(_individual[i].get_STI_vacc_time()[sti]);
 		}
 		string header = stiname + "duration";
 		df.addcol(header, sti_dur);
@@ -5626,6 +5628,8 @@ dcDataFrame Population::export_to_dataframe(){
 		df.addcol(header, sti_treat);
 		header = stiname + "immun";
 		df.addcol(header, sti_immun);
+		header = stiname + "vaccTime";
+		df.addcol(header, sti_vacc_date);
 	}
 	return df;
 }
@@ -6316,6 +6320,15 @@ void Population::vaccinate_indiv(unsigned long uid, STIname stiname)
 	//DEBUG
 	//cout<<endl<<"VAX DEBUG::: UID "<<uid<< STInameString(stiname)<<"vax: "<<vaxSuccess<<endl;
 	// ----
+}
+
+
+void Population::set_STI_immunity(unsigned long uid, STIname stiname, double immunity){
+	
+	/// Set the immunitiy level of a given individual for a STI
+	
+	int sti_i = positionSTIinVector(stiname, _STI);
+	_individual[uid].set_STI_immunity(sti_i, immunity);
 }
 
 

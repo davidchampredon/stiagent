@@ -1,5 +1,5 @@
 HIV_vaccine_fail,0.999
-Tp_vaccine_fail,0.98
+Tp_vaccine_fail,0.02
 Ct_vaccine_fail,0.999
 Ng_vaccine_fail,0.999
 HSV2_vaccine_fail,0.999
@@ -21,7 +21,7 @@ Hd_VRE,0.999
 Cv_VRE,0.999
 ,
 HIV_vacc_waneRate,0.999
-Tp_vacc_waneRate,0.5
+Tp_vacc_waneRate,0.02
 Ct_vacc_waneRate,0.999
 Ng_vacc_waneRate,0.999
 HSV2_vacc_waneRate,0.999

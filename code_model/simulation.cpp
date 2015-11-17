@@ -3205,10 +3205,11 @@ void Simulation::update_vacc(STIname stiname){
 			// immunity:
 			double imm = exp(-tv * w);
 			// update the value of waning immunity:
-			_population.getIndividual(uid).set_STI_immunity(sti_i, imm);
+			// delete : _population.getIndividual(uid).set_STI_immunity(sti_i, imm);
+			_population.set_STI_immunity(uid, stiname, imm);
 			
 			//DEBUG
-			//cout <<_simulationTime << " --> UID "<<uid<< " imm = "<< imm <<endl;
+//			cout <<_simulationTime << " --> UID "<<uid<< " imm = "<< imm <<endl;
 		}
 	}
 }
