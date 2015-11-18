@@ -266,6 +266,7 @@ void Population::setup_for_simulation(unsigned long founder_size,
 	for (int s=0; s<_nSTImodelled; s++){
 		_STI[s].load_treatment_param(_STI[s].get_name(), file_STI_treatment);
 		_STI[s].load_vaccine_param(_STI[s].get_name(), file_STI_vaccine);
+		_STI_mtct_cumcount.push_back(0);
 	}
 	
 	// Founder ppopulation: no partnerships, no STIs.
@@ -4699,7 +4700,7 @@ double Population::STI_proba_MTCT(STIname sti, double stiduration)
 	if (sti==Tp) proba = proba/(1.0+exp(3.0*(stiduration-2.0)));
 	
 	// DEBUG
-	cout << STInameString(sti)<<"_"<< stiduration << " DEBUG MTCT PROBA: "<<proba<<endl;
+	//cout << STInameString(sti)<<"_"<< stiduration << " DEBUG MTCT PROBA: "<<proba<<endl;
 	// =====
 	
 	return proba;
@@ -5001,6 +5002,15 @@ vector<double> Population::STI_prevalence_by_age(STIname s,
 	}
 	
 	return res;
+}
+
+
+void Population::update_STI_mtct_cumcount(vector<bool> mtct){
+	/// Increase the cumulative count of
+	/// MTCT events
+	
+	for(int i=0; i<mtct.size();i++)
+		if(mtct[i]) _STI_mtct_cumcount[i]++;
 }
 
 

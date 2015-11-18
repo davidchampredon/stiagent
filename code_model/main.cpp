@@ -185,7 +185,7 @@ int main(int argc, const char * argv[])
 				
 				cout << "==== DEBUG: population"<<endl;
 				dcDataFrame export_pop = Sobj.get_population().export_to_dataframe();
-				export_pop.display();
+				if(0) export_pop.display();
 			}
 			
 			//cout<<"GLOBAL DISTANCE FROM TARGETS:"<<S.calibration_distance_targets()<<endl;

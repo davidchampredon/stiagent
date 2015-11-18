@@ -110,25 +110,30 @@ vector<bool> Simulation::MTCT(unsigned long uid)
 	/// (vector size = number of STIs modelled)
 	/// ('true' = transmission to child)
 	
+	Individual I = _population.getIndividual(uid);
 	
 	// MTCT at previous time step
-	vector<bool> prev_mtct = _population.getIndividual(uid).get_STI_MTCT();
+	vector<bool> prev_mtct = I.get_STI_MTCT();
 	
 	// Loop through all STIs
 	unsigned long nsti = _population.get_STI().size();
 	vector<bool> mtct = prev_mtct;
 	
+	// DEBUG
+	//displayVector(mtct);
+	
 	for (int i=0; i<nsti; i++)
 	{
 		STIname stiname = _population.get_STI()[i].get_name();
 		
-		if(!prev_mtct[i])
-		{
-			double stiduration = _population.getIndividual(uid).get_STIduration()[i];
-			// retrieve proba MTCT
-			double proba = _population.STI_proba_MTCT(stiname, stiduration);
-			// Draw if transmission occurs
-			mtct[i] = (uniform01()<proba? true:false);		
+		if(!prev_mtct[i]){
+			double stiduration = I.get_STIduration()[i];
+			if(stiduration>0){
+				// retrieve proba MTCT
+				double proba = _population.STI_proba_MTCT(stiname, stiduration);
+				// Draw if transmission occurs
+				mtct[i] = (uniform01()<proba? true:false);
+			}
 		}
 	}
 	return mtct;
@@ -188,14 +193,15 @@ void Simulation::update_pregnancies(double timestep)
 		double gest = _population.getIndividual(uid_preg[i]).get_gestationDuration();
 		double age_mother = _population.getIndividual(uid_preg[i]).get_age();
 		
-		// Mother-to-child STI transmission
+		// Mother-to-child STI transmission.
+		// Updated at each time step but
+		// effective only at delivery
 		vector<bool> sti_mtct = MTCT(uid_preg[i]);
 		_population.set_STI_MTCT(uid_preg[i],sti_mtct);
 
 		// increase pregnancy if birth not soon enough
-		if (gest < 0.75-timestep){
+		if (gest < 0.75-timestep)
 			increment_gestationDuration(uid_preg[i],timestep);
-		}
 		
 		// trigger child birth if close to gestation period
 		if (gest >= 0.75-timestep){
@@ -209,8 +215,16 @@ void Simulation::update_pregnancies(double timestep)
 			// Birth book-keeping
 			set_gestationDuration(uid_preg[i],0);
 			increment_nChildBorn(uid_preg[i]);
+			_population.update_STI_mtct_cumcount(sti_mtct);
+
+			vector<bool> reset_mtct(_population.get_nSTImodelled(),false);
+			_population.set_STI_MTCT(uid_preg[i],reset_mtct);
+			
 			_newborn_timestep++;
 		}
+		// DEBUG
+		//cout<< "UID "<< uid_preg[i] << " : " << sti_mtct[0]<<" ; " << sti_mtct[1]<<endl;
+		// ------
 	}
 }
 
@@ -558,6 +572,8 @@ void Simulation::runAllEvents_timeStep_obj(int numTimeStep,
 		
 		v.push_back(_population.census_circum());
 		v.push_back(_newborn_timestep);
+		v.push_back(_population.get_STI_mtct_cumcount()[0]);
+		v.push_back(_population.get_STI_mtct_cumcount()[1]);
 		
 		// HIV prevalence by risk group
 		
@@ -894,6 +910,8 @@ void Simulation::runAllEvents_horizon_obj(bool doSex,
 		
 		colnames.push_back("nCircum");
 		colnames.push_back("nNewBorn");
+		colnames.push_back("mtctHIV");
+		colnames.push_back("mtctTp");
 		colnames.push_back("HIVprevRisk0");
 		colnames.push_back("HIVprevRisk1");
 		colnames.push_back("HIVprevRisk2");
