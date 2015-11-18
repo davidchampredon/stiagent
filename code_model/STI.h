@@ -104,6 +104,8 @@ class STI
 	
 	vector<double>	_HIVparam;				// Specific parameters for HIV
 	
+	double			_proba_MTCT;				// probability of mother to child transmission ("vertical")
+	
 	// --- Infectivity Curve shape parameters ---
 	vector<double>	_shape_param;			// Shape parameters for infectivity curve (size depends on STI)
 	double			_asymptom_IC_reduc;		// Reduction factor of the Infectivity Curve when infection is asymptomatic
@@ -123,7 +125,7 @@ class STI
 	// --- Vaccine ---
 	double			_proba_vaccineFailure;		// Probability the vaccine forthat STI does not trigger immune response
 	double			_VRE;						// Vaccine Reduction Effect on infectivity curve
-	double			_vacc_SF_reduction;			// Vaccine Reduction Effect on susceptibility
+	double			_vacc_waneRate;				// Immunity exponential waning rate
 	
 public:
 	
@@ -158,6 +160,7 @@ public:
 
 	double			get_probaMaxSexTransm() {return _probaMaxSexTransm;}
 	vector<double>	get_probaSexTransm_SAT() {return _probaSexTransm_SAT;}
+	double			get_proba_MTCT() {return _proba_MTCT;}
 	
 	double			get_naturalClearanceDuration() {return _naturalClearanceDuration;}
 	
@@ -171,7 +174,7 @@ public:
 	// Vaccine:
 	double			get_proba_vaccineFailure() {return _proba_vaccineFailure;}
 	double			get_VRE() {return _VRE;}
-	double			get_vacc_SF_reduction(){return _vacc_SF_reduction;}
+	double			get_vacc_waneRate(){return _vacc_waneRate;}
 	
 	// === SET FUNCTIONS ===
 	
@@ -201,7 +204,7 @@ public:
 
 	void			set_proba_vaccineFailure(double x) {_proba_vaccineFailure = x;}
 	void			set_VRE(double x) {_VRE = x;}
-	void			set_vacc_SF_reduction(double x) {_vacc_SF_reduction=x;}
+	void			set_vacc_waneRate(double x) {_vacc_waneRate=x;}
 	
 	// === INFECTIVITY ===
 	

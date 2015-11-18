@@ -266,6 +266,7 @@ void Population::setup_for_simulation(unsigned long founder_size,
 	for (int s=0; s<_nSTImodelled; s++){
 		_STI[s].load_treatment_param(_STI[s].get_name(), file_STI_treatment);
 		_STI[s].load_vaccine_param(_STI[s].get_name(), file_STI_vaccine);
+		_STI_mtct_cumcount.push_back(0);
 	}
 	
 	// Founder ppopulation: no partnerships, no STIs.
@@ -4463,9 +4464,9 @@ vector<double> Population::STI_CalcProbaTransmission(unsigned long uid_infect,
 		// Also check the susceptible partner
 		// is not vaccinated against this STI
 		
-		if ( _individual[uid_infect].get_STIduration()[sti]>0 &&
-			 _individual[uid_suscep].get_STIduration()[sti]==0 &&
-			!_individual[uid_suscep].get_STI_immunized()[sti]){
+		if (_individual[uid_infect].get_STIduration()[sti]>0 &&
+			_individual[uid_suscep].get_STIduration()[sti]==0 &&
+			_individual[uid_suscep].get_STI_immunity()[sti]<1 ){
 			
 			// Infectivity for this individual and this sti
 			double infectivity = _individual[uid_infect].STI_IC()[sti];
@@ -4489,6 +4490,7 @@ vector<double> Population::STI_CalcProbaTransmission(unsigned long uid_infect,
 			while (UID_sexpartners_of_male[p_position] != uid_female) p_position++;
 			stopif(p_position > UID_sexpartners_of_male.size(),
 				   "Can't find UID of sex partner when assigning sex act types!");
+			
 			// Assign the associated number of sex acts for this sex partner, by sex act type
 			nSexType[0] = _individual[uid_male].get_UID_n_sexAct_Type0_period(p_position);
 			nSexType[1] = _individual[uid_male].get_UID_n_sexAct_Type1_period(p_position);
@@ -4652,7 +4654,8 @@ vector<unsigned long>  Population::STI_transmissions(double timeStep,
 							if (successTransmission)
 							{
 								STI_transmission_indiv(_STI[sti].get_name(),
-													   uid,uid_p,timeStep,
+													   uid, uid_p,
+													   timeStep,
 													   save_trace_file);
 								incidence[sti]++;
 								// DEBUG
@@ -4687,13 +4690,19 @@ vector<unsigned long>  Population::STI_transmissions(double timeStep,
 
 
 
-double Population::STI_probaMTCT(STIname sti, double stiduration)
+double Population::STI_proba_MTCT(STIname sti, double stiduration)
 {
-	// TO DO: do not hard code
-	double proba = 0.0;
+	/// Calculate the actual probability of MTCT
+	double proba = _STI[positionSTIinVector(sti, _STI)].get_proba_MTCT();
+	// special case for syphilis
+	// where mtct is believed to
+	// decrease with time.
+	if (sti==Tp) proba = proba/(1.0+exp(3.0*(stiduration-2.0)));
 	
-	if (sti==HIV)	proba = 0.30;
-	if (sti==Tp)	proba = 0.90/(1.0+exp(3.0*(stiduration-2.0)));
+	// DEBUG
+	//cout << STInameString(sti)<<"_"<< stiduration << " DEBUG MTCT PROBA: "<<proba<<endl;
+	// =====
+	
 	return proba;
 }
 
@@ -4993,6 +5002,15 @@ vector<double> Population::STI_prevalence_by_age(STIname s,
 	}
 	
 	return res;
+}
+
+
+void Population::update_STI_mtct_cumcount(vector<bool> mtct){
+	/// Increase the cumulative count of
+	/// MTCT events
+	
+	for(int i=0; i<mtct.size();i++)
+		if(mtct[i]) _STI_mtct_cumcount[i]++;
 }
 
 
@@ -5607,14 +5625,16 @@ dcDataFrame Population::export_to_dataframe(){
 		vector<double> sti_sympt;
 		vector<double> sti_treat;
 		vector<double> sti_immun;
+		vector<double> sti_vacc_date;
 		
 		string stiname = STInameString(_STI[sti].get_name());
 		
 		for(unsigned long i=0; i<_size; i++){
 			sti_dur.push_back(_individual[i].get_STIduration()[sti]);
 			sti_sympt.push_back(_individual[i].get_STIsymptom()[sti]);
-			sti_immun.push_back(_individual[i].get_STI_immunized()[sti]);
+			sti_immun.push_back(_individual[i].get_STI_immunity()[sti]);
 			sti_treat.push_back(_individual[i].get_STItreatDuration()[sti]);
+			sti_vacc_date.push_back(_individual[i].get_STI_vacc_time()[sti]);
 		}
 		string header = stiname + "duration";
 		df.addcol(header, sti_dur);
@@ -5624,8 +5644,9 @@ dcDataFrame Population::export_to_dataframe(){
 		df.addcol(header, sti_treat);
 		header = stiname + "immun";
 		df.addcol(header, sti_immun);
+		header = stiname + "vaccTime";
+		df.addcol(header, sti_vacc_date);
 	}
-
 	return df;
 }
 
@@ -5743,7 +5764,7 @@ void Population::saveToCSVFile(string pathFile)
 		
 		// Vaccination data
 		for (int sti=0; sti<_STI.size(); sti++){
-			f << _individual[i].get_STI_immunized()[sti];
+			f << _individual[i].get_STI_immunity()[sti];
 			if (sti<_STI.size()-1) f << ",";
 		}
 		
@@ -6286,35 +6307,53 @@ void Population::vaccinate_indiv(unsigned long uid, STIname stiname)
 	
 	// -- Checks --
 	stopif(!_individual[uid].isAlive(), "Cannot vaccinate a dead individual!");
-	string errmsg = "UID " + int2string(uid) + " is already vaccinated";
-	stopif(_individual[uid].get_STI_immunized(stiname), errmsg);
 	// ------------
 	
 	int i_sti = positionSTIinVector(stiname, _STI);
 	
 	// Record this individual has been vaccinated (irrespective of success)
 	_individual[uid].set_STI_vacc(i_sti, true);
-	
-	// Retrieve probability of vaccine failure:
-	double p = _STI[i_sti].get_proba_vaccineFailure();
+	_individual[uid].set_STI_vacc_time(i_sti, _simulationTime);
 	
 	// Determine if vaccine will be succesfull for that individual:
-	bool vaxSuccess = true;
+	double p = _STI[i_sti].get_proba_vaccineFailure();
+	double vaxSuccess = 1.0;
 	double u = uniform01();
-	if(u<p) vaxSuccess = false;
-	_individual[uid].set_STI_immunized(i_sti, vaxSuccess);
+	if(u<p) vaxSuccess = 0.0;
+	_individual[uid].set_STI_immunity(i_sti, vaxSuccess);
 	
+
+	// DELETE WHEN SURE (2015-11-13)
+	//
 	// if immunization not successful,
 	// but achieve reduction in susceptibility:
-	if(!vaxSuccess){
-		double prev_value = _individual[uid].get_STIsusceptFactor(stiname);
-		double vaxSFR = _STI[i_sti].get_vacc_SF_reduction();
-		_individual[uid].set_STIsusceptFactor(i_sti,vaxSFR*prev_value);
-	}
+//	if(vaxSuccess<0.001){
+//		double previousSF	= _individual[uid].get_STIsusceptFactor(stiname);
+//		double susc_vacc	= 1-_individual[uid].get_STI_immunity()[i_sti];
+//		_individual[uid].set_STIsusceptFactor(i_sti, susc_vacc * previousSF);
+//	}
 	
 	//DEBUG
 	//cout<<endl<<"VAX DEBUG::: UID "<<uid<< STInameString(stiname)<<"vax: "<<vaxSuccess<<endl;
 	// ----
+}
+
+
+void Population::set_STI_immunity(unsigned long uid, STIname stiname, double immunity){
+	
+	/// Set the immunitiy level of a given individual for a STI
+	
+	int sti_i = positionSTIinVector(stiname, _STI);
+	_individual[uid].set_STI_immunity(sti_i, immunity);
+}
+
+
+void Population::set_STI_MTCT(unsigned long uid, vector<bool> mtct){
+	_individual[uid].set_STI_MTCT(mtct);
+}
+
+void Population::set_STI_MTCT(unsigned long uid, STIname stiname, bool mtct){
+	_individual[uid].set_STI_MTCT(stiname, mtct);
 }
 
 

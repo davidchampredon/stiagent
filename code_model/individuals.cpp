@@ -93,20 +93,9 @@ Individual::Individual(unsigned long uid, Gender g, double age, int maxSexPartne
 	for (int i=0; i<nSTI; i++){
 		set_STIduration(i,STIdurations[i]);
 		set_STIsymptom(i, STIsymptoms[i]);
+		_STI_MTCT.push_back(false);
 	}
-	
 	set_RebHIV(templateRebHIV);
-	
-	
-	// DELETE WHEN SURE (2015-08-24) : MOVED TO "STI_initializeAll"
-//	// -- Vaccination (none)
-//	
-//	_STI_vacc.clear();
-//	_STI_vacc.resize(_STI.size(),false);
-//	
-//	_STI_immunized.clear();
-//	_STI_immunized.resize(_STI.size(),false);
-	
 }
 
 
@@ -355,11 +344,11 @@ double Individual::get_STItreatAdherence(STIname stiname)
 	return _STItreatAdherence[i];
 }
 
-bool Individual::get_STI_immunized(STIname stiname)
+double Individual::get_STI_immunity(STIname stiname)
 {
-	/// Is this indivdual immunized to 'stiname'?
+	/// Immunity to 'stiname'
 	int i = positionSTIinVector(stiname, _STI);
-	return _STI_immunized[i];
+	return _STI_immunity[i];
 }
 
 
@@ -493,12 +482,13 @@ void Individual::reset_UID_n_sexAct_period()
 
 
 
-void Individual::update_STIsusceptFactor()
+void Individual::init_STIsusceptFactor()
 {
 	_STIsusceptFactor.clear();
 	int n = _STI.size();
 	
-	// susceptibility factor = 1.00 by default (multiplicative factor)
+	// susceptibility factor = 1.00
+	// by default (multiplicative factor)
 	_STIsusceptFactor.resize(n,1.00);
 	
 	// If circumcised, then susceptibility
@@ -511,8 +501,10 @@ void Individual::update_STIsusceptFactor()
 	// If already vaccinated but
 	// not immunized
 	for(int i=0; i<n; i++){
-		if(_STI_vacc[i] && !_STI_immunized[i])
-			_STIsusceptFactor[i]=_STIsusceptFactor[i]*_STI[i].get_vacc_SF_reduction();
+		if(_STI_vacc[i]){
+			double susc_vacc = 1-_STI_immunity[i];
+			_STIsusceptFactor[i]=_STIsusceptFactor[i] * susc_vacc;
+		}
 	}
 }
 
@@ -553,10 +545,14 @@ void Individual::STI_initializeAll(vector<STI> STItemplate)
 	
 	_STI_vacc.clear();
 	_STI_vacc.resize(_STI.size(),false);
-	_STI_immunized.clear();
-	_STI_immunized.resize(_STI.size(),false);
+	
+	_STI_vacc_time.clear();
+	_STI_vacc_time.resize(_STI.size(),99e9);
+	
+	_STI_immunity.clear();
+	_STI_immunity.resize(_STI.size(),0.0);
 
-	update_STIsusceptFactor();
+	init_STIsusceptFactor();
 	
 	_STIsymptom.clear();
 	_STIsymptom.resize(n,false);
@@ -622,6 +618,12 @@ void Individual::set_STIsymptom(STIname stiname, bool isSymptomatic)
 {
 	int i_sti = positionSTIinVector(stiname, _STI);
 	_STIsymptom[i_sti] = isSymptomatic;
+}
+
+void Individual::set_STI_MTCT(STIname stiname, bool mtct)
+{
+	int i_sti = positionSTIinVector(stiname, _STI);
+	_STI_MTCT[i_sti] = mtct;
 }
 
 

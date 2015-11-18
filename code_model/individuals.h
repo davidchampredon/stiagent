@@ -116,7 +116,7 @@ class Individual
 	vector<bool>	_STIsymptom;			// ith element=1 if ith STI is symptomatic (0 else)
 	
 	vector< vector<unsigned long> > _STI_secondary_cases; // UID of all secondary cases infected by this individual, for every STI
-	
+	vector<bool>	_STI_MTCT;				// whether mother to child transmission occurs (relevant only for pregnant females)
 	
 	// == Treatment ==
 	
@@ -127,9 +127,10 @@ class Individual
 	
 	// == Vaccination ==
 	
+	vector<double>	_STI_vacc_time;		// time when vaccinated
 	vector<bool>	_STI_vacc;			// STI vaccination status
-	vector<bool>	_STI_immunized;		// STI immunity status
-	
+	vector<double>	_STI_immunity;		// STI immunity status: 1=full immunity, 0=no immunity
+
 	
 public:
 	
@@ -238,9 +239,16 @@ public:
 	int					get_STItreatTMS(STIname sti);
 	double				get_STItreatAdherence(STIname sti);
 	
-	vector<bool>		get_STI_immunized() {return _STI_immunized;}
-	bool				get_STI_immunized(STIname stiname);
+	
+	vector<bool>		get_STI_vacc(){return _STI_vacc;}
+	vector<double>		get_STI_vacc_time(){return _STI_vacc_time;}
+	
+	vector<double>		get_STI_immunity() {return _STI_immunity;}
+	double				get_STI_immunity(STIname stiname);
 
+	vector<bool>		get_STI_MTCT() {return _STI_MTCT;}
+
+	
 	vector<unsigned long>		get_STI_secondary_cases(STIname stiname);
 	
 	// ==============================
@@ -310,7 +318,7 @@ public:
 	
 	void		set_riskGroup(int r) {_riskGroup=r;}
 	
-	void		update_STIsusceptFactor();
+	void		init_STIsusceptFactor();
 	void		set_STIsusceptFactor(int i, double x) {_STIsusceptFactor[i]=x;}
 	
 	// OLD VERSION USED IN OLD CALIBRATION FUNCTION :void		set_STI(vector<STI> s) {_STI = s;}
@@ -320,6 +328,9 @@ public:
 	void		set_STIduration(STIname	stiname, double duration);
 	
 	void		set_STIsymptom(int sti_index, bool isSymptomatic);
+	
+	void		set_STI_MTCT(vector<bool> mtct) {_STI_MTCT = mtct;}
+	void		set_STI_MTCT(STIname stiname, bool mtct);
 	
 	void		set_RebHIV(vector<double> x) {_RebHIV=x;}
 	
@@ -333,10 +344,14 @@ public:
 	void		set_STItreatTMS(int x, STIname sti) ;
 	void		set_STItreatAdherence(double x, STIname sti);
 	
+	void		set_STI_vacc_time(vector<double> x) {_STI_vacc_time = x;}
+	void		set_STI_vacc_time(int i,double x) {_STI_vacc_time[i] = x;}
+	
 	void		set_STI_vacc(vector<bool> x) {_STI_vacc=x;}
 	void		set_STI_vacc(int i, bool x) {_STI_vacc[i]=x;}
-	void		set_STI_immunized(vector<bool> x) {_STI_immunized=x;}
-	void		set_STI_immunized(int i, bool x) {_STI_immunized[i]=x;}
+	
+	void		set_STI_immunity(vector<double> x) {_STI_immunity=x;}
+	void		set_STI_immunity(int i, double x) {_STI_immunity[i]=x;}
 
 	
 	

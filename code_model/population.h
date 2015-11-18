@@ -115,7 +115,6 @@ class Population
 	vector<double>		_dissolution_PartnerDeficit;// Parameters for partner deficit dissolution component
 	double				_dissolution_STI_symptom;	// Relative reduction of proba to dissolve if any partner is symptomatic of any STI
 	double				_dissolution_ageConcPartn;	// shape parameter for link b/w age and # of concurrent partnership
-
 		
 	
 	// ==== CSW ====
@@ -126,7 +125,6 @@ class Population
 	double				_CSW_recruitment_ageMin;		// Minimum age to start commercial sex
 	double				_CSW_recruitment_ageMax;		// Maximum age to start commercial sex
 	double				_CSW_ageMax;					// Maximum age for practicing CSW
-	
 	double				_CSW_cessationRate;				// Drop out rate of commercial sex
 		
 	
@@ -170,6 +168,8 @@ class Population
 	vector<double>		_RebHIV;			// HIV infectivity rebound due to STIs co-infections
 	
 	vector< vector<unsigned long> > _secondary_cases; // Number of all secondary cases for every STIs (size of vector increases as simulation runs)
+	
+	vector<unsigned long>	_STI_mtct_cumcount;	// Cumulative count of MTCT events, for each STI
 	
 	
 	// Book keepers
@@ -324,6 +324,7 @@ public:
 	vector<STI>		get_STI() {return _STI;}
 	
 	vector<unsigned long>	get_UID_pot_preg() {return _UID_pot_preg;}
+	vector<unsigned long>	get_STI_mtct_cumcount() { return _STI_mtct_cumcount;}
 	
 		
 	// === Subset Functions ===
@@ -783,8 +784,9 @@ public:
 	
 	double			STI_coInfection_oddsRatio(unsigned long uid, int sti); // odds ratio for a given individual, to STI 'sti'
 
-	double			STI_probaMTCT(STIname sti, double stiduration);		// probability of mother-to-child transmission
-	
+	double			STI_proba_MTCT(STIname sti, double stiduration);		// probability of mother-to-child transmission
+	void			set_STI_MTCT(unsigned long uid, vector<bool> mtct);
+	void			set_STI_MTCT(unsigned long uid, STIname stiname, bool mtct);
 	
 	// Terminate STIs that have reached the max duration
 	// before immune system clearance, accros the whole population
@@ -813,10 +815,14 @@ public:
 	double			STI_prevalence(STIname s);					// Global prevalence for just one STI
 	double			STI_prevalence(STIname s, int riskGroup);	// Prevalence for just one STI, within a given risk group
 
-	dcMatrix			STI_prevalence_by_riskGroup(vector<STIname> stinames);							// Prevalence per risk group, for every STIs
+	dcMatrix		STI_prevalence_by_riskGroup(vector<STIname> stinames);							// Prevalence per risk group, for every STIs
 	vector<double>	STI_prevalence_by_age(STIname s, vector<double> agebreaks);						// Prevalence by age for just one STI
 	vector<double>	STI_prevalence_by_age(STIname s, Gender g, vector<double> agebreaks);			// Prevalence by age for just one STI, within a given gender
 	vector<double>	STI_prevalence_by_age(STIname s, int riskGroup,vector<double> agebreaks);		// Prevalence by age for just one STI, within a given risk group
+	
+	
+	void			update_STI_mtct_cumcount(vector<bool> mtct);
+
 	
 	// --- Reproductive numbers ---
 	
@@ -837,8 +843,8 @@ public:
 	// ===       VACCINATION       ===
 	// ===============================
 
-	void			vaccinate_indiv(unsigned long uid, STIname stiname);
-	
+	void		vaccinate_indiv(unsigned long uid, STIname stiname);
+	void		set_STI_immunity(unsigned long uid, STIname stiname, double immunity);
 	
     
 	// ===============================

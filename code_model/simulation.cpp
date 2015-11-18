@@ -110,27 +110,31 @@ vector<bool> Simulation::MTCT(unsigned long uid)
 	/// (vector size = number of STIs modelled)
 	/// ('true' = transmission to child)
 	
-	// Log file for all attempts of MTCT
-	string filename=_DIR_OUT+"mtct_attempts.out";
-	ofstream mtctlog(filename.c_str(),ios::app);
+	Individual I = _population.getIndividual(uid);
+	
+	// MTCT at previous time step
+	vector<bool> prev_mtct = I.get_STI_MTCT();
 	
 	// Loop through all STIs
-	int nsti = _population.get_STI().size();
-	vector<bool> mtct(nsti,false);
+	unsigned long nsti = _population.get_STI().size();
+	vector<bool> mtct = prev_mtct;
+	
+	// DEBUG
+	//displayVector(mtct);
 	
 	for (int i=0; i<nsti; i++)
 	{
 		STIname stiname = _population.get_STI()[i].get_name();
-		double stiduration = _population.getIndividual(uid).get_STIduration()[i];
 		
-		// retrieve proba MTCT
-		double proba = _population.STI_probaMTCT(stiname, stiduration);
-		
-		// Draw if transmission occurs
-		mtct[i] = (uniform01()<proba? true:false);
-		
-		// log event
-		if(_save_trace_files) mtctlog << STInameString(stiname)<<"," << mtct[i]<<endl;
+		if(!prev_mtct[i]){
+			double stiduration = I.get_STIduration()[i];
+			if(stiduration>0){
+				// retrieve proba MTCT
+				double proba = _population.STI_proba_MTCT(stiname, stiduration);
+				// Draw if transmission occurs
+				mtct[i] = (uniform01()<proba? true:false);
+			}
+		}
 	}
 	return mtct;
 }
@@ -189,15 +193,18 @@ void Simulation::update_pregnancies(double timestep)
 		double gest = _population.getIndividual(uid_preg[i]).get_gestationDuration();
 		double age_mother = _population.getIndividual(uid_preg[i]).get_age();
 		
+		// Mother-to-child STI transmission.
+		// Updated at each time step but
+		// effective only at delivery
+		vector<bool> sti_mtct = MTCT(uid_preg[i]);
+		_population.set_STI_MTCT(uid_preg[i],sti_mtct);
+
 		// increase pregnancy if birth not soon enough
-		if (gest < 0.75-timestep){
+		if (gest < 0.75-timestep)
 			increment_gestationDuration(uid_preg[i],timestep);
-		}
 		
 		// trigger child birth if close to gestation period
 		if (gest >= 0.75-timestep){
-			// Mother-to-child STI transmission
-			vector<bool> sti_mtct = MTCT(uid_preg[i]);
 			Individual child;
 			_nursery.add_child(child,
 							   uid_preg[i],
@@ -208,8 +215,16 @@ void Simulation::update_pregnancies(double timestep)
 			// Birth book-keeping
 			set_gestationDuration(uid_preg[i],0);
 			increment_nChildBorn(uid_preg[i]);
+			_population.update_STI_mtct_cumcount(sti_mtct);
+
+			vector<bool> reset_mtct(_population.get_nSTImodelled(),false);
+			_population.set_STI_MTCT(uid_preg[i],reset_mtct);
+			
 			_newborn_timestep++;
 		}
+		// DEBUG
+		//cout<< "UID "<< uid_preg[i] << " : " << sti_mtct[0]<<" ; " << sti_mtct[1]<<endl;
+		// ------
 	}
 }
 
@@ -296,15 +311,16 @@ void Simulation::runAllEvents_timeStep(int numTimeStep,
 	if (debugflag) cout << "STI_update_naturalClearance"<<endl;
 	_population.STI_update_naturalClearance();
 	
-	// STI Treatment
+	// STI Treatment and vaccine waning:
 	for (int sti=0; sti<_population.get_STI().size(); sti++){
-		update_cure(_population.get_STI()[sti].get_name());
+		STIname stiname = _population.get_STI()[sti].get_name();
+		update_cure(stiname);
+		update_vacc(stiname);
 	}
-	
 	
 	// Deaths
 	if (debugflag) cout << "deathEvents"<<endl;
-	_population.deathEvents(_timeStep,false /*_save_trace_files*/); //force not write trace file because huge!
+	_population.deathEvents(_timeStep,false /*_save_trace_files*/); // <-- force not write trace file because huge!
 	
 	
 	// update incidence
@@ -445,10 +461,8 @@ void Simulation::runAllEvents_timeStep_obj(int numTimeStep,
 	if (debugflag) cout << "CSW cessation"<<endl;
 	_population.CSWcessation(_timeStep);
 	
-	
 	// Resets variables at the start of this period
 	if (doSex) _population.reset_sexActs();
-	
 	
 	// Partnerships formation and dissolution
 	if (debugflag) cout << "dissolve partnerships"<<endl;
@@ -487,10 +501,14 @@ void Simulation::runAllEvents_timeStep_obj(int numTimeStep,
 	if (debugflag) cout << "STI_update_naturalClearance"<<endl;
 	_population.STI_update_naturalClearance();
 	
-	// STI Treatment
+	// STI Treatment and vaccine waning:
 	for (int sti=0; sti<_population.get_STI().size(); sti++){
-		update_cure(_population.get_STI()[sti].get_name());
+		STIname stiname = _population.get_STI()[sti].get_name();
+		update_cure(stiname);
+		update_vacc(stiname);
 	}
+	
+	// STI Vaccination
 	
 	
 	// Deaths
@@ -554,6 +572,8 @@ void Simulation::runAllEvents_timeStep_obj(int numTimeStep,
 		
 		v.push_back(_population.census_circum());
 		v.push_back(_newborn_timestep);
+		v.push_back(_population.get_STI_mtct_cumcount()[0]);
+		v.push_back(_population.get_STI_mtct_cumcount()[1]);
 		
 		// HIV prevalence by risk group
 		
@@ -890,6 +910,8 @@ void Simulation::runAllEvents_horizon_obj(bool doSex,
 		
 		colnames.push_back("nCircum");
 		colnames.push_back("nNewBorn");
+		colnames.push_back("mtctHIV");
+		colnames.push_back("mtctTp");
 		colnames.push_back("HIVprevRisk0");
 		colnames.push_back("HIVprevRisk1");
 		colnames.push_back("HIVprevRisk2");
@@ -973,7 +995,6 @@ void Simulation::runAllEvents_horizon_obj(bool doSex,
 								  logIndivInfo);
 		
 		// Record STI prevalences
-		
 		if (doSex)
 		{
 			vector<double> tmp;
@@ -982,16 +1003,10 @@ void Simulation::runAllEvents_horizon_obj(bool doSex,
 				STIname stiname = _population.get_STI()[s].get_name();
 				
 				if (t==0) _STI_prevalence(t_i,s) = _population.STI_prevalence(stiname);
-				if (t>0)
-				{
-					tmp.push_back(_population.STI_prevalence(stiname));
-				}
+				if (t>0) tmp.push_back(_population.STI_prevalence(stiname));
 			}
 			
 			if (t>0) _STI_prevalence.addRowVector(tmp);
-			
-			// DEBUG
-			//_STI_prevalence.display();
 		}
 		
 		
@@ -1008,8 +1023,6 @@ void Simulation::runAllEvents_horizon_obj(bool doSex,
 			tmp.push_back(t);
 			
 			for (int i=0;i<=3;i++) tmp.push_back(degDist[i]);
-			
-//			vectorToCSVFile_Row(tmp, fileDegreeDist);
 		}
 		
 		
@@ -2976,7 +2989,7 @@ void Simulation::activate_intervention(int i)
 	stopif(_intervention[i].get_annCvgRate()<=0, "Proportion of intervention must be positive");
 	
 	// retrieve intervention features
-	double target_dt = _intervention[i].get_annCvgRate()*_timeStep;
+	double target_dt	= _intervention[i].get_annCvgRate()*_timeStep;
 	STIname sti			= _intervention[i].get_stiname();
 	string interv_type	= _intervention[i].get_type();
 	
@@ -3026,7 +3039,7 @@ void Simulation::activate_intervention(int i)
 			bool indivIsTargeted	= false;
 			
 			bool isSymptomatic		= indiv.get_STIsymptom()[sti_i];
-			bool alreadyVacc		= indiv.get_STI_immunized()[sti_i];  // slow code: get_STI_immunized(sti);
+			bool alreadyVacc		= indiv.get_STI_vacc()[sti_i];  
 			
 			if(doTreat_mass)	indivIsTargeted = indiv.get_STIduration()[sti_i]>0; // slow code: indiv.STI_infected(sti);
 			if(doTreat_symptom) indivIsTargeted = indiv.get_STIsymptom()[sti_i]; // slow code: is_symptomatic(sti);
@@ -3176,11 +3189,8 @@ void Simulation::update_cure(STIname sti)
 //		if (tmp.isAlive() &&
 //			tmp.STI_treated(sti) &&
 //			tmp.get_STIduration(sti)>0) cure_indiv(uid,sti);
-//		
-//	}
-	
-	
 }
+
 
 
 // ===================================================================
@@ -3197,6 +3207,31 @@ void Simulation::vaccinate_indiv(unsigned long uid, STIname stiname)
 	_population.vaccinate_indiv(uid, stiname);
 }
 
+void Simulation::update_vacc(STIname stiname){
+	/// Update immunity provided by vaccination
+	
+	int sti_i = positionSTIinVector(stiname, _population.get_STI());
+	
+	for (unsigned long uid=0; uid<_population.get_size(); uid++){
+		
+		Individual tmp = _population.getIndividual(uid);
+		
+		if (tmp.isAlive() && tmp.get_STI_vacc()[sti_i]){
+			// time since vaccination:
+			double tv = _simulationTime - tmp.get_STI_vacc_time()[sti_i];
+			// waning rate:
+			double w = _population.get_STI()[sti_i].get_vacc_waneRate();
+			// immunity:
+			double imm = exp(-tv * w);
+			// update the value of waning immunity:
+			// delete : _population.getIndividual(uid).set_STI_immunity(sti_i, imm);
+			_population.set_STI_immunity(uid, stiname, imm);
+			
+			//DEBUG
+//			cout <<_simulationTime << " --> UID "<<uid<< " imm = "<< imm <<endl;
+		}
+	}
+}
 
 
 
