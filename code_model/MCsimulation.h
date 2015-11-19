@@ -116,20 +116,6 @@ public:
 
 
 // One stochastic run of the whole simulation
-//
-Simulation	runSimulation_one(Population P_init,
-							  string filename_init_STI_prev,
-							  vector<string> filename_interventions,
-							  double horizon_prtn,
-							  double timestep_prtn,
-							  double horizon,
-							  double timestep,
-							  bool TraceNetwork,
-							  int displayProgress,
-							  unsigned int mc_id);
-
-
-// same as "runSimulation_one" but no file written, objects only.
 // (used for R library wrap)
 Simulation	runSimulation_one_obj(Population P_init,
 								  string filename_init_STI_prev,
@@ -144,21 +130,6 @@ Simulation	runSimulation_one_obj(Population P_init,
 								  string folder_inputs,
 								  string folder_calib);
 
-
-// Monte Carlo runs of the whole simulation
-// Each MC trial simulation is stored in the output vector
-//
-vector<Simulation>	runSimulationMC(unsigned int nMC,
-									Population P_init,
-									string filename_init_STI_prev,
-									vector<string> filename_interventions,
-									double horizon_prtn,
-									double timestep_prtn,
-									double horizon,
-									double timestep,
-									bool TraceNetwork,
-									int displayProgress,
-									int jobnum=1);
 
 
 vector<Simulation>	runSimulationMC_obj(unsigned int nMC,

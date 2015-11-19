@@ -211,63 +211,63 @@ void	run_comp_interventions(unsigned int nMC,
 							   int jobnum)
 {
 	/// Run several scenario and compare their outcomes
-	
-	// deals with eol character issues
-	filename_intervention_wrapper = trim(filename_intervention_wrapper);
-	
-	int n_scenario = filename_intervention_wrapper.size();
-	
-	cout << "DEBUG:::"<<n_scenario<<endl;
-	
-	vector<MCsimulation> scenario;
-	
-	for (int i=0; i<n_scenario; i++){
-		// retrieve relevant intervention wrapper
-		vector<string> interv_wrap;
-		string file_i =_DIR_IN + filename_intervention_wrapper[i];
-		vectorFromCSVfile_string(interv_wrap, file_i.c_str(), 1);
-		
-		// DEBUG
-		cout<<"Running scenario #"<<i<<endl;
-		// -----
-		
-		// run the MC simulations
-		MCsimulation tmp(nMC,
-						 P_init,
-						 filename_init_STI_prev,
-						 interv_wrap,
-						 horizon_prtn,
-						 timestep_prtn,
-						 horizon,
-						 timestep,
-						 TraceNetwork,
-						 displayProgress,
-						 jobnum);
-		
-		tmp.set_scenarioName(filename_intervention_wrapper[i].c_str());
-		
-		scenario.push_back(tmp);
-		
-		// DEBUG
-		cout<<"prevalence Tp scenario#"<<i<<"= " <<tmp.mean_prevalence_final(Tp)<<endl;
-		// -----
-	}
-	
-	
-	// ============
-	// OUTPUT FILES
-	// ============
-	
-	// file names for output
-	int n_sti = scenario[0].get_simulation(0).get_population().get_nSTImodelled();
-	for(int s=0; s<n_sti; s++){
-		STIname stiname = scenario[0].get_simulation(0).get_population().get_STI()[s].get_name();
-		string str_stiname = STInameString(stiname);
-		string filename_comp_scen	= _DIR_OUT + "compare_scenario_"+ str_stiname +"_job"+int2string(jobnum)+".out";
-		writeToFile_scenario_outcome(filename_comp_scen, stiname, scenario);
-	}
-	
-	
+//	
+//	// deals with eol character issues
+//	filename_intervention_wrapper = trim(filename_intervention_wrapper);
+//	
+//	int n_scenario = filename_intervention_wrapper.size();
+//	
+//	cout << "DEBUG:::"<<n_scenario<<endl;
+//	
+//	vector<MCsimulation> scenario;
+//	
+//	for (int i=0; i<n_scenario; i++){
+//		// retrieve relevant intervention wrapper
+//		vector<string> interv_wrap;
+//		string file_i =_DIR_IN + filename_intervention_wrapper[i];
+//		vectorFromCSVfile_string(interv_wrap, file_i.c_str(), 1);
+//		
+//		// DEBUG
+//		cout<<"Running scenario #"<<i<<endl;
+//		// -----
+//		
+//		// run the MC simulations
+//		MCsimulation tmp(nMC,
+//						 P_init,
+//						 filename_init_STI_prev,
+//						 interv_wrap,
+//						 horizon_prtn,
+//						 timestep_prtn,
+//						 horizon,
+//						 timestep,
+//						 TraceNetwork,
+//						 displayProgress,
+//						 jobnum);
+//		
+//		tmp.set_scenarioName(filename_intervention_wrapper[i].c_str());
+//		
+//		scenario.push_back(tmp);
+//		
+//		// DEBUG
+//		cout<<"prevalence Tp scenario#"<<i<<"= " <<tmp.mean_prevalence_final(Tp)<<endl;
+//		// -----
+//	}
+//	
+//	
+//	// ============
+//	// OUTPUT FILES
+//	// ============
+//	
+//	// file names for output
+//	int n_sti = scenario[0].get_simulation(0).get_population().get_nSTImodelled();
+//	for(int s=0; s<n_sti; s++){
+//		STIname stiname = scenario[0].get_simulation(0).get_population().get_STI()[s].get_name();
+//		string str_stiname = STInameString(stiname);
+//		string filename_comp_scen	= _DIR_OUT + "compare_scenario_"+ str_stiname +"_job"+int2string(jobnum)+".out";
+//		writeToFile_scenario_outcome(filename_comp_scen, stiname, scenario);
+//	}
+//	
+//	
 }
 
 

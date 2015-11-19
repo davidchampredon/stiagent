@@ -1283,7 +1283,6 @@ void Population::UpdateSelectedParameter(string paramName,
 }
 
 
-
 void Population::UpdateSelectedParameter(vector<string> paramName,
 										 vector<double> value)
 {
@@ -1292,7 +1291,6 @@ void Population::UpdateSelectedParameter(vector<string> paramName,
 	for (int i=0; i<paramName.size(); i++)
 		UpdateSelectedParameter(paramName[i],value[i]);
 }
-
 
 
 void Population::UpdateSelectedParameter_file(string filename, unsigned int paramSet)
@@ -1841,7 +1839,6 @@ void Population::deathEvents(double prd, bool save_trace_file)
 
 
 
-
 unsigned long Population::census_Females()
 {
 	unsigned long f = 0;
@@ -1868,8 +1865,6 @@ unsigned long Population::census_Partnered(int numberOfPartners)
 	return p;
 }
 
-
-
 unsigned long Population::census_singles()
 {
 	// CALCULATES THE NUMBER OF SINGLES IN THE POPULATION
@@ -1884,7 +1879,6 @@ unsigned long Population::census_singles()
 	}
 	return s;
 }
-
 
 unsigned long Population::census_singles(Gender g)
 {
@@ -1902,7 +1896,6 @@ unsigned long Population::census_singles(Gender g)
 	}
 	return s;
 }
-
 
 double Population::census_ratioSingles()
 {
@@ -1944,8 +1937,6 @@ unsigned long Population::census_divorced()
 	}
 	return p;
 }
-
-
 
 
 vector<double> Population::census_getAgeGap(unsigned long uid)
@@ -2230,9 +2221,6 @@ vector<double> Population::census_ageGapFirstSexSpouseDistribution(vector<double
 	}
 	return distributionNormalized(years, yearsBreaks);
 }
-
-
-
 
 
 vector<double> Population::census_nLifeSexPrtnrDistrib(vector<double> nBreaks,
@@ -6205,57 +6193,6 @@ void Population::FileOutput(string pathFile)
 	}
 }
 
-void Population::graphvizFileOutput(string pathFile)
-{
-	ofstream f(pathFile.c_str());
-	
-	f << "graph G{"<<endl;
-	f << "node [shape=box,style=filled];"<<endl;
-	
-	bool include_single = false;
-	
-	for (int i=0; i<_size; i++)
-	{
-		
-		// Retrieves gender of left-hand partner
-		string g_i="F";
-		if (_individual[i].get_gender()==male) g_i="M";
-		
-		unsigned long uid = _individual[i].get_UID();
-		
-		int nConc = _individual[i].get_nCurrSexPartner();
-		
-		
-		// If single, no link
-		if (nConc==0 && include_single)
-		{
-			f << g_i << uid << ";"<<endl;
-		}
-		// Loop on all partners
-		if (nConc>0)
-		{
-			for (int p=0; p<nConc; p++)
-			{
-				unsigned long uid_p = _individual[i].getPartnerUID(p);
-				
-				string g_p="F";
-				if (_individual[uid_p].get_gender()==male) g_p="M";
-				
-				// Edge between partners
-				f << g_i << uid << " -- " << g_p << uid_p <<";"<<endl;
-			}
-		}
-		// Color the node w.r.t. number of concurrent partners
-		string color = "white";
-		
-		if (nConc==2) color = "yellow";
-		if (nConc==3) color = "orange";
-		if (nConc>3) color = "red";
-		
-		f << g_i << uid <<" [color=\""<<color<<"\"];"<<endl;
-	}
-	f << "}" << endl;
-}
 
 
 unsigned long Population::getUIDfemale(unsigned long uid1, unsigned long uid2)

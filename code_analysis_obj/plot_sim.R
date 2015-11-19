@@ -25,7 +25,7 @@ plot.ts <- function(sim){
 		plot.timeseries(sim,varname="mtctHIV",title="Cumulative MTCT HIV"),
 		plot.timeseries(sim,varname="mtctTp",title="Cumulative MTCT Tp"),
 		plot.proportion.timeseries(sim,varname=c("mtctHIV","mtctTp"),
-								   title="MTCT proportions"),
+								   title="Cumulative MTCT proportions"),
 		plot.proportion.timeseries(sim,varname=c("nRskGrp0","nRskGrp1","nRskGrp2"),
 								   title="Risk group proportions")
 	)

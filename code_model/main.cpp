@@ -152,17 +152,6 @@ int main(int argc, const char * argv[])
 			
 			Simulation S;
 			
-			if(!doObj){
-				S = runSimulation_one(P,
-									  file_init_STI,
-									  file_intervention,
-									  horizon_prtn, timestep_prtn,
-									  horizon, timeStep,
-									  TraceNetwork,
-									  displayProgress,
-									  iter_mc);
-				S.displayInfo();
-			}
 			
 			if(doObj){
 				string folder_inputs = _DIR_IN;
@@ -239,94 +228,8 @@ int main(int argc, const char * argv[])
 		// ===    MONTE CARLO RUN    ===
 		// =============================
 		
-		if (doMCRun)
-		{
-			
-			// Simulate with several Monte Carlo iterations
-			// (test environment: will be serial execution - for parallel, see Makefile)
-			
-			unsigned int nMC = getParameterFromFile("MCiter", "in_simulation.csv");
-			
-			double		horizon_prtn	= getParameterFromFile("horizon_prtn_years", "in_simulation.csv");
-			double		timestep_prtn	= getParameterFromFile("timestep_prtn_days", "in_simulation.csv")/365.0;
-			
-			
-			// Intervention specification files
-			
-			vector<string> file_intervention;
-			vectorFromCSVfile_string(file_intervention,
-									 "in_intervention_wrapper.csv", 1);
-			vector<string> file_intervention2;
-			vectorFromCSVfile_string(file_intervention2,
-									 "in_intervention_wrapper2.csv", 1);
-			
-			
-			bool		TraceNetwork	= false;
-			int			displayProgress = 11;
-			
-			string		file_init_STI	= "in_STI_initial_prevalence.csv";
-			int			jobnum = 1;
-			
-			// Run all MC iterations
-			vector<Simulation> Smc = runSimulationMC(nMC,
-													 P,
-													 file_init_STI,
-													 file_intervention,
-													 horizon_prtn,
-													 timestep_prtn,
-													 horizon,
-													 timeStep,
-													 TraceNetwork,
-													 displayProgress,
-													 jobnum);
-			// Store results in object
-			MCsimulation MCS(Smc);
-			
-			
-			// Another simulation to compare with
-			
-			bool do_comparison = false;
-			vector<Simulation> Smc2;
-			
-			if (do_comparison)
-			{
-				force_seed_reset();
-				Smc2 = runSimulationMC(nMC,
-									   P,
-									   file_init_STI,
-									   file_intervention2,
-									   horizon_prtn,
-									   timestep_prtn,
-									   horizon,
-									   timeStep,
-									   TraceNetwork,
-									   displayProgress,
-									   jobnum);
-			}
-			
-			//cout<<endl<<"DISTANCE FROM TARGETS:";
-			//displayVector(MCS.distance_from_targets());
-			
-			
-			
-			// Compare simulations
-			if(do_comparison)
-			{
-				MCsimulation MCS2(Smc2);
-				
-				double test_mtct = comp_simul_mean_MTCT(Tp, MCS, MCS2);
-				double test_cuminc = comp_simul_mean_cumul_incidence(Tp, MCS, MCS2);
-				
-				cout << "DEBUG DIFF MTCT = "<< test_mtct <<endl;
-				cout << "DEBUG DIFF CUM.INC = "<< test_cuminc <<endl;
-			}
-			
-			// DEBUG
-			MCS.displayInfo();
-			displayVector(MCS.mean_prevalence_ts(HIV));
-			displayVector(MCS.mean_prevalence_ts(Tp));
-		}
-		
+		if (doMCRun){}
+
 		
 		if (doMultiScenario){
 			// Simulate with several Monte Carlo iterations

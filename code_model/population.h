@@ -909,7 +909,6 @@ public:
 									 unsigned int idate=0);		// Save to file epidemiological outputs (e.g. STI prevalences)
 
 	
-	void			graphvizFileOutput(string pathFile);
     void			FileOutput(string pathFile);
 
 	

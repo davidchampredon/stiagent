@@ -36,93 +36,93 @@ dcDataFrame LHS_explore(Population P,
 	/// RESPECTIVE DISTANCE TO TARGETS (mean and variance)
 	
 	
-	// ---- Create LHSed input parameters
-	
-	vector<string> LHS_limits_filename;
-	vector<string> LHS_samples_filename;
-	
-	vectorFromCSVfile_string(LHS_limits_filename, limit_LHS_file_wrapper.c_str(), 1);
-	
-	int nFiles = LHS_limits_filename.size();
-	
-	vector<dcDataFrame> df(nFiles);
-	
-	for (int i=0; i<nFiles; i++)
-	{
-		LHS_samples_filename.push_back(_DIR_CALIB + LHS_limits_filename[i] +".out");
-		df[i] = LHS_generate_all_samples2(_DIR_CALIB + LHS_limits_filename[i],
-										  nLHS,
-										  LHS_samples_filename[i]);
-	}
-	
-	// Data frame that will be returned
-	dcDataFrame df0 = df[0];
-	for (int i=1; i<nFiles-1; i++)
-	{
-		cout<<endl<<"i="<<i;
-		df0 = rbind(df0, df[i]);
-	}
-	
-	
-	// ---- Read inputs for simulation
-	
-	double		horizon			= getParameterFromFile("horizon_years", "in_simulation.csv");
-	double		timeStep		= getParameterFromFile("timestep_days", "in_simulation.csv")/365.0;
-	double		horizon_prtn	= getParameterFromFile("horizon_prtn_years", "in_simulation.csv");
-	double		timestep_prtn	= getParameterFromFile("timestep_prtn_days", "in_simulation.csv")/365.0;
-	
-	bool		TraceNetwork	= false;
-	int			displayProgress = 11;
-	
-	
-	// ---- Interventions
-	vector<string> file_intervention;
-	vectorFromCSVfile_string(file_intervention,
-							 file_intervention_wrapper.c_str(), 1);
-	
-	
-	// ---- Calculate distance for each parameter set
-	
-	vector<double> distance_mean;
-	vector<double> distance_variance;
-	vector<double> distance_min;
-	vector<double> distance_max;
-	
-	for (int i=0; i<nLHS; i++)
-	{
-		cout << "DEBUG INFO LHS:"<< i <<"; jobnum:"<<jobnum<<endl;
-		
-		// Update parameters' value
-		// with the current LHS set
-		// from all files
-		
-		for (int k=0; k<nFiles; k++)
-		{
-			P.UpdateSelectedParameter_file(LHS_samples_filename[k],i+1);
-		}
-		
-		// Run all MC iterations
-		vector<Simulation> Smc = runSimulationMC(nMC,
-												 P, file_init_STI,
-												 file_intervention,
-												 horizon_prtn, timestep_prtn,
-												 horizon, timeStep,
-												 TraceNetwork,displayProgress,
-												 jobnum);
-		
-		MCsimulation MCS(Smc);
-		distance_mean.push_back(MCS.distance_from_targets()[0]);
-		distance_variance.push_back(MCS.distance_from_targets()[1]);
-		distance_min.push_back(MCS.distance_from_targets()[2]);
-		distance_max.push_back(MCS.distance_from_targets()[3]);
-		
-	}
-	
-	df0.addrow("distance_mean", distance_mean);
-	df0.addrow("distance_variance", distance_variance);
-	df0.addrow("distance_min", distance_min);
-	df0.addrow("distance_max", distance_max);
-	
+//	// ---- Create LHSed input parameters
+//	
+//	vector<string> LHS_limits_filename;
+//	vector<string> LHS_samples_filename;
+//	
+//	vectorFromCSVfile_string(LHS_limits_filename, limit_LHS_file_wrapper.c_str(), 1);
+//	
+//	int nFiles = LHS_limits_filename.size();
+//	
+//	vector<dcDataFrame> df(nFiles);
+//	
+//	for (int i=0; i<nFiles; i++)
+//	{
+//		LHS_samples_filename.push_back(_DIR_CALIB + LHS_limits_filename[i] +".out");
+//		df[i] = LHS_generate_all_samples2(_DIR_CALIB + LHS_limits_filename[i],
+//										  nLHS,
+//										  LHS_samples_filename[i]);
+//	}
+//	
+//	// Data frame that will be returned
+//	dcDataFrame df0 = df[0];
+//	for (int i=1; i<nFiles-1; i++)
+//	{
+//		cout<<endl<<"i="<<i;
+//		df0 = rbind(df0, df[i]);
+//	}
+//	
+//	
+//	// ---- Read inputs for simulation
+//	
+//	double		horizon			= getParameterFromFile("horizon_years", "in_simulation.csv");
+//	double		timeStep		= getParameterFromFile("timestep_days", "in_simulation.csv")/365.0;
+//	double		horizon_prtn	= getParameterFromFile("horizon_prtn_years", "in_simulation.csv");
+//	double		timestep_prtn	= getParameterFromFile("timestep_prtn_days", "in_simulation.csv")/365.0;
+//	
+//	bool		TraceNetwork	= false;
+//	int			displayProgress = 11;
+//	
+//	
+//	// ---- Interventions
+//	vector<string> file_intervention;
+//	vectorFromCSVfile_string(file_intervention,
+//							 file_intervention_wrapper.c_str(), 1);
+//	
+//	
+//	// ---- Calculate distance for each parameter set
+//	
+//	vector<double> distance_mean;
+//	vector<double> distance_variance;
+//	vector<double> distance_min;
+//	vector<double> distance_max;
+//	
+//	for (int i=0; i<nLHS; i++)
+//	{
+//		cout << "DEBUG INFO LHS:"<< i <<"; jobnum:"<<jobnum<<endl;
+//		
+//		// Update parameters' value
+//		// with the current LHS set
+//		// from all files
+//		
+//		for (int k=0; k<nFiles; k++)
+//		{
+//			P.UpdateSelectedParameter_file(LHS_samples_filename[k],i+1);
+//		}
+//		
+//		// Run all MC iterations
+//		vector<Simulation> Smc = runSimulationMC(nMC,
+//												 P, file_init_STI,
+//												 file_intervention,
+//												 horizon_prtn, timestep_prtn,
+//												 horizon, timeStep,
+//												 TraceNetwork,displayProgress,
+//												 jobnum);
+//		
+//		MCsimulation MCS(Smc);
+//		distance_mean.push_back(MCS.distance_from_targets()[0]);
+//		distance_variance.push_back(MCS.distance_from_targets()[1]);
+//		distance_min.push_back(MCS.distance_from_targets()[2]);
+//		distance_max.push_back(MCS.distance_from_targets()[3]);
+//		
+//	}
+//	
+//	df0.addrow("distance_mean", distance_mean);
+//	df0.addrow("distance_variance", distance_variance);
+//	df0.addrow("distance_min", distance_min);
+//	df0.addrow("distance_max", distance_max);
+	dcDataFrame df0;
 	return df0;
 }
 
@@ -144,99 +144,99 @@ void calibration_LHS_new(Population P,
 						 )
 {
 	
-	/// CALIBRATION EXPLORING PARAMETER SPACE
-	/// USING LATIN HYPERCUBE SAMPLING
-	///
-	/// PARAMETERS TO CALIBRATE ARE DEFINED IN A FILE
-	
-	
-	// Read inputs for simulation
-	
-	double		horizon			= getParameterFromFile("horizon_years", "in_simulation.csv");
-	double		timeStep		= getParameterFromFile("timestep_days", "in_simulation.csv")/365.0;
-	
-	double		horizon_prtn	= getParameterFromFile("horizon_prtn_years", "in_simulation.csv");
-	double		timestep_prtn	= getParameterFromFile("timestep_prtn_days", "in_simulation.csv")/365.0;
-	
-	bool		TraceNetwork	= false;
-	int			displayProgress = 11;
-	
-	
-	// Initial STI prevalence
-	
-	string		file_init_STI	= "in_STI_initial_prevalence.csv";
-	
-	
-	// Interventions
-	
-	vector<string> file_intervention;
-	vectorFromCSVfile_string(file_intervention,
-							 "in_intervention_wrapper.csv", 1);
-	
-	
-	// Save LHS sampled parameters into files
-	
-	vector<string> LHS_limits_filename;
-	vector<string> LHS_samples_filename;
-	
-	vectorFromCSVfile_string(LHS_limits_filename, limit_LHS_file_wrapper.c_str(), 1);
-	
-	int nFiles = LHS_limits_filename.size();
-	
-	for (int i=0; i<nFiles; i++)
-	{
-		LHS_samples_filename.push_back(_DIR_CALIB + LHS_limits_filename[i] +".out");
-		LHS_generate_all_samples(_DIR_CALIB + LHS_limits_filename[i], nLHS, LHS_samples_filename[i]);
-	}
-	
-	
-	vector<double> calibdist;
-	
-	// TO DO: DO NOT HARD-CODE THIS
-	int DHSphase = 4;
-	
-	for (int i=0; i<nLHS; i++)
-	{
-		cout << "DEBUG INFO LHS:"<< i <<"; jobnum:"<<jobnum<<endl;
-		
-		// Update parameters' value
-		// with the current LHS set
-		// from all files
-		
-		for (int k=0; k<nFiles; k++)
-		{
-			P.UpdateSelectedParameter_file(LHS_samples_filename[k],i+1);
-		}
-		
-		//		cout<<"---TRACE 1."<<i<<"."<<jobnum<<endl;
-		
-		// Run all MC iterations
-		vector<Simulation> Smc = runSimulationMC(nMC,
-												 P, file_init_STI,
-												 file_intervention,
-												 horizon_prtn, timestep_prtn,
-												 horizon, timeStep,
-												 TraceNetwork,displayProgress,
-												 jobnum);
-		
-		//		cout<<"---TRACE 2."<<i<<"."<<jobnum<<endl;
-		
-		// Setting targets
-		for(int j=0;j<Smc.size();j++)
-		{
-			calibration_set_all_target_wrap(Smc[j],
-											target_file_wrapper,
-											DHSphase);
-		}
-		
-		// Calculating distance from targets
-		calibdist.push_back(average_distance_target(Smc));
-	}
-	
-	//	cout<<"---TRACE 3--"<<jobnum<<endl;
-	
-	vectorToCSVFile_Row(calibdist,
-						_DIR_CALIB+"dist_all_LHS_job_"+int2string(jobnum)+".out");
+//	/// CALIBRATION EXPLORING PARAMETER SPACE
+//	/// USING LATIN HYPERCUBE SAMPLING
+//	///
+//	/// PARAMETERS TO CALIBRATE ARE DEFINED IN A FILE
+//	
+//	
+//	// Read inputs for simulation
+//	
+//	double		horizon			= getParameterFromFile("horizon_years", "in_simulation.csv");
+//	double		timeStep		= getParameterFromFile("timestep_days", "in_simulation.csv")/365.0;
+//	
+//	double		horizon_prtn	= getParameterFromFile("horizon_prtn_years", "in_simulation.csv");
+//	double		timestep_prtn	= getParameterFromFile("timestep_prtn_days", "in_simulation.csv")/365.0;
+//	
+//	bool		TraceNetwork	= false;
+//	int			displayProgress = 11;
+//	
+//	
+//	// Initial STI prevalence
+//	
+//	string		file_init_STI	= "in_STI_initial_prevalence.csv";
+//	
+//	
+//	// Interventions
+//	
+//	vector<string> file_intervention;
+//	vectorFromCSVfile_string(file_intervention,
+//							 "in_intervention_wrapper.csv", 1);
+//	
+//	
+//	// Save LHS sampled parameters into files
+//	
+//	vector<string> LHS_limits_filename;
+//	vector<string> LHS_samples_filename;
+//	
+//	vectorFromCSVfile_string(LHS_limits_filename, limit_LHS_file_wrapper.c_str(), 1);
+//	
+//	int nFiles = LHS_limits_filename.size();
+//	
+//	for (int i=0; i<nFiles; i++)
+//	{
+//		LHS_samples_filename.push_back(_DIR_CALIB + LHS_limits_filename[i] +".out");
+//		LHS_generate_all_samples(_DIR_CALIB + LHS_limits_filename[i], nLHS, LHS_samples_filename[i]);
+//	}
+//	
+//	
+//	vector<double> calibdist;
+//	
+//	// TO DO: DO NOT HARD-CODE THIS
+//	int DHSphase = 4;
+//	
+//	for (int i=0; i<nLHS; i++)
+//	{
+//		cout << "DEBUG INFO LHS:"<< i <<"; jobnum:"<<jobnum<<endl;
+//		
+//		// Update parameters' value
+//		// with the current LHS set
+//		// from all files
+//		
+//		for (int k=0; k<nFiles; k++)
+//		{
+//			P.UpdateSelectedParameter_file(LHS_samples_filename[k],i+1);
+//		}
+//		
+//		//		cout<<"---TRACE 1."<<i<<"."<<jobnum<<endl;
+//		
+//		// Run all MC iterations
+//		vector<Simulation> Smc = runSimulationMC(nMC,
+//												 P, file_init_STI,
+//												 file_intervention,
+//												 horizon_prtn, timestep_prtn,
+//												 horizon, timeStep,
+//												 TraceNetwork,displayProgress,
+//												 jobnum);
+//		
+//		//		cout<<"---TRACE 2."<<i<<"."<<jobnum<<endl;
+//		
+//		// Setting targets
+//		for(int j=0;j<Smc.size();j++)
+//		{
+//			calibration_set_all_target_wrap(Smc[j],
+//											target_file_wrapper,
+//											DHSphase);
+//		}
+//		
+//		// Calculating distance from targets
+//		calibdist.push_back(average_distance_target(Smc));
+//	}
+//	
+//	//	cout<<"---TRACE 3--"<<jobnum<<endl;
+//	
+//	vectorToCSVFile_Row(calibdist,
+//						_DIR_CALIB+"dist_all_LHS_job_"+int2string(jobnum)+".out");
 }
 
 
