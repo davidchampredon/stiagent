@@ -21,7 +21,7 @@ Hd_VRE,0.999
 Cv_VRE,0.999
 ,
 HIV_vacc_waneRate,0.999
-Tp_vacc_waneRate,0.001
+Tp_vacc_waneRate,0.05
 Ct_vacc_waneRate,0.999
 Ng_vacc_waneRate,0.999
 HSV2_vacc_waneRate,0.999

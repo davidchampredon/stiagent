@@ -323,6 +323,8 @@ public:
 
 	vector<STI>		get_STI() {return _STI;}
 	
+	double			get_STIsusceptFactor(STIname stiname, unsigned long uid);
+	
 	vector<unsigned long>	get_UID_pot_preg() {return _UID_pot_preg;}
 	vector<unsigned long>	get_STI_mtct_cumcount() { return _STI_mtct_cumcount;}
 	

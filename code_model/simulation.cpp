@@ -253,188 +253,188 @@ void Simulation::runAllEvents_timeStep(int numTimeStep,
 									   bool logIndivInfo)
 {
 	/// Execute all simulation events during a single time step
-	
-	bool debugflag = false;
-	double t = _population.get_simulationTime();
-	
-	if (debugflag) cout << "SIZE = "<<_population.get_size()<<endl;
-	
-	// Youth arrivals
-	if (debugflag) cout << "youth arrivals"<<endl;
-	_population.youthArrivals(_timeStep,_save_trace_files);
-	
-	// Commercial sex workers (CSW)
-	if (debugflag) cout << "CSW recruitment"<<endl;
-	_population.CSWrecruitment(_timeStep);
-	if (debugflag) cout << "CSW cessation"<<endl;
-	_population.CSWcessation(_timeStep);
-	
-	
-	// Resets variables at the start of this period
-	if (doSex) _population.reset_sexActs();
-	
-	
-	// Partnerships formation and dissolution
-	if (debugflag) cout << "dissolve partnerships"<<endl;
-	if (_population.totalNumberPartnerships()>0)
-		_population.dissolvePartnerships(_timeStep,_save_trace_files);
-	
-	// Partnerships formations and dissolutions
-	if (debugflag) cout << "spousalScanAllCasual"<<endl;
-	_population.formPartnerships(_timeStep,_save_trace_files);
-	_population.spousalScanAllCasual();
-	
-	// DEBUG
-	_population.debug_check_partnerUID();
-	
-	// Sex acts
-	if (debugflag) cout << "update_sexActs"<<endl;
-	if (doSex) _population.update_sexActs(_timeStep, _save_trace_files);
-	
-	// STI transmissions
-	if (debugflag) cout << "STI_transmissions"<<endl;
-	vector<unsigned long> incidence;
-	if (t>0 && doSex){
-		incidence = _population.STI_transmissions(_timeStep,_save_trace_files);
-	}
-	
-	// Pregnancies and MTCT
-	if (debugflag) cout << "Pregnancies"<<endl;
-	if (t>0 && doSex) update_pregnancies(_timeStep);
-	
-	// Duration, age updates
-	if (debugflag) cout << "updateAllDurations_updateAllAges"<<endl;
-	_population.updateAllDurations(_timeStep);
-	_population.updateAllAges(_timeStep);
-	
-	// Natural clearance of all STIs
-	if (debugflag) cout << "STI_update_naturalClearance"<<endl;
-	_population.STI_update_naturalClearance();
-	
-	// STI Treatment and vaccine waning:
-	for (int sti=0; sti<_population.get_STI().size(); sti++){
-		STIname stiname = _population.get_STI()[sti].get_name();
-		update_cure(stiname);
-		update_vacc(stiname);
-	}
-	
-	// Deaths
-	if (debugflag) cout << "deathEvents"<<endl;
-	_population.deathEvents(_timeStep,false /*_save_trace_files*/); // <-- force not write trace file because huge!
-	
-	
-	// update incidence
-	if (doSex){
-		if (numTimeStep==0){
-			int n_sti = _population.get_STI().size();
-			for (int j=0;j<n_sti; j++)
-				_STI_incidence(0,j) = 0.0;
-		}
-		if (numTimeStep>0){
-			_STI_incidence.addRowVector(incidence);
-		}
-	}
-	
-	// update reproductive numbers for all STIs
-	if (doSex) {
-		for (int sti=0; sti<_population.get_nSTImodelled(); sti++) {
-			STIname stiname = _population.get_STI()[sti].get_name();
-			_population.update_secondary_cases(stiname);
-		}
-	}
-	
-	
-	// --------------------------------------------
-	// Log file
-	// --------------------------------------------
-	
-	// TO DO: do not impose no log file when no sex
-	bool tmp_save_trace_files = true; // <-- for debug purposes
-	if(doSex && tmp_save_trace_files/*_save_trace_files*/)
-	{
-		// Population level info in log file
-		f << t << ",";
-		f << _population.census_alive() << ",";
-		f << _population.census_dead() << ",";
-		f << _population.totalNumberPartnerships() << ",";
-		f << _population.totalNumberSpousalPartneships() << ",";
-		f << _population.census_Females() << ",";
-		
-		int nSTI = _population.get_nSTImodelled();
-		for (int i=0; i<nSTI; i++){
-			f << _population.census_STIinfected()[i];
-			f<<",";
-		}
-		f << _population.census_STIcoinfected(HIV, Tp);
-		f << ",";
-		
-		f << _population.census_STIcoinfected(HIV, Tp,0);
-		f << ",";
-		f << _population.census_STIcoinfected(HIV, Tp,1);
-		f << ",";
-		f << _population.census_STIcoinfected(HIV, Tp,2);
-		f << ",";
-		f << _population.census_STIcoinfected(HIV, Tp,9);
-		f << ",";
-		
-		f << _population.census_CSW().size();
-		f << ",";
-		
-		for (int r=0; r<= _population.get_maxRiskGroup(); r++){
-			f << _population.census_riskGroup()[r];
-			f << ",";
-		}
-		
-		f << _population.census_circum();
-		f << ",";
-		f << _newborn_timestep;
-		f << ",";
-		
-		// HIV prevalence by risk group
-		f << _population.STI_prevalence(HIV, 0) << ",";
-		f << _population.STI_prevalence(HIV, 1) << ",";
-		f << _population.STI_prevalence(HIV, 2) << ",";
-		f << _population.STI_prevalence(HIV, 9) << ",";
-		// Tp prevalence by risk group
-		f << _population.STI_prevalence(Tp, 0) << ",";
-		f << _population.STI_prevalence(Tp, 1) << ",";
-		f << _population.STI_prevalence(Tp, 2) << ",";
-		f << _population.STI_prevalence(Tp, 9) << ",";
-		
-		// Reproductive numbers
-		f << _population.Reff_cum_mean(HIV) <<",";
-		f << _population.Reff_cum_mean(Tp);
-		
-		f << endl;
-	}
-	
-	
-	if (logIndivInfo)
-	{
-		for (int uid=0; uid<_population.get_size(); uid++){
-			ff << t << ",";
-			ff << _population.getIndividual(uid).get_UID() << ",";
-			ff << _population.getIndividual(uid).isAlive() << ",";
-			
-			if (_population.getIndividual(uid).get_nCurrSexPartner()>0)
-			{
-				ff << _population.getIndividual(uid).getPartnerUID(0);
-			}
-			ff<< ",";
-			
-			// TO DO: awkward:
-			if (_population.getIndividual(uid).get_UID_n_sexAct_period().size()>0 &&
-				_population.getIndividual(uid).get_UID_sexAct_period()[0]== _population.getIndividual(uid).getPartnerUID(0))
-			{
-				ff << _population.getIndividual(uid).get_UID_n_sexAct_period()[0];
-			}
-			ff<< ",";
-			
-			ff << _population.getIndividual(uid).get_STIduration()[0] << ",";
-			ff << _population.getIndividual(uid).STI_IC()[0];
-			ff << endl;
-		}
-	}
+//	
+//	bool debugflag = false;
+//	double t = _population.get_simulationTime();
+//	
+//	if (debugflag) cout << "SIZE = "<<_population.get_size()<<endl;
+//	
+//	// Youth arrivals
+//	if (debugflag) cout << "youth arrivals"<<endl;
+//	_population.youthArrivals(_timeStep,_save_trace_files);
+//	
+//	// Commercial sex workers (CSW)
+//	if (debugflag) cout << "CSW recruitment"<<endl;
+//	_population.CSWrecruitment(_timeStep);
+//	if (debugflag) cout << "CSW cessation"<<endl;
+//	_population.CSWcessation(_timeStep);
+//	
+//	
+//	// Resets variables at the start of this period
+//	if (doSex) _population.reset_sexActs();
+//	
+//	
+//	// Partnerships formation and dissolution
+//	if (debugflag) cout << "dissolve partnerships"<<endl;
+//	if (_population.totalNumberPartnerships()>0)
+//		_population.dissolvePartnerships(_timeStep,_save_trace_files);
+//	
+//	// Partnerships formations and dissolutions
+//	if (debugflag) cout << "spousalScanAllCasual"<<endl;
+//	_population.formPartnerships(_timeStep,_save_trace_files);
+//	_population.spousalScanAllCasual();
+//	
+//	// DEBUG
+//	_population.debug_check_partnerUID();
+//	
+//	// Sex acts
+//	if (debugflag) cout << "update_sexActs"<<endl;
+//	if (doSex) _population.update_sexActs(_timeStep, _save_trace_files);
+//	
+//	// STI transmissions
+//	if (debugflag) cout << "STI_transmissions"<<endl;
+//	vector<unsigned long> incidence;
+//	if (t>0 && doSex){
+//		incidence = _population.STI_transmissions(_timeStep,_save_trace_files);
+//	}
+//	
+//	// Pregnancies and MTCT
+//	if (debugflag) cout << "Pregnancies"<<endl;
+//	if (t>0 && doSex) update_pregnancies(_timeStep);
+//	
+//	// Duration, age updates
+//	if (debugflag) cout << "updateAllDurations_updateAllAges"<<endl;
+//	_population.updateAllDurations(_timeStep);
+//	_population.updateAllAges(_timeStep);
+//	
+//	// Natural clearance of all STIs
+//	if (debugflag) cout << "STI_update_naturalClearance"<<endl;
+//	_population.STI_update_naturalClearance();
+//	
+//	// STI Treatment and vaccine waning:
+//	for (int sti=0; sti<_population.get_STI().size(); sti++){
+//		STIname stiname = _population.get_STI()[sti].get_name();
+//		update_cure(stiname);
+//		update_vacc(stiname);
+//	}
+//	
+//	// Deaths
+//	if (debugflag) cout << "deathEvents"<<endl;
+//	_population.deathEvents(_timeStep,false /*_save_trace_files*/); // <-- force not write trace file because huge!
+//	
+//	
+//	// update incidence
+//	if (doSex){
+//		if (numTimeStep==0){
+//			int n_sti = _population.get_STI().size();
+//			for (int j=0;j<n_sti; j++)
+//				_STI_incidence(0,j) = 0.0;
+//		}
+//		if (numTimeStep>0){
+//			_STI_incidence.addRowVector(incidence);
+//		}
+//	}
+//	
+//	// update reproductive numbers for all STIs
+//	if (doSex) {
+//		for (int sti=0; sti<_population.get_nSTImodelled(); sti++) {
+//			STIname stiname = _population.get_STI()[sti].get_name();
+//			_population.update_secondary_cases(stiname);
+//		}
+//	}
+//	
+//	
+//	// --------------------------------------------
+//	// Log file
+//	// --------------------------------------------
+//	
+//	// TO DO: do not impose no log file when no sex
+//	bool tmp_save_trace_files = true; // <-- for debug purposes
+//	if(doSex && tmp_save_trace_files/*_save_trace_files*/)
+//	{
+//		// Population level info in log file
+//		f << t << ",";
+//		f << _population.census_alive() << ",";
+//		f << _population.census_dead() << ",";
+//		f << _population.totalNumberPartnerships() << ",";
+//		f << _population.totalNumberSpousalPartneships() << ",";
+//		f << _population.census_Females() << ",";
+//		
+//		int nSTI = _population.get_nSTImodelled();
+//		for (int i=0; i<nSTI; i++){
+//			f << _population.census_STIinfected()[i];
+//			f<<",";
+//		}
+//		f << _population.census_STIcoinfected(HIV, Tp);
+//		f << ",";
+//		
+//		f << _population.census_STIcoinfected(HIV, Tp,0);
+//		f << ",";
+//		f << _population.census_STIcoinfected(HIV, Tp,1);
+//		f << ",";
+//		f << _population.census_STIcoinfected(HIV, Tp,2);
+//		f << ",";
+//		f << _population.census_STIcoinfected(HIV, Tp,9);
+//		f << ",";
+//		
+//		f << _population.census_CSW().size();
+//		f << ",";
+//		
+//		for (int r=0; r<= _population.get_maxRiskGroup(); r++){
+//			f << _population.census_riskGroup()[r];
+//			f << ",";
+//		}
+//		
+//		f << _population.census_circum();
+//		f << ",";
+//		f << _newborn_timestep;
+//		f << ",";
+//		
+//		// HIV prevalence by risk group
+//		f << _population.STI_prevalence(HIV, 0) << ",";
+//		f << _population.STI_prevalence(HIV, 1) << ",";
+//		f << _population.STI_prevalence(HIV, 2) << ",";
+//		f << _population.STI_prevalence(HIV, 9) << ",";
+//		// Tp prevalence by risk group
+//		f << _population.STI_prevalence(Tp, 0) << ",";
+//		f << _population.STI_prevalence(Tp, 1) << ",";
+//		f << _population.STI_prevalence(Tp, 2) << ",";
+//		f << _population.STI_prevalence(Tp, 9) << ",";
+//		
+//		// Reproductive numbers
+//		f << _population.Reff_cum_mean(HIV) <<",";
+//		f << _population.Reff_cum_mean(Tp);
+//		
+//		f << endl;
+//	}
+//	
+//	
+//	if (logIndivInfo)
+//	{
+//		for (int uid=0; uid<_population.get_size(); uid++){
+//			ff << t << ",";
+//			ff << _population.getIndividual(uid).get_UID() << ",";
+//			ff << _population.getIndividual(uid).isAlive() << ",";
+//			
+//			if (_population.getIndividual(uid).get_nCurrSexPartner()>0)
+//			{
+//				ff << _population.getIndividual(uid).getPartnerUID(0);
+//			}
+//			ff<< ",";
+//			
+//			// TO DO: awkward:
+//			if (_population.getIndividual(uid).get_UID_n_sexAct_period().size()>0 &&
+//				_population.getIndividual(uid).get_UID_sexAct_period()[0]== _population.getIndividual(uid).getPartnerUID(0))
+//			{
+//				ff << _population.getIndividual(uid).get_UID_n_sexAct_period()[0];
+//			}
+//			ff<< ",";
+//			
+//			ff << _population.getIndividual(uid).get_STIduration()[0] << ",";
+//			ff << _population.getIndividual(uid).STI_IC()[0];
+//			ff << endl;
+//		}
+//	}
 	
 }
 
@@ -3207,6 +3207,7 @@ void Simulation::vaccinate_indiv(unsigned long uid, STIname stiname)
 	_population.vaccinate_indiv(uid, stiname);
 }
 
+
 void Simulation::update_vacc(STIname stiname){
 	/// Update immunity provided by vaccination
 	
@@ -3224,12 +3225,11 @@ void Simulation::update_vacc(STIname stiname){
 			// immunity:
 			double imm = exp(-tv * w);
 			// update the value of waning immunity:
-			// delete : _population.getIndividual(uid).set_STI_immunity(sti_i, imm);
 			_population.set_STI_immunity(uid, stiname, imm);
 			
-
-			//DEBUG
-//			cout <<_simulationTime << " --> UID "<<uid<< " imm = "<< imm <<endl;
+			// update susceptibility factor:
+			double prev_sf = _population.get_STIsusceptFactor(stiname,uid);
+			_population.set_STIsusceptFactor(uid, stiname, prev_sf*(1-imm));
 		}
 	}
 }

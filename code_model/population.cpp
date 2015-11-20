@@ -3412,6 +3412,10 @@ double Population::get_PartnerMatrix_element(unsigned long uidf, unsigned long u
 }
 
 
+double Population::get_STIsusceptFactor(STIname stiname, unsigned long uid){
+	return(_individual[uid].get_STIsusceptFactor(stiname));
+}
+
 
 void Population::setDissolutionParameters(string dissolutionFile)
 {
