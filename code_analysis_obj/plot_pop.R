@@ -224,7 +224,7 @@ plot.immunity <- function(sim,stiname){
 	P.all <- get.population(sim)
 	var<- paste0(stiname,"immun")
 	
-	g1 <- ggplot(P.all)+geom_histogram(aes_string(x=var,fill="Gender"),
+	g1 <- ggplot(P.all)+geom_histogram(aes_string(x=var,y="..density..",fill="Gender"),
 									  binwidth = 0.05)
 	g1 <- g1 + coord_cartesian(xlim=c(0,1))
 	g1 <- g1 + ggtitle(paste("Immunity distribution for",stiname)) + xlab("Immunity")

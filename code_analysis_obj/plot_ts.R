@@ -1,6 +1,6 @@
-#####
-#####   FUNCTIONS TO PLOT SIMULATION's TIME SERIES
-#####
+#
+#   FUNCTIONS TO PLOT SIMULATION's TIME SERIES
+#
 
 source("utils.R")
 library(ggplot2)
@@ -10,7 +10,8 @@ plot.timeseries <- function(sim,
 							varname,
 							title,
 							do.summary=TRUE,
-							qLo=0.1,qHi=0.9){
+							qLo=0.1,qHi=0.9,
+							interv.info = NULL){
 	
 	DF.all <- get.timeseries(sim)
 	DF <- DF.all[,c("time","mc",varname)]
@@ -33,6 +34,22 @@ plot.timeseries <- function(sim,
 		g <- ggplot(DF)+geom_line(aes(x=time),aes_string(y=varname),colour=factor(mc))
 		g <- g + ggtitle(title) + ylab("")
 	}
+	
+	# interventions
+	ymx <- max(DF[,varname])
+	if(!is.null(interv.info)){
+		for(i in 1:length(interv.info)){
+			v = interv.info[[i]]$sched
+			v <- v[v<998]
+			g <- g + geom_vline(xintercept=v, colour="orange",lty=2,size=2)
+			g <- g + annotate("text", 
+							  x = v*0.96, 
+							  y = rep(ymx,length(v)), 
+							  label = interv.info[[i]]$sti,
+							  col="orange")
+		}
+	}
+	
 	return(g)
 }
 
