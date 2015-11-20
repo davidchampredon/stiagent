@@ -80,5 +80,6 @@ plot.pop.all <- function(sim){
 				 plot.stipos.prtn(sim,stiname="HIV",excl.csw=TRUE),
 				 plot.stipos.prtn(sim,stiname="Tp",excl.csw=TRUE)
 	)
+	plot.immunity(sim,stiname="Tp")
 	dev.off()
 }

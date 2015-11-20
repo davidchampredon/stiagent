@@ -6276,6 +6276,14 @@ void Population::vaccinate_indiv(unsigned long uid, STIname stiname)
 }
 
 
+
+void Population::set_STIsusceptFactor(unsigned long uid, STIname stiname, double x){
+
+	int sti_i = positionSTIinVector(stiname, _STI);
+	_individual[uid].set_STIsusceptFactor(sti_i, x);
+}
+
+
 void Population::set_STI_immunity(unsigned long uid, STIname stiname, double immunity){
 	
 	/// Set the immunitiy level of a given individual for a STI

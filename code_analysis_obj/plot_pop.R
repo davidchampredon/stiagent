@@ -219,4 +219,20 @@ plot.stipos.prtn <- function(sim,stiname,excl.csw=TRUE){
 }
 
 
+plot.immunity <- function(sim,stiname){
+	
+	P.all <- get.population(sim)
+	var<- paste0(stiname,"immun")
+	
+	g1 <- ggplot(P.all)+geom_histogram(aes_string(x=var,fill="Gender"),
+									  binwidth = 0.05)
+	g1 <- g1 + coord_cartesian(xlim=c(0,1))
+	g1 <- g1 + ggtitle(paste("Immunity distribution for",stiname)) + xlab("Immunity")
+	g1 <- g1 + facet_wrap(~Gender)
+	
+	g2 <- ggplot(P.all)+geom_point(aes_string(y=var,x="age",colour="Gender"))
+	g2 <- g2 + ggtitle("Age and Immunity")
+	
+	grid.arrange(g1,g2)
+}
 

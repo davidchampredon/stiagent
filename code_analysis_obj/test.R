@@ -41,29 +41,32 @@ if (n.cpu<=0) n.cpu <- max(1,cpumax+n.cpu)
 #################################################################
 ### Run simulation
 #################################################################
-
+t0 <- as.numeric(Sys.time())
 sim <- stiagent_runsim_one_scen(folder_inputs,
 								folder_calib,
 								founder_file,
 								scenario_file,
-								n.mc = 2,
+								n.mc = 3,
 								n.cpu,
 								path.stiagent.lib,
 								displayProgress=0)
-
+t1 <- as.numeric(Sys.time())
+message(paste("Duration simulations:",round((t1-t0)/60,2),"minutes"))
 
 #################################################################
 ### Plots (plot_sim.R)
 #################################################################
-
+message("plotting...",appendLF = F)
 # plot time series:
 plot.ts(sim)
 
 # plot population:
 plot.pop.all(sim)
+message("done.")
 
 # -----------------------------------------------------------------
 
-t1 <- as.numeric(Sys.time())
-message(paste("----- Time elapsed:",round((t1-t0)/60,1))," minutes -----")
+t2 <- as.numeric(Sys.time())
+message(paste("----- Time elapsed:",round((t2-t0)/60,1))," minutes -----")
 save.image(file = "test.RData")
+message(" === END ===")

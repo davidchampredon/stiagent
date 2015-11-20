@@ -845,7 +845,7 @@ public:
 
 	void		vaccinate_indiv(unsigned long uid, STIname stiname);
 	void		set_STI_immunity(unsigned long uid, STIname stiname, double immunity);
-	
+	void		set_STIsusceptFactor(unsigned long uid, STIname stiname, double x);
     
 	// ===============================
 	// ===       MISCELLENAOUS     ===
