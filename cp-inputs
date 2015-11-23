@@ -1,0 +1,2 @@
+rm -rf ./inputs_$1/*.csv
+cp ./inputs/_pop_$1/*.csv ./inputs_$1/

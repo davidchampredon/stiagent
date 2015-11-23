@@ -20,11 +20,11 @@ cpumax <- parallel::detectCores()
 
 ### paths
 path.stiagent.lib <- "../Rlibrary/lib"
-folder_inputs <- "../inputs/"
+folder_inputs <- "../inputs_A/"
 folder_calib <- "../calibration/"
 
 ### Founder population parameters:
-founder_file <- "in_populationFeatures_TEST.csv"
+founder_file <- "in_populationFeatures.csv"
 
 # Scenario file defining interventions
 # that will be run during this simulation:

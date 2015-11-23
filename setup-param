@@ -1,0 +1,4 @@
+./inputs/copy-all
+./cp-inputs A
+./cp-inputs B
+./cp-inputs C
