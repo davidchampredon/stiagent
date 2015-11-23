@@ -24,3 +24,5 @@ outputs/*.out
 SF_MC_timestamp.txt
 
 *.RData
+*.Rhistory
+
