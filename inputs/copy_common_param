@@ -1,0 +1,13 @@
+echo Copying common parameters for population $1
+DIR=./_pop_$1
+cp interv_*.csv $DIR
+cp in_treatment.csv $DIR
+cp in_scenario*.csv $DIR
+cp in_STI*.csv $DIR
+cp in_paramBirth.csv $DIR
+cp in_paramDeath.csv $DIR
+cp in_paramDMG.csv $DIR
+cp in_HIVrebound.csv $DIR
+cp in_populationFeatures.csv $DIR
+cp in_simulation.csv $DIR
+echo ... done for population $1.
