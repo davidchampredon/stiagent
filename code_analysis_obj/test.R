@@ -9,7 +9,6 @@ t0 <- as.numeric(Sys.time())
 source("run_one_scenario.R")
 source("plot_sim.R")
 
-
 library(gridExtra)
 library(parallel)
 cpumax <- parallel::detectCores()
@@ -46,7 +45,7 @@ sim <- stiagent_runsim_one_scen(folder_inputs,
 								folder_calib,
 								founder_file,
 								scenario_file,
-								n.mc = 4,
+								n.mc = 2,
 								n.cpu,
 								path.stiagent.lib,
 								displayProgress=0)
@@ -56,13 +55,13 @@ message(paste("Duration simulations:",round((t1-t0)/60,2),"minutes"))
 #################################################################
 ### Plots (plot_sim.R)
 #################################################################
-message("plotting...",appendLF = F)
+message("plotting...")
 # plot time series:
 plot.ts(sim)
 
 # plot population:
 plot.pop.all(sim)
-message("done.")
+message("... plotting done.")
 
 # -----------------------------------------------------------------
 

@@ -1,3 +1,8 @@
+#####################################################################
+###
+###   COMPARE OUTCOMES FROM DIFFERENT INTERVENTION SCENARIOS
+###
+#####################################################################
 
 source("run_one_scenario.R")
 source("reformat_obj.R")
@@ -14,9 +19,8 @@ path.stiagent.lib <- "../Rlibrary/lib"
 folder_inputs = "../inputs/"
 folder_calib = "../calibration/"
 
-
 ### Founder population parameters:
-founder_file <- "in_populationFeatures.csv"
+founder_file <- "in_populationFeatures_TEST.csv"
 
 # Scenario file defining interventions
 # that will be run during this simulation:
@@ -28,7 +32,7 @@ scenario_file[[3]] <- "in_scenario_TrSympt.csv"
 ps <- read.csv("prm_simul.csv",header = FALSE)
 n.mc <- ps[ps[,1]=="mc_iter",2]
 n.cpu <- ps[ps[,1]=="ncpu",2]
-if (n.cpu<=0) n.cpu <- max(1,cpumax-n.cpu)
+if (n.cpu<=0) n.cpu <- max(1,cpumax+n.cpu)
 
 
 ### Run each scenario
