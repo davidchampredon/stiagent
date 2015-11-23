@@ -1,3 +1,8 @@
+echo ================================================
+echo = Warning: 
+echo = Population specific files are NOT generated 
+echo = with this script use Excel spreadsheets
+echo ================================================
 ./inputs/copy-all
 ./cp-inputs A
 ./cp-inputs B

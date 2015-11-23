@@ -26,13 +26,7 @@ plot.ts <- function(sim){
 	
 	interv.info <- get.interv.time(folder_inputs,scenario_file)
 	
-	
-	pdf("plot_ts.pdf",width=20,height=12)
-	
-	
 	### Population ###
-	
-	
 	grid.arrange(
 		plot.timeseries(sim,varname="nAlive",title="Alive",interv.info=interv.info),
 		plot.timeseries(sim,varname="fem.ratio",title="Female ratio",interv.info=interv.info),
@@ -50,7 +44,6 @@ plot.ts <- function(sim){
 		plot.proportion.timeseries(sim,varname=c("nRskGrp0","nRskGrp1","nRskGrp2"),
 								   title="Risk group proportions")
 	)
-	
 	
 	### Diseases ###
 	
@@ -77,14 +70,12 @@ plot.ts <- function(sim){
 		plot.prev.risk(sim, stiname="HIV"),
 		plot.prev.risk(sim, stiname="Tp")
 	)
-	dev.off()
-	
 }
 
 
 
 plot.pop.all <- function(sim){
-	pdf("plot_pop.pdf",width=20,height=12)
+	
 	
 	plot.durPrtn.rskgrp(sim)
 	plot.prtn.distrib(sim)
@@ -102,5 +93,4 @@ plot.pop.all <- function(sim){
 				 plot.stipos.prtn(sim,stiname="Tp",excl.csw=TRUE)
 	)
 	plot.immunity(sim,stiname="Tp")
-	dev.off()
 }
