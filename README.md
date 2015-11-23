@@ -1,8 +1,9 @@
 # stiagent
 Agent-based model for sexually transmitted infections.
 
+====================================
 
-(As of 2015-11-11)
+(As of 2015-11-23)
 
 **Directories**
 
@@ -25,7 +26,7 @@ The other directories are not actively used and should be cleaned-up once a stab
 
 *1) Goal*
 
-We want to compare various epidemiological outcomes under different intervention scenarios using an hypothetical syphilis vaccine.
+We want to compare various epidemiological outcomes under different intervention scenarios using an hypothetical syphilis vaccine. See ```goals.xlsx```. Three populations are considered, each representing a `typical` population with low/high Syphilis and HIV prevlences.
 
 *2) Preparatory work*
 
