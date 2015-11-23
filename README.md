@@ -19,6 +19,8 @@ Agent-based model for sexually transmitted infections.
 
 The other directories are not actively used and should be cleaned-up once a stable version of this code runs with R wrapping.
 
+====================================
+
 **Simulation Analysis**
 
 *1) Goal*
