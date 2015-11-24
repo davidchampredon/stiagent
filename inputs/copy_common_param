@@ -1,7 +1,5 @@
 echo Copying common parameters for population $1
 DIR=./_pop_$1
-cp interv_*.csv $DIR
-cp in_treatment.csv $DIR
 cp in_STI*.csv $DIR
 cp in_paramBirth.csv $DIR
 cp in_paramDeath.csv $DIR
