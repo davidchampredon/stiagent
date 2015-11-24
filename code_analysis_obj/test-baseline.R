@@ -29,7 +29,7 @@ founder_file <- "in_populationFeatures.csv"
 
 # Scenario file defining interventions
 # that will be run during this simulation:
-scenario_file <-  "in_scenario_test.csv"
+scenario_file <-  "in_scenario_baseline.csv"
 
 ps <- read.csv("prm_simul.csv",header = FALSE)
 n.mc <- ps[ps[,1]=="mc_iter",2]

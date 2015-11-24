@@ -1,1 +1,4 @@
+cd $(dirname $0)
+Rscript test-baseline.R A
 Rscript test-baseline.R B
+Rscript test-baseline.R C
