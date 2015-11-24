@@ -14,9 +14,6 @@ Agent-based model for sexually transmitted infections.
 ```inputs```: all necessary inputs for the model. There are many, so an Excel spreadsheet helps to specify and visualize them all.
 
 ```code_analysis_obj```: where simulations are run and analyzed with Rscripts. 
- * ```main_comp.R``` compares outcomes of several scenarios.
- * ```test.R``` performs various tests, mostly for debugging.
-
 
 The other directories are not actively used and should be cleaned-up once a stable version of this code runs with R wrapping.
 
@@ -31,10 +28,10 @@ We want to compare various epidemiological outcomes under different intervention
 *2) Preparatory work*
 
 Run simulations with the baseline scenario on the 3 populations and check 
- * i) prevalence reached equilibrium at t=30y (when new interventions start)
+ * i) prevalence reached equilibrium from t=30y (when new interventions start) to 50y (horizon)
  * ii) population features and time series sensible
 
-For now, these tests are done with ```test.R```
+For now, these tests are done with `make test_baseline_prev.out`.
 
 *3) Comparisons*
 
