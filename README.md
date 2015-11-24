@@ -14,9 +14,6 @@ Agent-based model for sexually transmitted infections.
 ```inputs```: all necessary inputs for the model. There are many, so an Excel spreadsheet helps to specify and visualize them all.
 
 ```code_analysis_obj```: where simulations are run and analyzed with Rscripts. 
- * ```main_comp.R``` compares outcomes of several scenarios.
- * ```test.R``` performs various tests, mostly for debugging.
-
 
 The other directories are not actively used and should be cleaned-up once a stable version of this code runs with R wrapping.
 
