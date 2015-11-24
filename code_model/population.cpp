@@ -1759,38 +1759,38 @@ void Population::deathEvents(double prd, bool save_trace_file)
 	
 	
 	// Trace files
-	string fname_death_indiv	= _DIR_OUT + "death_individuals.out";
-	string fname_death_indiv2	= _DIR_OUT + "death_individuals_notDead.out";
-	string fname_death			= _DIR_OUT + "deaths.out";
+//	string fname_death_indiv	= _DIR_OUT + "death_individuals.out";
+//	string fname_death_indiv2	= _DIR_OUT + "death_individuals_notDead.out";
+//	string fname_death			= _DIR_OUT + "deaths.out";
 	
-	ofstream f(fname_death_indiv.c_str(), ios::app);
-	ofstream f2(fname_death_indiv2.c_str(), ios::app);
-	ofstream g(fname_death.c_str(), ios::app);
+//	ofstream f(fname_death_indiv.c_str(), ios::app);
+//	ofstream f2(fname_death_indiv2.c_str(), ios::app);
+//	ofstream g(fname_death.c_str(), ios::app);
 	
 	// headers for trace files
 	if (save_trace_file) {
 		
-		string tmp,tmp2;
-		ifstream fchk(fname_death_indiv.c_str());
-		getline(fchk,tmp); fchk.close();
-		bool isempty =(tmp.length()==0);
-		
-		ifstream fchk2(fname_death_indiv2.c_str());
-		tmp=""; getline(fchk2,tmp); fchk2.close();
-		bool isempty_2 =(tmp.length()==0);
-		
-		ifstream gchk(fname_death.c_str());
-		getline(gchk,tmp2); fchk.close();
-		bool isempty2 =(tmp2.length()==0);
-		
-		if (isempty)
-			f << "time,UID,Age,HIVduration,probaDeath,riskGroup" << endl; // add fields accordingly
-		
-		if (isempty_2)
-			f2 << "time,UID,Age,HIVduration,probaDeath,riskGroup" << endl; // add fields accordingly
-		
-		if (isempty2)
-			g << "time,nDeaths,popSize"<<endl;
+//		string tmp,tmp2;
+//		ifstream fchk(fname_death_indiv.c_str());
+//		getline(fchk,tmp); fchk.close();
+//		bool isempty =(tmp.length()==0);
+//		
+//		ifstream fchk2(fname_death_indiv2.c_str());
+//		tmp=""; getline(fchk2,tmp); fchk2.close();
+//		bool isempty_2 =(tmp.length()==0);
+//		
+//		ifstream gchk(fname_death.c_str());
+//		getline(gchk,tmp2); fchk.close();
+//		bool isempty2 =(tmp2.length()==0);
+//		
+//		if (isempty)
+//			f << "time,UID,Age,HIVduration,probaDeath,riskGroup" << endl; // add fields accordingly
+//		
+//		if (isempty_2)
+//			f2 << "time,UID,Age,HIVduration,probaDeath,riskGroup" << endl; // add fields accordingly
+//		
+//		if (isempty2)
+//			g << "time,nDeaths,popSize"<<endl;
 	}
 	// -- end headers
 	
@@ -1810,12 +1810,12 @@ void Population::deathEvents(double prd, bool save_trace_file)
 			{
 				if (save_trace_file)
 				{
-					// Tracks the deaths at the individual level
-					f << _simulationTime << "," << uid << "," << _individual[uid].get_age() <<",";
-					// DELETE WHEN SURE: f << _individual[uid].get_STIduration()[HIV] << "," << probaDeath<<",";
-					f << _individual[uid].get_STIduration(HIV) << "," << probaDeath<<",";
-					f << _individual[uid].get_riskGroup();
-					f << endl;
+//					// Tracks the deaths at the individual level
+//					f << _simulationTime << "," << uid << "," << _individual[uid].get_age() <<",";
+//					// DELETE WHEN SURE: f << _individual[uid].get_STIduration()[HIV] << "," << probaDeath<<",";
+//					f << _individual[uid].get_STIduration(HIV) << "," << probaDeath<<",";
+//					f << _individual[uid].get_riskGroup();
+//					f << endl;
 				}
 				
 				kill(uid,save_trace_file);
@@ -1823,19 +1823,19 @@ void Population::deathEvents(double prd, bool save_trace_file)
 			}
 			if (u >= probaDeath && save_trace_file)
 			{
-				// Tracks the deaths at the individual level
-				f2 << _simulationTime << "," << uid << "," << _individual[uid].get_age() <<",";
-				//DELETE WHE SURE: f2 << _individual[uid].get_STIduration()[HIV] << "," << probaDeath<<",";
-				f2 << _individual[uid].get_STIduration(HIV) << "," << probaDeath<<",";
-				f2 << _individual[uid].get_riskGroup();
-				f2 << endl;
+//				// Tracks the deaths at the individual level
+//				f2 << _simulationTime << "," << uid << "," << _individual[uid].get_age() <<",";
+//				//DELETE WHE SURE: f2 << _individual[uid].get_STIduration()[HIV] << "," << probaDeath<<",";
+//				f2 << _individual[uid].get_STIduration(HIV) << "," << probaDeath<<",";
+//				f2 << _individual[uid].get_riskGroup();
+//				f2 << endl;
 				
 			}
 		}
 	}
 	
 	// Tracks the deaths at the population level
-	if (save_trace_file) g << _simulationTime << ","<<cnt<<","<<census_alive()<<endl;
+//	if (save_trace_file) g << _simulationTime << ","<<cnt<<","<<census_alive()<<endl;
 }
 
 
@@ -1844,8 +1844,7 @@ unsigned long Population::census_Females()
 {
 	unsigned long f = 0;
 	
-	for (int i=0; i<_size; i++)
-	{
+	for (int i=0; i<_size; i++){
 		if (_individual[i].get_gender()==female && _individual[i].isAlive())
 			f++;
 	}
@@ -3147,7 +3146,7 @@ vector<unsigned long> Population::formUIDcandidateFemale(double prd)
 void Population::formPartnerships(double prd, bool save_trace_file)
 {
 	
-	ofstream tracefile(_DIR_OUT + "nFemalesCandidate.out",ios::app);
+//	ofstream tracefile(_DIR_OUT + "nFemalesCandidate.out",ios::app);
 	
 	// Retrieve the UIDs of all females candidate for new partnership
 	vector<unsigned long> uid_females_candidate = formUIDcandidateFemale(prd);
@@ -3155,11 +3154,10 @@ void Population::formPartnerships(double prd, bool save_trace_file)
 	// Number of those females
 	unsigned long nFc = uid_females_candidate.size();
 	
-	if(save_trace_file) tracefile<<_simulationTime<<","<<nFc<<endl;
+//	if(save_trace_file) tracefile<<_simulationTime<<","<<nFc<<endl;
 	
 	// For each of those females, pick randomly a male and try to match
-	for (int i=0; i<nFc; i++)
-	{
+	for (int i=0; i<nFc; i++){
 		formOnePartnershipFromFemale_rand(uid_females_candidate[i],save_trace_file);
 	}
 	
@@ -3193,7 +3191,7 @@ void Population::dissolvePartnerships(double prd, bool save_trace_file)
 	vector<long> random_index = uniformIntVectorUnique(Dc,0,N-1);
 	
 	// Trace file
-	ofstream tracefile(_DIR_OUT + "partner_dissol_tentatives.out",ios::app);
+//	ofstream tracefile(_DIR_OUT + "partner_dissol_tentatives.out",ios::app);
 	
 	// Scan all selected partnerships
 	// and draw a random variable for each of them
@@ -3233,9 +3231,9 @@ void Population::dissolvePartnerships(double prd, bool save_trace_file)
 		}
 		
 		if(save_trace_file){
-			tracefile << g_Spouse<<","<<g_RG<<","<<g_Duration<<",";
-			tracefile << g_Age<<","<< g_Deficit<<","<< g_symptom<<",";//<< g_ageConc<<",";
-			tracefile << proba << "," <<successDissolution<<endl;
+//			tracefile << g_Spouse<<","<<g_RG<<","<<g_Duration<<",";
+//			tracefile << g_Age<<","<< g_Deficit<<","<< g_symptom<<",";//<< g_ageConc<<",";
+//			tracefile << proba << "," <<successDissolution<<endl;
 		}
 		// DEBUG
 		/*cout << dissolve;
@@ -3683,17 +3681,17 @@ void Population::sexActs_number_males(unsigned long uid, double period,
 	int nSexActs = 0;
 	
 	// Trace files ---
-	string filename = _DIR_OUT + "sexReduction.out";
-	ifstream fcheck(filename.c_str());
-	string tmp;
-	getline(fcheck,tmp);
-	fcheck.close();
-	bool isempty =(tmp.length()==0);
-	ofstream ff(filename.c_str(), ios::app);
-	// headers
-	if (isempty){
-		ff << "uid,riskGroup,Rm,h_age,h_risk,h_sti,h_partn,h_child,Rf,Rsex,NsexActs,age,nPartners"<<endl;
-	}
+//	string filename = _DIR_OUT + "sexReduction.out";
+//	ifstream fcheck(filename.c_str());
+//	string tmp;
+//	getline(fcheck,tmp);
+//	fcheck.close();
+//	bool isempty =(tmp.length()==0);
+//	ofstream ff(filename.c_str(), ios::app);
+//	// headers
+//	if (isempty){
+//		ff << "uid,riskGroup,Rm,h_age,h_risk,h_sti,h_partn,h_child,Rf,Rsex,NsexActs,age,nPartners"<<endl;
+//	}
 	// --------------
 	
 	
@@ -3723,10 +3721,10 @@ void Population::sexActs_number_males(unsigned long uid, double period,
 	double Rm = h_age * h_risk * h_sti  * h_nPartners * h_child;
 	
 	if (save_trace_file){
-		ff  << uid  << "," << rg_m << ","
-		<< Rm   <<" ," << h_age <<" ,"
-		<< h_risk <<" ," << h_sti <<" ,"
-		<< h_nPartners <<" ,"<< h_child <<" ,";
+//		ff  << uid  << "," << rg_m << ","
+//		<< Rm   <<" ," << h_age <<" ,"
+//		<< h_risk <<" ," << h_sti <<" ,"
+//		<< h_nPartners <<" ,"<< h_child <<" ,";
 	}
 	
 	double Rf=0.0;
@@ -3753,7 +3751,7 @@ void Population::sexActs_number_males(unsigned long uid, double period,
 	// Draw the number of sex acts
 	nSexActs = Rsex==0? 0 : poisson(Rsex*period);
 	
-	if (save_trace_file) ff<<Rf<<","<<Rsex<<","<<nSexActs<<","<<age_m<<","<<nPartners<<endl;
+//	if (save_trace_file) ff<<Rf<<","<<Rsex<<","<<nSexActs<<","<<age_m<<","<<nPartners<<endl;
 	
 	// update the number of sex acts
 	// that will be performed by this male during this period
@@ -3816,7 +3814,7 @@ void Population::sexAct_distribute_partnerTypes(gsl_rng* r, unsigned long uid,
 	/// DISTRIBUTE AMONG PARTNER TYPES (SPOUSE, CASUAL, CSW)
 	
 	// Trace file
-	ofstream tracefile(_DIR_OUT + "sexDistribPartn.out",ios::app);
+//	ofstream tracefile(_DIR_OUT + "sexDistribPartn.out",ios::app);
 	
 	// Total number of sex acts
 	int N = _individual[uid].get_nSexActs_period();
@@ -3864,12 +3862,12 @@ void Population::sexAct_distribute_partnerTypes(gsl_rng* r, unsigned long uid,
 		
 		// Traces
 		if (save_trace_file){
-			tracefile << _simulationTime <<","<< uid <<",";
-			tracefile << _individual[uid].get_riskGroup() <<","<< _individual[uid].STI_anyInfection() <<",";
-			tracefile << NpartnerType[0] << ",";
-			tracefile << NpartnerType[1] << ",";
-			tracefile << NpartnerType[2] << ",";
-			tracefile << ns << "," << nc << endl;
+//			tracefile << _simulationTime <<","<< uid <<",";
+//			tracefile << _individual[uid].get_riskGroup() <<","<< _individual[uid].STI_anyInfection() <<",";
+//			tracefile << NpartnerType[0] << ",";
+//			tracefile << NpartnerType[1] << ",";
+//			tracefile << NpartnerType[2] << ",";
+//			tracefile << ns << "," << nc << endl;
 		}
 	}
 	
@@ -3881,12 +3879,12 @@ void Population::sexAct_distribute_partnerTypes(gsl_rng* r, unsigned long uid,
 		// Traces
 		if (save_trace_file)
 		{
-			tracefile << _simulationTime <<","<< uid <<",";
-			tracefile << _individual[uid].get_riskGroup() <<","<< _individual[uid].STI_anyInfection() <<",";
-			tracefile << -999 << ",";
-			tracefile << -999 << ",";
-			tracefile << N  << ",";
-			tracefile << 0 << "," << 0 << endl;
+//			tracefile << _simulationTime <<","<< uid <<",";
+//			tracefile << _individual[uid].get_riskGroup() <<","<< _individual[uid].STI_anyInfection() <<",";
+//			tracefile << -999 << ",";
+//			tracefile << -999 << ",";
+//			tracefile << N  << ",";
+//			tracefile << 0 << "," << 0 << endl;
 		}
 	}
 	
@@ -4421,22 +4419,24 @@ vector<double> Population::STI_CalcProbaTransmission(unsigned long uid_infect,
 	/// BETWEEN TWO INDIVIDUALS
 	
 	// trace file of all transmission tentatives
+
+	// BEFORE DELETING IMPLEMENT OBJECT EQUIVALENT TO THIS FILE SAVE:
 	
-	bool logTentativeInFile = false;
-	
-	string logTentativeInFile_name = _DIR_OUT + "transmission_details.out";
-	ifstream fcheck(logTentativeInFile_name.c_str());
-	string tmp;
-	getline(fcheck,tmp);
-	fcheck.close();
-	bool isempty =(tmp.length()==0);
-	ofstream ff(logTentativeInFile_name.c_str(), ios::app);
-	// headers for log file
-	if (isempty){
-		ff << "time, from, to, stiname, stiduration, IC, SF, sexType, sexTypeReduc, ";
-		ff << "nSexActs, maxProba, OR, probaBaseline, probaCoinfection,";
-		ff << "riskGroupFrom,riskGroupTo"<<endl;
-	}
+//	bool logTentativeInFile = false;
+//	
+//	string logTentativeInFile_name = _DIR_OUT + "transmission_details.out";
+//	ifstream fcheck(logTentativeInFile_name.c_str());
+//	string tmp;
+//	getline(fcheck,tmp);
+//	fcheck.close();
+//	bool isempty =(tmp.length()==0);
+//	ofstream ff(logTentativeInFile_name.c_str(), ios::app);
+//	// headers for log file
+//	if (isempty){
+//		ff << "time, from, to, stiname, stiduration, IC, SF, sexType, sexTypeReduc, ";
+//		ff << "nSexActs, maxProba, OR, probaBaseline, probaCoinfection,";
+//		ff << "riskGroupFrom,riskGroupTo"<<endl;
+//	}
 	
 	// UIDs of all male's sex partners (including CSWs) during this period:
 	unsigned long uid_male		= getUIDmale(uid_infect, uid_suscep);
@@ -4513,29 +4513,31 @@ vector<double> Population::STI_CalcProbaTransmission(unsigned long uid_infect,
 					double tmp = pow(1-proba_T_coinf, nSexType[T]);
 					MPT_sti = MPT_sti*tmp;
 					
+					// BEFORE DELETING IMPLEMENT OBJECT EQUIVALENT TO THIS FILE SAVE:
+					
 					// log file
-					if (logTentativeInFile)
-					{
-						ff << _simulationTime<<",";
-						ff << uid_infect<<",";
-						ff << uid_suscep<<",";
-						ff << STInameString(_STI[sti].get_name())<<",";
-						ff << _individual[uid_infect].get_STIduration()[sti] <<",";
-						ff << infectivity<<",";
-						ff << susceptFactor<<",";
-						ff << T<<",";
-						ff << SAT[T]<<",";
-						ff << nSexType[T]<<",";
-						ff << maxProba<<",";
-						ff << oddsratio<<",";
-						ff << proba_T<<",";
-						ff << proba_T_coinf<<",";
-						//						if (_individual[uid_infect].get_riskGroup()==3) {
-						//							double dummy =1 ; dummy++;
-						//						}
-						ff << _individual[uid_infect].get_riskGroup()<<",";
-						ff << _individual[uid_suscep].get_riskGroup()<<endl;
-					}
+//					if (logTentativeInFile)
+//					{
+//						ff << _simulationTime<<",";
+//						ff << uid_infect<<",";
+//						ff << uid_suscep<<",";
+//						ff << STInameString(_STI[sti].get_name())<<",";
+//						ff << _individual[uid_infect].get_STIduration()[sti] <<",";
+//						ff << infectivity<<",";
+//						ff << susceptFactor<<",";
+//						ff << T<<",";
+//						ff << SAT[T]<<",";
+//						ff << nSexType[T]<<",";
+//						ff << maxProba<<",";
+//						ff << oddsratio<<",";
+//						ff << proba_T<<",";
+//						ff << proba_T_coinf<<",";
+//						//						if (_individual[uid_infect].get_riskGroup()==3) {
+//						//							double dummy =1 ; dummy++;
+//						//						}
+//						ff << _individual[uid_infect].get_riskGroup()<<",";
+//						ff << _individual[uid_suscep].get_riskGroup()<<endl;
+//					}
 					
 					// DEBUG
 					/*cout << "Try transm "<< STInameString(sti) <<" ["<<uid_infect<<"->"<<uid_suscep<<"]";
@@ -4566,13 +4568,13 @@ vector<unsigned long>  Population::STI_transmissions(double timeStep,
 	/// Returns a vector of incidence (incidence value for each STI)
 	
 	
-	// --- Trace file of all transmission events
+// IMPLEMENT OBJECT BEFORE DELETING:
 	
-	string fname = _DIR_OUT + "transmission_success.out";
-	
-	ofstream ff(fname.c_str(),ios::app);
-	if (save_trace_file) write_headers_if_emptyFile(fname, "time,uid,uid_p,stiname,nSexAct,successTransm");
-	
+// --- Trace file of all transmission events
+//	string fname = _DIR_OUT + "transmission_success.out";
+//	ofstream ff(fname.c_str(),ios::app);
+//	if (save_trace_file) write_headers_if_emptyFile(fname, "time,uid,uid_p,stiname,nSexAct,successTransm");
+//	
 	
 	// ---------------------------------------
 	
@@ -4656,15 +4658,16 @@ vector<unsigned long>  Population::STI_transmissions(double timeStep,
 								//cout << " from "<<uid<< " to " <<uid_p<<endl;
 							}
 							
-							if (save_trace_file)
-							{
-								//"time,uid,uid_p,stiname,nSexAct,successTransm"
-								ff << _simulationTime <<",";
-								ff << uid <<"," << uid_p <<",";
-								ff << STInameString(_STI[sti].get_name()) << ",";
-								ff << _individual[uid].get_UID_n_sexAct_period()[p] << ",";
-								ff << successTransmission << endl;
-							}
+							// IMPLEMENT OBJECT BEFORE DELETING:
+//							if (save_trace_file)
+//							{
+//								//"time,uid,uid_p,stiname,nSexAct,successTransm"
+//								ff << _simulationTime <<",";
+//								ff << uid <<"," << uid_p <<",";
+//								ff << STInameString(_STI[sti].get_name()) << ",";
+//								ff << _individual[uid].get_UID_n_sexAct_period()[p] << ",";
+//								ff << successTransmission << endl;
+//							}
 						}
 					} // end_loop on all STIs
 				} // end_if has any infection
