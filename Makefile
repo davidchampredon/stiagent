@@ -34,4 +34,4 @@ test_baseline_prev.out: $(INPUTS) $(TBSCRIPTS) setup-param
 ###
 
 comp_scen.out: $(INPUTS) $(TBSCRIPTS)
-	Rscript main_comp.Rs
+	Rscript main_comp.R
