@@ -27,3 +27,11 @@ TBSCRIPTS = code_analysis_obj/*.* code_analysis_obj/test-baseline
 test_baseline_prev.out: $(INPUTS) $(TBSCRIPTS) setup-param
 	./setup-param
 	./code_analysis_obj/test-baseline
+
+
+
+### Comparison of outcomes between scenarios
+###
+
+comp_scen.out: $(INPUTS) $(TBSCRIPTS)
+	Rscript main_comp.Rs
