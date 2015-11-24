@@ -105,11 +105,12 @@ List stiagent_runsim(List params) {
 	P.setup_for_simulation(founder_size,
 						   founder_femprop,
 						   founder_cswprop,
-						   _DIR_IN + "in_STI.csv",
-						   _DIR_IN + "in_STI_SFincrease.csv",
-						   _DIR_IN + "in_HIVrebound.csv",
-						   _DIR_IN + "in_STItreatment.csv",
-						   _DIR_IN + "in_STI_vaccine.csv",
+						   _DIR_IN,
+						    "in_STI.csv",
+						    "in_STI_SFincrease.csv",
+						    "in_HIVrebound.csv",
+						    "in_STItreatment.csv",
+						    "in_STI_vaccine.csv",
 						   debugInfo);
 	
 	
@@ -278,11 +279,12 @@ List stiagent_comp_interv(List params) {
 	P.setup_for_simulation(founder_size,
 						   founder_femprop,
 						   founder_cswprop,
-						   _DIR_IN + "in_STI.csv",
-						   _DIR_IN + "in_STI_SFincrease.csv",
-						   _DIR_IN + "in_HIVrebound.csv",
-						   _DIR_IN + "in_STItreatment.csv",
-						   _DIR_IN + "in_STI_vaccine.csv",
+						   _DIR_IN,
+						   "in_STI.csv",
+						   "in_STI_SFincrease.csv",
+						   "in_HIVrebound.csv",
+						   "in_STItreatment.csv",
+						   "in_STI_vaccine.csv",
 						   debugInfo);
 	
 	

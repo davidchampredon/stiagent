@@ -113,15 +113,17 @@ int main(int argc, const char * argv[])
 		unsigned long founder_size = 100;
 		double founder_femprop = 0.5;
 		double founder_cswprop = 0.01;
+		string folder_inputs = "../inputs/";
 		
 		P.setup_for_simulation(founder_size,
 							   founder_femprop,
 							   founder_cswprop,
-							   _DIR_IN + "in_STI.csv",
-							   _DIR_IN + "in_STI_SFincrease.csv",
-							   _DIR_IN + "in_HIVrebound.csv",
-							   _DIR_IN + "in_STItreatment.csv",
-							   _DIR_IN + "in_STI_vaccine.csv",
+							   folder_inputs,
+							    "in_STI.csv",
+							    "in_STI_SFincrease.csv",
+							    "in_HIVrebound.csv",
+							    "in_STItreatment.csv",
+							    "in_STI_vaccine.csv",
 							   debugInfo);
 		
 		// ======================

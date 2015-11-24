@@ -220,6 +220,7 @@ public:
 	void setup_for_simulation(unsigned long founder_size,
 							  double founder_female_ratio,
 							  double founder_prop_csw,
+							  string folder_inputs,
 							  string file_STI_features,
 							  string file_STI_SFincrease,
 							  string file_STI_HIVrebound,
@@ -530,7 +531,7 @@ public:
 	
 	// === Set several parameters ===
 	
-	void			setAllParameters();		// Set all parameters (file names are hard coded)
+	void			setAllParameters(string folder_inputs);		// Set all parameters (file names are hard coded)
 	
 	void			set_Population_features(string filename);
 	

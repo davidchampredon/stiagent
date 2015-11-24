@@ -18,7 +18,7 @@ void check_partnershipMatrix()
 				   "in_STI_SFincrease.csv",
 				   "in_HIVrebound.csv");
 	
-	P.setAllParameters();
+	P.setAllParameters("../inputs");
 	
 	P.displayInfo(false);
 	

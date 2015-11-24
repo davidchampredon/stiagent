@@ -242,6 +242,7 @@ void Population::set_and_check_UID(){
 void Population::setup_for_simulation(unsigned long founder_size,
 									  double founder_female_ratio,
 									  double founder_prop_csw,
+									  string folder_inputs,
 									  string file_STI_features,
 									  string file_STI_SFincrease,
 									  string file_STI_HIVrebound,
@@ -255,17 +256,17 @@ void Population::setup_for_simulation(unsigned long founder_size,
 	
 	
 	// Set all parameters of this population
-	setAllParameters();
+	setAllParameters(folder_inputs);
 
 	// Set all STIs parameters
-	STI_setAllParameters(file_STI_features);
-	set_STI_SFincrease(file_STI_SFincrease);
-	set_RebHIV_fromFile(file_STI_HIVrebound);
+	STI_setAllParameters(folder_inputs+file_STI_features);
+	set_STI_SFincrease(folder_inputs+file_STI_SFincrease);
+	set_RebHIV_fromFile(folder_inputs+file_STI_HIVrebound);
 	
 	// Set treatment and vaccine parameters for each STI:
 	for (int s=0; s<_nSTImodelled; s++){
-		_STI[s].load_treatment_param(_STI[s].get_name(), file_STI_treatment);
-		_STI[s].load_vaccine_param(_STI[s].get_name(), file_STI_vaccine);
+		_STI[s].load_treatment_param(_STI[s].get_name(), folder_inputs+file_STI_treatment);
+		_STI[s].load_vaccine_param(_STI[s].get_name(), folder_inputs+file_STI_vaccine);
 		_STI_mtct_cumcount.push_back(0);
 	}
 	
@@ -309,7 +310,7 @@ void Population::setup_for_simulation_old(string file_startpopulation,
 				  file_STI_vaccine);
 	
 	// Set all parameters of this population
-	setAllParameters();
+	setAllParameters("../inputs");
 	
 	
 	// update the list of UIDs of females
@@ -702,22 +703,22 @@ void Population::setIndividual_nCurrSexPartner()
 
 
 
-void Population::setAllParameters()
+void Population::setAllParameters(string folder_inputs)
 {
 	/// SET ALL PARAMETERS AT ONCE
 	/// FILE NAMES ARE HARD CODED (CHANGE THAT?)
 	
 	// File names
 	
-	string populationFeatures_file		= _DIR_IN + "in_populationFeatures.csv";
+	string populationFeatures_file		= folder_inputs + "in_populationFeatures.csv";
 	
-	string demographics_file			= _DIR_IN + "in_paramDMG.csv";
-	string formation_file				= _DIR_IN + "in_paramFORM.csv";
-	string spousal_file					= _DIR_IN + "in_paramSPOUSAL.csv";
-	string dissolution_file				= _DIR_IN + "in_paramDISSOL.csv";
+	string demographics_file			= folder_inputs + "in_paramDMG.csv";
+	string formation_file				= folder_inputs + "in_paramFORM.csv";
+	string spousal_file					= folder_inputs + "in_paramSPOUSAL.csv";
+	string dissolution_file				= folder_inputs + "in_paramDISSOL.csv";
 	
-	string param_sexActivity_file		= _DIR_IN + "in_paramSexActivity.csv";
-	string param_CSW_file				= _DIR_IN + "in_CSW.csv";
+	string param_sexActivity_file		= folder_inputs + "in_paramSexActivity.csv";
+	string param_CSW_file				= folder_inputs + "in_CSW.csv";
 	
 	
 	// Set values of parameters

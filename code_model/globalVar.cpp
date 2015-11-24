@@ -11,7 +11,7 @@
 
 //  ==== Directories ====
 
-std::string _DIR_IN			= "../inputs/";
+//std::string _DIR_IN			= "../inputs/";
 std::string _DIR_OUT		= "../outputs/";
 std::string _DIR_CALIB		= "../calibration/";
 std::string _DIR_VIZINPUT	= "./VisualizeInput/";

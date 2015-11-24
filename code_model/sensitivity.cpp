@@ -40,7 +40,7 @@ void sensitivity_distance_calib_from_files(string target_filename_wrapper,
 	
 	
 	// Set parameter values from files
-	S.get_population().setAllParameters();
+	S.get_population().setAllParameters("../inputs/");
 	
 	
 	// Store the baseline values of parameters in vectors
