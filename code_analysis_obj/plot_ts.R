@@ -6,6 +6,24 @@ source("utils.R")
 library(ggplot2)
 
 
+draw.intervention <- function(interv.info, g, ymx){
+	# Draw vertical lines where intervention
+	# start/end for all STIs (relevant for time series only)
+	
+	for(i in 1:length(interv.info)){
+		v = interv.info[[i]]$sched
+		v <- v[v<998] # <-- avoid drawing when intervention does not end
+		g <- g + geom_vline(xintercept=v, colour="orange",lty=2,size=2)
+		g <- g + annotate("text", 
+						  x = v*0.96, 
+						  y = rep(ymx,length(v)), 
+						  label = interv.info[[i]]$sti,
+						  col="orange")
+	}
+	return(g)
+}
+
+
 plot.timeseries <- function(sim,
 							varname,
 							title,
@@ -37,19 +55,8 @@ plot.timeseries <- function(sim,
 	
 	# interventions
 	ymx <- max(DF[,varname])
-	if(!is.null(interv.info)){
-		for(i in 1:length(interv.info)){
-			v = interv.info[[i]]$sched
-			v <- v[v<998]
-			g <- g + geom_vline(xintercept=v, colour="orange",lty=2,size=2)
-			g <- g + annotate("text", 
-							  x = v*0.96, 
-							  y = rep(ymx,length(v)), 
-							  label = interv.info[[i]]$sti,
-							  col="orange")
-		}
-	}
-	
+	if(!is.null(interv.info)) g <- draw.intervention(interv.info,g,ymx)
+
 	return(g)
 }
 
@@ -99,7 +106,7 @@ plot.incidence <- function(sim,period, stiname,
 						   title,
 						   do.summary=TRUE,
 						   qLo=0.1, qHi=0.9,
-						   interv.date=NULL){
+						   interv.info=NULL){
 	
 	stopifnot(type %in% c("cases","rate"))
 	
@@ -128,9 +135,7 @@ plot.incidence <- function(sim,period, stiname,
 		g <- ggplot(z)+geom_step(aes(x=t, y=y,colour=factor(mc)))
 	}
 	
-	if(!is.null(interv.date)){
-		g <- g + geom_vline(xintercept=interv.date,colour="orange",size=2,linetype=2)
-	}
+	if(!is.null(interv.info)) g <- draw.intervention(interv.info,g,ymx=max(z$y)*0.9)
 	
 	g <- g + ggtitle(title)+xlab(period)+ylab("")
 	return(g)
@@ -138,7 +143,8 @@ plot.incidence <- function(sim,period, stiname,
 
 
 plot.proportion.timeseries <- function(sim,varname,
-									   title, palette="Paired"){
+									   title, palette="Paired",
+									   interv.info=NULL){
 	
 	DF.all <- get.timeseries(sim)
 	DF0 <- DF.all[,c("time","mc",varname)]
@@ -154,26 +160,31 @@ plot.proportion.timeseries <- function(sim,varname,
 	g <- g + scale_fill_brewer(palette = palette)
 	g <- g + scale_colour_brewer(palette = palette) + ylab("Proportion")
 	g <- g + ggtitle(title)
+	if(!is.null(interv.info)) g <- draw.intervention(interv.info,g,ymx = 0.9) # <-- yscale in [0;1]
 	return(g)
 }
 
 
-plot.prev.risk <- function(sim, stiname){
+plot.prev.risk <- function(sim, stiname,interv.info=NULL){
+	### PLOT PREVALENCE BY RISK GROUPS
+	###
 	DF.all <- get.timeseries(sim)
 	DF.all$time2 <- round(DF.all$time)
 	z <- paste0(stiname,"prevRisk",c(0,1,2,9))
 	DF0 <- DF.all[,c("time2","mc",z)]
 	
-	DF <- ddply(DF0,c("time2",z),function(x,ind){apply(x[,ind],MARGIN = 2, FUN = mean)},z )
+	DF <- ddply(DF0,c("time2"),function(x,ind){apply(x[,ind],MARGIN = 2, FUN = mean)},z )
 	DF2 <- gather(DF,key=time2)
 	names(DF2)[2]<-"var"  # <- change that
 	
-	g <- ggplot(DF2)+geom_step(aes(x=time2,y=value,fill=var,colour=var))
+	g <- ggplot(DF2)+geom_line(aes(x=time2,y=value,colour=var),size=2)
 	g <- g + scale_colour_brewer(palette = "Reds")
 	g <- g + ggtitle(paste(stiname,"prevalence by risk group"))+xlab("")+ylab("")
+	
+	if(!is.null(interv.info)) g <- draw.intervention(interv.info,g,ymx = 0.9*max(DF2$value)) 
+	
 	return(g)
 }
-
 
 
 

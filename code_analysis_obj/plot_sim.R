@@ -40,9 +40,11 @@ plot.ts <- function(sim){
 		plot.timeseries(sim,varname="mtctHIV",title="Cumulative MTCT HIV",interv.info=interv.info),
 		plot.timeseries(sim,varname="mtctTp",title="Cumulative MTCT Tp",interv.info=interv.info),
 		plot.proportion.timeseries(sim,varname=c("mtctHIV","mtctTp"),
-								   title="Cumulative MTCT proportions"),
+								   title="Cumulative MTCT proportions",
+								   interv.info=interv.info),
 		plot.proportion.timeseries(sim,varname=c("nRskGrp0","nRskGrp1","nRskGrp2"),
-								   title="Risk group proportions")
+								   title="Risk group proportions",
+								   interv.info=interv.info)
 	)
 	
 	### Diseases ###
@@ -50,28 +52,33 @@ plot.ts <- function(sim){
 	grid.arrange(
 		plot.timeseries(sim,varname="HIV",title="Number of HIV infected indiv",interv.info=interv.info),
 		plot.timeseries(sim,varname="Tp",title="Number of Syphilis infected indiv",interv.info=interv.info),
+		plot.timeseries(sim,varname="HIVprev",title="HIV prevalence",interv.info=interv.info),
+		plot.timeseries(sim,varname="Tpprev",title="Tp prevalence",interv.info=interv.info),
 		plot.incidence(sim,
 					   period="year", 
 					   stiname="HIV", 
 					   type="rate", 
-					   title="Incidence rate HIV"),
+					   title="Incidence rate HIV",
+					   interv.info=interv.info),
 		plot.incidence(sim,
 					   period="year", 
 					   stiname="Tp", 
 					   type="rate", 
 					   title="Incidence rate Tp",
-					   interv.date = c(30,40)),
+					   interv.info=interv.info),
 		plot.proportion.timeseries(sim,varname=c("HIV","Tp"),
-								   title="Prevalence proportions"),
+								   title="Prevalence proportions",
+								   interv.info=interv.info),
 		plot.proportion.timeseries(sim,varname=paste0("HIVprevRisk",c(0,1,2)),
-								   title="HIV by risk group"),
+								   title="HIV by risk group",
+								   interv.info=interv.info),
 		plot.proportion.timeseries(sim,varname=paste0("TpprevRisk",c(0,1,2)),
-								   title="Tp by risk group"),
-		plot.prev.risk(sim, stiname="HIV"),
-		plot.prev.risk(sim, stiname="Tp")
+								   title="Tp by risk group",
+								   interv.info=interv.info),
+		plot.prev.risk(sim, stiname="HIV",interv.info=interv.info),
+		plot.prev.risk(sim, stiname="Tp",interv.info=interv.info)
 	)
 }
-
 
 
 plot.pop.all <- function(sim){
