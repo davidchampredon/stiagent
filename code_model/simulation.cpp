@@ -545,7 +545,7 @@ void Simulation::runAllEvents_timeStep_obj(int numTimeStep,
 		// * * * * WARNING * * * *
 		//
 		// ORDER MUST BE SAME AS DEFINED
-		// BY HEADERS IN "run_allEvents_horizon_obj"
+		// BY HEADERS IN "runAllEvents_horizon_obj"
 		
 		v.push_back(t);
 		v.push_back(_population.census_alive());
@@ -569,38 +569,34 @@ void Simulation::runAllEvents_timeStep_obj(int numTimeStep,
 		for (int r=0; r<= _population.get_maxRiskGroup(); r++)
 			v.push_back(_population.census_riskGroup()[r]);
 		
-		
 		v.push_back(_population.census_circum());
 		v.push_back(_newborn_timestep);
 		v.push_back(_population.get_STI_mtct_cumcount()[0]);
 		v.push_back(_population.get_STI_mtct_cumcount()[1]);
 		
-		// HIV prevalence by risk group
+		// HIV & Tp prevalence:
+		v.push_back(_population.STI_prevalence(HIV));
+		v.push_back(_population.STI_prevalence(Tp));
 		
+		// HIV prevalence by risk group
 		v.push_back(_population.STI_prevalence(HIV, 0));
 		v.push_back(_population.STI_prevalence(HIV, 1));
 		v.push_back(_population.STI_prevalence(HIV, 2));
 		v.push_back(_population.STI_prevalence(HIV, 9));
 		
 		// Tp prevalence by risk group
-		
 		v.push_back(_population.STI_prevalence(Tp, 0));
 		v.push_back(_population.STI_prevalence(Tp, 1));
 		v.push_back(_population.STI_prevalence(Tp, 2));
 		v.push_back(_population.STI_prevalence(Tp, 9));
 		
 		// Reproductive numbers
-		
 		v.push_back(_population.Reff_cum_mean(HIV));
 		v.push_back(_population.Reff_cum_mean(Tp));
 		
 		// Update data frame:
 		_df_sim.addrow(to_string(numTimeStep), v);
 	}
-	
-	
-	
-	
 }
 
 
@@ -912,6 +908,9 @@ void Simulation::runAllEvents_horizon_obj(bool doSex,
 		colnames.push_back("nNewBorn");
 		colnames.push_back("mtctHIV");
 		colnames.push_back("mtctTp");
+
+		colnames.push_back("HIVprev");
+		colnames.push_back("Tpprev");
 		colnames.push_back("HIVprevRisk0");
 		colnames.push_back("HIVprevRisk1");
 		colnames.push_back("HIVprevRisk2");
@@ -920,6 +919,7 @@ void Simulation::runAllEvents_horizon_obj(bool doSex,
 		colnames.push_back("TpprevRisk1");
 		colnames.push_back("TpprevRisk2");
 		colnames.push_back("TpprevRisk9");
+		
 		colnames.push_back("Reff_HIV");
 		colnames.push_back("Reff_Tp");
 		
