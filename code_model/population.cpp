@@ -2768,7 +2768,7 @@ bool Population::isFormationPossible(unsigned long uid1, unsigned long uid2,
 	/// DETERMINES IF PARTNERSHIP FORMATION
 	/// IS POSSIBLE BASED ON ALL FACTORS
 	
-	ofstream tracefile(_DIR_OUT + "partnership_tentatives.out",ios::app);
+//	ofstream tracefile(_DIR_OUT + "partnership_tentatives.out",ios::app);
 	
 	
 	// Check both are alive
@@ -2794,7 +2794,7 @@ bool Population::isFormationPossible(unsigned long uid1, unsigned long uid2,
 	bool open2 = _individual[uid2].isOpenToNewPartnership();
 	if (!open1 || !open2)
 	{
-		if(save_trace_file) tracefile << "not_open,,,,0"<<endl;
+//		if(save_trace_file) tracefile << "not_open,,,,0"<<endl;
 		return false;
 	}
 	
@@ -2872,9 +2872,9 @@ bool Population::isFormationPossible(unsigned long uid1, unsigned long uid2,
 	
 	if(save_trace_file)
 	{
-		tracefile << f_age<<","<< f_ageGap<<","<< f_riskgroup<<",";
-		tracefile << f_deficit<<","<< f_STIsymptom<<",";
-		tracefile << (u<proba)<<endl;
+//		tracefile << f_age<<","<< f_ageGap<<","<< f_riskgroup<<",";
+//		tracefile << f_deficit<<","<< f_STIsymptom<<",";
+//		tracefile << (u<proba)<<endl;
 	}
 	
 	// Based on draw, decide wether formation occurs or not
