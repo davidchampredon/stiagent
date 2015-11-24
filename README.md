@@ -31,10 +31,10 @@ We want to compare various epidemiological outcomes under different intervention
 *2) Preparatory work*
 
 Run simulations with the baseline scenario on the 3 populations and check 
- * i) prevalence reached equilibrium at t=30y (when new interventions start)
+ * i) prevalence reached equilibrium from t=30y (when new interventions start) to 50y (horizon)
  * ii) population features and time series sensible
 
-For now, these tests are done with ```test.R```
+For now, these tests are done with `make test_baseline_prev.out`.
 
 *3) Comparisons*
 
