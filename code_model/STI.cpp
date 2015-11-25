@@ -801,49 +801,6 @@ string STInameString(STIname sti)
 }
 
 
-//string STInameString(int sti_index)
-//{
-//	// * * * WARNING * * * 
-//	// MUST BE SAME ORDER AS ENUM
-//	
-//	switch (sti_index) 
-//	{
-//		case 0:
-//			return "HIV";
-//			break;
-//		case 1:
-//			return "HSV2";
-//			break;
-//		case 2:
-//			return "HPV";
-//			break;
-//		case 3:
-//			return "Ct";
-//			break;
-//		case 4:
-//			return "Ng";
-//			break;
-//		case 5:
-//			return "Tp";
-//			break;
-//		case 6:
-//			return "Hd";
-//			break;
-//		case 7:
-//			return "Bv";
-//			break;
-//		case 8:
-//			return "Tv";
-//			break;	
-//			
-//		default:
-//			cout << "ERROR [STInameString]: STI name does not exist"<<endl;
-//			exit(1);
-//			break;
-//	}
-//	
-//}
-
 
 STIname StringToSTIname(string name)
 {

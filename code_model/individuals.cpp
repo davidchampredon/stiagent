@@ -1060,32 +1060,25 @@ void Individual::treat(STIname sti)
     int i_sti = positionSTIinVector(sti, _STI);
     
     // Check first if STI indeed infecting
-	
 	string errmsg ="Trying to treat STI "+STInameString(sti)+" that is not infecting UID "+ to_string(_UID);
 	stopif(get_STIduration(sti)==0, errmsg);
-	
 	
 	// Initialize treatment duration to
 	// a small value (unit in years)
 	// (being>0 is a test that treatment has started)
-	
 	set_STItreatDuration(0.001,sti);
-	
 	
     // --- Microbiological success of treatment ---
 	// (success is stochastic and depends on each individual)
-    
     double	p_fail	= _STI[i_sti].get_proba_treatmentFailure();
     int		TMS		= binom(1-p_fail, 1);
 
 	set_STItreatTMS(TMS, sti);
     
     // --- Adherence ---
-	
 	// adh_prm[0] = adherence_max
 	// adh_prm[1] = decay risk group
 	// adh_prm[0] = asymptomatic factor
-	
 	vector<double> adh_prm = _STI[i_sti].get_adherence_param();
 	
 	// if symptomatic
@@ -1095,9 +1088,6 @@ void Individual::treat(STIname sti)
 	if (_STI[i_sti].get_is_symptomatic()) A = A*adh_prm[2];
 	
 	set_STItreatAdherence(A, sti);
-	
-    // Treatment Reduction Effect (TRE)
-    //vector<double> TREstar = _STI[i_sti].get_TREstar_param();
 }
 
 

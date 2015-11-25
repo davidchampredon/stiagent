@@ -5622,6 +5622,7 @@ dcDataFrame Population::export_to_dataframe(){
 		vector<double> sti_treat;
 		vector<double> sti_immun;
 		vector<double> sti_vacc_date;
+		vector<double> sti_IC;
 		
 		string stiname = STInameString(_STI[sti].get_name());
 		
@@ -5631,6 +5632,8 @@ dcDataFrame Population::export_to_dataframe(){
 			sti_immun.push_back(_individual[i].get_STI_immunity()[sti]);
 			sti_treat.push_back(_individual[i].get_STItreatDuration()[sti]);
 			sti_vacc_date.push_back(_individual[i].get_STI_vacc_time()[sti]);
+			sti_IC.push_back(_individual[i].STI_IC()[sti]);
+
 		}
 		string header = stiname + "duration";
 		df.addcol(header, sti_dur);
@@ -5642,6 +5645,8 @@ dcDataFrame Population::export_to_dataframe(){
 		df.addcol(header, sti_immun);
 		header = stiname + "vaccTime";
 		df.addcol(header, sti_vacc_date);
+		header = stiname + "_IC";
+		df.addcol(header, sti_IC);
 	}
 	return df;
 }
