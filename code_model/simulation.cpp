@@ -57,7 +57,6 @@ vector<double> Simulation::get_STI_prevalence_final(){
 	return x;
 }
 
-
 vector<double> Simulation::get_STI_cumIncidence_final(){
 	/// DESACTIVATED BECAUSE RESULT NOT CONSISTENT WITH PREVALENCE
 	/// === LOOK AT THIS WHEN HAVE TIME ----
@@ -77,31 +76,25 @@ vector<double> Simulation::get_STI_cumIncidence_final(){
 //	return x;
 }
 
-
 void Simulation::STI_set_initial_prevalence(string filename){
 	_population.STI_set_initial_prevalence(filename);
 }
-
 
 void Simulation::set_pregnant(unsigned long uid){
 	_population.set_pregnant(uid);
 }
 
-
 void Simulation::increment_gestationDuration(unsigned long uid, double x){
 	_population.increment_gestationDuration(uid, x);
 }
-
 
 void Simulation::set_gestationDuration(unsigned long uid, double x){
 	_population.set_gestationDuration(uid, x);
 }
 
-
 void Simulation::increment_nChildBorn(unsigned long uid){
 	_population.increment_nChildBorn(uid);
 }
-
 
 
 vector<bool> Simulation::MTCT(unsigned long uid)
@@ -242,9 +235,6 @@ double Simulation::STI_cumul_incidence(STIname s,int time_i)
 	
 	return sum;
 }
-
-
-
 
 
 void Simulation::runAllEvents_timeStep(int numTimeStep,
@@ -439,7 +429,6 @@ void Simulation::runAllEvents_timeStep(int numTimeStep,
 }
 
 
-
 void Simulation::runAllEvents_timeStep_obj(int numTimeStep,
 										   bool doSex,
 										   bool logIndivInfo)
@@ -598,10 +587,6 @@ void Simulation::runAllEvents_timeStep_obj(int numTimeStep,
 		_df_sim.addrow(to_string(numTimeStep), v);
 	}
 }
-
-
-
-
 
 
 void Simulation::runAllEvents_horizon(bool doSex,
@@ -845,9 +830,6 @@ void Simulation::runAllEvents_horizon(bool doSex,
 }
 
 
-
-
-
 void Simulation::runAllEvents_horizon_obj(bool doSex,
 										  bool logIndivInfo,
 										  bool traceNetwork,
@@ -1083,10 +1065,6 @@ void Simulation::runAllEvents_horizon_obj(bool doSex,
 
 
 
-
-
-
-
 /* ***************************************************/
 /* ************** C A L I B R A T I O N **************/
 /* ***************************************************/
@@ -1210,8 +1188,6 @@ void Simulation::set_calibration_schedule(string filename_calibrationTime,
 	
 }
 
-
-
 string calibration_file_to_type(string filename)
 {
 	/// converts a file name into a calibration type
@@ -1252,8 +1228,6 @@ string calibration_file_to_type(string filename)
 }
 
 
-
-
 bool Simulation::isCalibrationTime(double t)
 {
 	/// Check if this is a calibration time
@@ -1266,7 +1240,6 @@ bool Simulation::isCalibrationTime(double t)
 	}
 	return res;
 }
-
 
 unsigned int Simulation::whichCalibrationTime(double t)
 {
@@ -1281,8 +1254,6 @@ unsigned int Simulation::whichCalibrationTime(double t)
 	return res;
 }
 
-
-
 void Simulation::calculate_calibDistance_all(int calibtime_idx)
 {
 	/// Calculate distance of model from all targets
@@ -1292,7 +1263,6 @@ void Simulation::calculate_calibDistance_all(int calibtime_idx)
 		calculate_calibDistance_one(calibtime_idx,i);
 	}
 }
-
 
 void Simulation::calculate_calibDistance_one(int calibtime, int i)
 {
@@ -1463,7 +1433,6 @@ void Simulation::calculate_calibDistance_one(int calibtime, int i)
 	
 }
 
-
 void Simulation::calibration_target_type_output_save(unsigned long iter_mc,int calibtime_idx)
 {
 	/// Save all output based on target types and calibration times
@@ -1522,8 +1491,6 @@ void Simulation::calibration_target_type_output_save(unsigned long iter_mc,int c
 	}
 }
 
-
-
 double Simulation::calibration_distance_targets()
 {
 	/// Returns the overall calibration distance from all targets
@@ -1535,9 +1502,6 @@ double Simulation::calibration_distance_targets()
 	
 	return s;
 }
-
-
-
 
 double Simulation::calib_distance_ageDistrib()
 {
@@ -1566,9 +1530,6 @@ double Simulation::calib_distance_ageDistrib()
 	return diff_age/w_age;
 }
 
-
-
-
 double Simulation::calib_distance_ageGapDistrib()
 {
 	/// RETURN NORMALIZED DISTANCE TO CALIBRATION TARGET
@@ -1595,9 +1556,6 @@ double Simulation::calib_distance_ageGapDistrib()
 	
 	return diff_ageGaps/w_ageG;
 }
-
-
-
 
 double Simulation::calib_distance_ageFirstSexDistrib(Gender g)
 {
@@ -1628,7 +1586,6 @@ double Simulation::calib_distance_ageFirstSexDistrib(Gender g)
 	
 	return diff_age/w_age;
 }
-
 
 double Simulation::calib_distance_ageGapFirstSexSpouseDistrib(Gender g)
 {
@@ -1664,8 +1621,6 @@ double Simulation::calib_distance_ageGapFirstSexSpouseDistrib(Gender g)
 	return res;
 }
 
-
-
 double Simulation::calib_distance_singleRatio(Gender g)
 {
 	/// RETURN NORMALIZED DISTANCE TO CALIBRATION TARGET
@@ -1683,8 +1638,6 @@ double Simulation::calib_distance_singleRatio(Gender g)
 	return pow(diff_singleR/pow(target,thepower),1.0/thepower);
 }
 
-
-
 double Simulation::calib_distance_malesVisitCSW()
 {
 	/// RETURN NORMALIZED DISTANCE TO CALIBRATION TARGET
@@ -1700,7 +1653,6 @@ double Simulation::calib_distance_malesVisitCSW()
 	
 	return pow(diff/pow(_target_malesVisitCSW,thepower),1.0/thepower);
 }
-
 
 double Simulation::calib_distance_malesVisitCSW(double maxDurationSinceLastVisit)
 {
@@ -1750,9 +1702,6 @@ double Simulation::calib_distance_ageMalesVisitCSWDistrib()
 	
 	return diff_age/w_age;
 }
-
-
-
 
 double Simulation::calib_distance_nLifeSexPrtnrDistrib(Gender g)
 {
@@ -1902,8 +1851,6 @@ double Simulation::calib_distanceFromAllTargets()
 }
 
 
-
-
 double Simulation::calc_distanceFromAllTargets()
 {
 	/// DISTANCE BETWEEN CURRENT VALUES OF
@@ -1955,10 +1902,6 @@ double Simulation::calc_distanceFromAllTargets()
 	
 	return res;
 }
-
-
-
-
 
 
 double Simulation::calib_distanceFromAllTargets_MC(int nMC)
@@ -2414,11 +2357,6 @@ void Simulation::calib_setParameters(vector<double> param_demographics,
 }
 
 
-
-
-
-
-
 void Simulation::calib_setParameters_STI(vector<double> param_sexActivity,
 										 vector<double> param_stiFeatures_virus,
 										 vector<double> param_stiFeatures_bacteria,
@@ -2718,10 +2656,6 @@ vector<double> Simulation::TMPsensi(vector<double> param, double relativeBump, i
 }
 
 
-
-
-
-
 double Simulation::calib_ageDistribution_F(const gsl_vector *v, void *params)
 {
 	// Define the function to minimize here
@@ -2754,107 +2688,6 @@ double Simulation::calib_ageDistribution_F(const gsl_vector *v, void *params)
 
 // =================================================================
 // =================================================================
-
-
-/* ~~~ OOL DESACTIVATION ~~~ (uncomment to use)
- 
- void Simulation::calib_ageDistribution_Gradient(const gsl_vector *v, void *params, gsl_vector *G)
- {
- // Numerical Gradient of the function to minimize
- ool_diff_g_auto(&Simulation::calib_ageDistribution_F_wrapper, v, params, G);
- }
- 
- void Simulation::calib_ageDistribution_F_Gradient(const gsl_vector *v, void *params, double *f,gsl_vector *G)
- {
- // Numerical Gradient AND the function to minimize evaluated at the same time
- // (faster than, fct then gradient)
- (*f) = calib_ageDistribution_F(v, params);
- ool_diff_g_auto(&Simulation::calib_ageDistribution_F_wrapper, v, params, G);
- }
- 
- 
- 
- vector<double>	Simulation::calib_ageDistribution_OOL(vector<double> v0,
- vector<double> LowerBound,
- vector<double> UpperBound,
- int maxIterations = 300,
- bool displayInfo = false)
- {
- // CALIBRATION TO A TARGET AGE DISTRIBUTION
- // USING A MINIMIZER FROM THE GSL/OOL LIBRARY
- 
- 
- int dim = v0.size();   // space dimension to minimize
- 
- // CHECK ORDER OF 'v0' ELEMENTS IN: 'calib_ageDistribution_F'
- 
- // DEBUG
- cout << "Entering calib_ageDistribution..." << endl;
- cout << "starting condition : ";
- displayVector(v0);
- 
- // Choose here the minimization method
- // SPG:			ool_conmin_minimizer_spg (classical projected gradient method extended)
- // SMOOTH BOX:	ool_conmin_minimizer_gencan (active-set method for smooth box-constrained minimization.)
- // PGRAD:		ool_conmin_minimizer_pgrad (extension of the steepest descent algorithm to bound constraints problems)
- const ool_conmin_minimizer_type *T = ool_conmin_minimizer_spg;//spg;
- 
- // Definition of the OOL objects
- ool_conmin_spg_parameters P;
- ool_conmin_function F;
- ool_conmin_constraint C;
- ool_conmin_minimizer *M;
- gsl_vector *X;
- 
- // Initialize OOL objects with actual values/functions
- F.n     = dim;
- // Define here the function to minimize
- F.f     = &Simulation::calib_ageDistribution_F_wrapper;
- F.df    = &Simulation::calib_ageDistribution_Gradient_wrapper;
- F.fdf   = &Simulation::calib_ageDistribution_F_Gradient_wrapper;
- F.params= this;
- 
- // Initial condition
- X = convertToGSLVector(v0);
- 
- // Constraints
- C.n = dim;
- C.L = gsl_vector_alloc( C.n );
- C.U = gsl_vector_alloc( C.n );
- C.L = convertToGSLVector(LowerBound);
- C.U = convertToGSLVector(UpperBound);
- 
- // Define minimizer
- M = ool_conmin_minimizer_alloc( T, dim );
- ool_conmin_parameters_default( T, (void*)(&P) );
- // TRying to fine-tune optimizer parameters
- // P.alphamin = 5.0;
- ool_conmin_minimizer_set( M, &F, &C, X, (void*)(&P) );
- 
- 
- // Iterations to find minimum
- 
- vector<double> vMin = minimization_loop_OOL(M, maxIterations,displayInfo);
- 
- // Free memory
- // (GSL/OOL is a C library, not C++, so this is explicitly done)
- gsl_vector_free( C.L );
- gsl_vector_free( C.U );
- gsl_vector_free( X );
- ool_conmin_minimizer_free( M );
- 
- // Returns the value(s) that minimize the function
- return vMin;
- }
- */
-
-
-
-/* ***************************************************************************/
-/* ***************************************************************************/
-
-
-
 
 
 
@@ -2912,8 +2745,6 @@ void Simulation::save_outputs_sex(string pathFolder,
 									  dummy, //_target_ageMalesVisitCSWDistribution.extractColumn(0)
 									  iMC,idate);
 }
-
-
 
 
 void Simulation::save_outputs_epi(string pathFolder,
@@ -2975,9 +2806,6 @@ void Simulation::save_prevalence(unsigned int iter_mc){
 // ===================================================================
 // ===================================================================
 
-
-
-
 void Simulation::activate_intervention(int i)
 {
 	/// ACTIVATE TREATMENT OR VACCINATION BASED ON INTERVENTION FEATURES
@@ -2994,7 +2822,8 @@ void Simulation::activate_intervention(int i)
 	string interv_type	= _intervention[i].get_type();
 	
 	
-	// * WARNING: the proportion is understood as a rate and applied every time step
+	// * WARNING *
+	// the proportion is understood as a rate and applied every time step
 	// For example, propPerYear = 0.5 means 50% of infected will be treated over one year.
 	// If the time step is 0.1 year, then the target proportion for that timestep
 	// will be 0.1*0.5 = 0.05
@@ -3008,7 +2837,6 @@ void Simulation::activate_intervention(int i)
 	unsigned long cnt = 0;  // <-- number treated
 	unsigned long cnt2 = 0; // <-- number targeted
 	
-	
 	// scan the intervention type
 	bool doTreat_mass		= (interv_type=="treatment_mass");
 	bool doTreat_symptom	= (interv_type=="treatment_symptom");
@@ -3016,14 +2844,16 @@ void Simulation::activate_intervention(int i)
 	bool doVacc_symptom		= (interv_type=="vaccination_symptom");
 	bool doVacc_female		= (interv_type=="vaccination_female");
 	bool doVacc_femaleYoung	= (interv_type=="vaccination_femaleYoung");
+	bool doVacc_hiRisk		= (interv_type=="vaccination_highRisk");
 	
 	bool doTreatment	= (interv_type.substr(0,9)=="treatment");
 	bool doVaccination	= (interv_type.substr(0,11)=="vaccination");
 	
-	
 	// Integrity checks
-	bool type_known = doTreat_mass || doTreat_symptom ||
-						doVacc_mass || doVacc_symptom || doVacc_female || doVacc_femaleYoung;
+	bool type_known =	doTreat_mass || doTreat_symptom ||
+						doVacc_mass || doVacc_symptom ||
+						doVacc_female || doVacc_femaleYoung ||
+						doVacc_hiRisk;
 	stopif(!type_known, "Unknown intervention type!");
 	
 	unsigned int sti_i = positionSTIinVector(sti, _population.get_STI());
@@ -3065,6 +2895,11 @@ void Simulation::activate_intervention(int i)
 				bool tmp3 = !alreadyVacc;
 				indivIsTargeted = tmp1 && tmp2 && tmp3;
 			}
+			if(doVacc_hiRisk){
+				// only the highest risk group
+				int mxrg = _population.get_maxRiskGroup();
+				indivIsTargeted = (indiv.get_riskGroup()==mxrg) && !alreadyVacc;
+			}
 			
 			
 			// == Apply intervention on filtered individuals ==
@@ -3080,7 +2915,7 @@ void Simulation::activate_intervention(int i)
 				}
 				
 				// random sample
-				if (do_sample && uniform01()<= target_dt){
+				if (do_sample && (uniform01()<= target_dt) ){
 					if(doTreatment)		treat_indiv(uid, sti);
 					if(doVaccination)	vaccinate_indiv(uid, sti);
 					cnt++;
@@ -3089,36 +2924,24 @@ void Simulation::activate_intervention(int i)
 		}
 	} // end loop on individuals
 	
-	// Log information DEBUG
-	if(false){
-		string filename = _DIR_OUT + "intervention.out";
-		ofstream ff(filename.c_str(),ios::app);
-		ifstream ff2(filename.c_str());
-		bool isempty = (ff2.peek() == std::ifstream::traits_type::eof());
-		
-		if (isempty){
-			// headers
-			ff << "iMC, time, type, n_reached, n_targeted"<<endl;
-		}
-		
-		// data (must be consistent with headers above)
-		ff << _MC_trial_iter << ",";
-		ff << _population.get_simulationTime() << ",";
-		ff << interv_type << ",";
-		ff << cnt << ",";
-		ff << cnt2 ;//<< ",";
-		ff << endl;
-	}
 	
-	if(_MC_trial_iter==1 && false){
-		cout << "DEBUG_TREATMENT time_"<< _population.get_simulationTime()<< " ; prop recv ";
-		cout << interv_type << " = "<< (double)(cnt)/(double)(cnt2);
-		cout << " ; " << cnt << "/"<< cnt2 << " targeted individuals"<< endl;
-	}
+	// Intervention information
+	vector<double> v;
+	vector<string> cnames;
+
+	cnames.push_back("iMC");
+	v.push_back(_MC_trial_iter);
+	cnames.push_back("time");
+	v.push_back(_population.get_simulationTime());
+	cnames.push_back("n_reached");
+	v.push_back(cnt);
+	cnames.push_back("n_targeted");
+	v.push_back(cnt2);
 	
+	string rowname = interv_type + "_" + STInameString(sti);
+	_df_interv.addrow(rowname, v);
+	if(_df_interv.get_nrows()==1) _df_interv.set_colname(cnames);
 }
-
-
 
 
 
@@ -3272,105 +3095,5 @@ void Simulation::displayInfo()
 	
 	coutline(80);
 }
-
-
-
-
-
-/* ~~~ OOL DESACTIVATION ~~~ (uncomment to use)
- 
- double Simulation::example_fct_to_minimize(const gsl_vector *v, void *params)
- {
- // Define the function to minimize here
- 
- int dim = v->size;
- 
- vector<double> w(dim);
- w = allocateGSLVector(v);
- 
- // Set the values of the parameter to minimize
- _population.set_formation_MaxRate(w[0]);
- _population.set_dissolution_MaxRate(w[1]);
- 
- return dummy_c();
- }
- 
- void Simulation::example_fct_to_minimize_Gradient(const gsl_vector *v, void *params, gsl_vector *G)
- {
- // Numerical Gradient of the function to minimize
- ool_diff_g_auto(&Simulation::example_fct_to_minimize_wrapper, v, params, G);
- }
- 
- void Simulation::example_fct_to_minimize_FctGradient(const gsl_vector *v, void *params, double *f,gsl_vector *G)
- {
- // Numerical Gradient AND the function to minimize evaluated at the same time
- // (faster than, fct then gradient)
- (*f) = example_fct_to_minimize(v, params);
- ool_diff_g_auto(&Simulation::example_fct_to_minimize_wrapper, v, params, G);
- }
- 
- 
- vector<double>	Simulation::calib_minimization_example(vector<double> v0,
- vector<double> LowerBound,
- vector<double> UpperBound,
- int maxIterations = 300)
- {
- int dim = v0.size();   // space dimension to minimize
- bool displayInfo = true;
- 
- // Choose here the minimization method
- // SPG:			ool_conmin_minimizer_spg (classical projected gradient method extended)
- // SMOOTH BOX:	ool_conmin_minimizer_gencan (active-set method for smooth box-constrained minimization.)
- // PGRAD:		ool_conmin_minimizer_pgrad (extension of the steepest descent algorithm to bound constraints problems)
- const ool_conmin_minimizer_type *T = ool_conmin_minimizer_spg;
- 
- // Definition of the OOL objects
- ool_conmin_spg_parameters P;
- ool_conmin_function F;
- ool_conmin_constraint C;
- ool_conmin_minimizer *M;
- gsl_vector *X;
- 
- // Initialize OOL objects with actual values/functions
- F.n     = dim;
- // Define here the function to minimize
- F.f     = &Simulation::example_fct_to_minimize_wrapper;
- F.df    = &Simulation::example_fct_to_minimize_Gradient_wrapper;
- F.fdf   = &Simulation::example_fct_to_minimize_FctGradient_wrapper;
- F.params= this;
- 
- // Initial condition
- X = convertToGSLVector(v0);
- 
- // Constraints
- C.n = dim;
- C.L = gsl_vector_alloc( C.n );
- C.U = gsl_vector_alloc( C.n );
- C.L = convertToGSLVector(LowerBound);
- C.U = convertToGSLVector(UpperBound);
- 
- // Define minimizer
- M = ool_conmin_minimizer_alloc( T, dim );
- ool_conmin_parameters_default( T, (void*)(&P) );
- ool_conmin_minimizer_set( M, &F, &C, X, (void*)(&P) );
- 
- // Iterations to find minimum
- vector<double> vMin = minimization_loop_OOL(M, maxIterations,displayInfo);
- 
- // Free memory
- // (GSL/OOL is a C library, not C++, so this is explicitly done)
- gsl_vector_free( C.L );
- gsl_vector_free( C.U );
- gsl_vector_free( X );
- ool_conmin_minimizer_free( M );
- 
- // Returns the value(s) that minimize the function
- return vMin;
- }
- */ //END OOL DESACTIVATION
-
-
-
-
 
 

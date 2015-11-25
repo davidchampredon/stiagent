@@ -26,7 +26,8 @@ using namespace Rcpp;
 
 
 
-List dcDataFrameToRcppList(dcDataFrame df){
+List dcDataFrameToRcppList(dcDataFrame df,
+						   bool addRowName){
 	
 	/// Converts a dcDataFrame to a Rccp list
 	/// (helper function)
@@ -39,8 +40,16 @@ List dcDataFrameToRcppList(dcDataFrame df){
 	// each column of the dcDataFrame is a list:
 	for(int j=0; j<ncol; j++)
 		rcpplist.push_back(df.get_value().extractColumn(j));
-	// set the associated name:
-	rcpplist.attr("names") = df.get_colname();
+	// set the associated column names:
+	if(!addRowName) rcpplist.attr("names") = df.get_colname();
+	
+	// insert row names (as an additional column, don't know how to do differently)
+	if(addRowName) {
+		rcpplist.push_back(df.get_rowname());
+		vector<string> cn = df.get_colname();
+		cn.push_back("rowname");
+		rcpplist.attr("names") = cn;
+	}
 	
 	return rcpplist;
 }
@@ -90,7 +99,7 @@ List stiagent_runsim(List params) {
 	// etc...
 	//
 	// Hence, it is *NOT* the nuber of Monte Carlo iterations!!!!
-	
+	// ==============================================
 	unsigned int MC_id	= params["MC_id"];
 	
 	
@@ -162,12 +171,16 @@ List stiagent_runsim(List params) {
 	
 	// data frame of time series:
 	dcDataFrame df_sim		= Sobj.get_df_sim();
-	Rcpp::List df_sim_R		= dcDataFrameToRcppList(df_sim);
+	Rcpp::List df_sim_R		= dcDataFrameToRcppList(df_sim,false);
 
 	// Detailed population:
 	dcDataFrame pop_last	= POP.export_to_dataframe();
-	Rcpp::List pop_last_R	= dcDataFrameToRcppList(pop_last);
+	Rcpp::List pop_last_R	= dcDataFrameToRcppList(pop_last,false);
 
+	// Detailed interventions:
+	dcDataFrame df_interv	= Sobj.get_df_interv();
+	Rcpp::List df_interv_R	= dcDataFrameToRcppList(df_interv,true);
+	
 	
 	vector<double> cuminc_mtct_final;
 	vector<string> stiname_str;
@@ -210,7 +223,8 @@ List stiagent_runsim(List params) {
 						Named("popsize_alive") = POP.census_alive(),
 						Named("STInames") = stiname_str,
 						Named("infCurves") = IC,
-						Named("population") = pop_last_R
+						Named("population") = pop_last_R,
+						Named("df_interv") = df_interv_R
 						);
 }
 
@@ -347,7 +361,7 @@ List stiagent_comp_interv(List params) {
 	
 	// The response variable for each scenario:
 	for(int i=0; i<nsti; i++)
-		x.push_back(dcDataFrameToRcppList(df_comp_interv[i]));
+		x.push_back(dcDataFrameToRcppList(df_comp_interv[i],false));
 	
 	// The name of each scenario:
 	x.push_back(trim(file_scenario));

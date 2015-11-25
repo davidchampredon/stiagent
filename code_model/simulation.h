@@ -35,26 +35,23 @@ class Simulation
 	unsigned long	_newborn_timestep;		// number of newborns (during a Simulation timestep)
 	Nursery			_nursery;
 
-	
 	// STI related
 	dcMatrix		_STI_incidence;		// rows=time ; columns = STI
 	dcMatrix		_STI_prevalence;	// rows=time ; columns = STI
 	
-	
-	
 	// Interventions (Treatments, Vaccinations)
 	vector<Intervention>	_intervention;
-	
 
 	// Data frames that record outputs
-	dcDataFrame		_df_sim;
+	dcDataFrame		_df_sim;		// time series
+	dcDataFrame		_df_interv;		// intervention details
 	
 	
 	// ===============================
 	// === TARGETS FOR CALIBRATION ===
 	// ===============================
 	
-	int				_nMC_calibration;	// Number of MC runs for the simulation; used for calibration purposes
+	int		_nMC_calibration;	// Number of MC runs for the simulation; used for calibration purposes
 	
 	// Vector of times during the simulation
 	// when a calibration is expected
@@ -76,8 +73,6 @@ class Simulation
 	vector< vector<double> >	_calibrationDistances;
 	
 	
-	
-	
 	// Proportion of all sexually active indiv who have no partners
 	// Segregated gender
 	double			_target_singleRatio_f;
@@ -87,29 +82,29 @@ class Simulation
 	// FOR ALL AGE (AGE GAP) DISTRIBUTIONS:
 	// 1st col = age breaks
 	// 2nd col = proportion of population in associated age range age[i]<prop[i]<age[i+1]
-	dcMatrix			_target_ageDistribution;
-	dcMatrix			_target_ageGapDistribution;
-	dcMatrix			_target_ageFirstSexDistribution_f;
-	dcMatrix			_target_ageFirstSexDistribution_m;
-	dcMatrix			_target_ageGapFirstSexSpouseDistribution_f;	// gap b/w 1st sex and 1st spouse
-	dcMatrix			_target_ageGapFirstSexSpouseDistribution_m;	// gap b/w 1st sex and 1st spouse
+	dcMatrix		_target_ageDistribution;
+	dcMatrix		_target_ageGapDistribution;
+	dcMatrix		_target_ageFirstSexDistribution_f;
+	dcMatrix		_target_ageFirstSexDistribution_m;
+	dcMatrix		_target_ageGapFirstSexSpouseDistribution_f;	// gap b/w 1st sex and 1st spouse
+	dcMatrix		_target_ageGapFirstSexSpouseDistribution_m;	// gap b/w 1st sex and 1st spouse
 	
-	dcMatrix			_target_nLftSexPrtnrDistribution_f;	// Distribution of lifetime number of sex partners for females
-	dcMatrix			_target_nLftSexPrtnrDistribution_m;	// Distribution of lifetime number of sex partners for males
+	dcMatrix		_target_nLftSexPrtnrDistribution_f;	// Distribution of lifetime number of sex partners for females
+	dcMatrix		_target_nLftSexPrtnrDistribution_m;	// Distribution of lifetime number of sex partners for males
 	
 	double			_target_malesVisitCSW;					// propotion of males ever visited CSW
-	dcMatrix			_target_ageMalesVisitCSWDistribution;	// age distrib males ever visited CSW
+	dcMatrix		_target_ageMalesVisitCSWDistribution;	// age distrib males ever visited CSW
 	
 	
 	vector<STIname>	_target_STIprevalence_names;	// Names of the STI to be calibrated
 	vector<double>	_target_STIprevalence;			// Prevalence targets of the STI to be calibrated
-	dcMatrix			_target_STIprevalence_by_riskGroup; // Prevalence targets by risk group
+	dcMatrix		_target_STIprevalence_by_riskGroup; // Prevalence targets by risk group
 	
 	// TO DO: include in a more general variables (for all STIs)?
 	// not sure, as we may rarely have STI prevalence by age...
 	
-	dcMatrix			_target_HIV_prev_age_f;		// HIV prevalence by age (for females)
-	dcMatrix			_target_HIV_prev_age_m;		// HIV prevalence by age (for females)
+	dcMatrix		_target_HIV_prev_age_f;		// HIV prevalence by age (for females)
+	dcMatrix		_target_HIV_prev_age_m;		// HIV prevalence by age (for females)
 	
 	bool			_save_trace_files;
 	
@@ -222,6 +217,7 @@ public:
 	dcMatrix			get_target_HIV_prev_age_m() {return _target_HIV_prev_age_m;}
 	
 	dcDataFrame			get_df_sim(){return _df_sim;}
+	dcDataFrame			get_df_interv(){return _df_interv;}
 	
 	// =======================
 	// =======================
