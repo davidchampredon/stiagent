@@ -17,9 +17,9 @@ Rlibrary/stiagent.Rcheck/*
 Rlibrary/*.gz
 
 inputs/~*
-inputs_A*
-inputs_B*
-inputs_C*
+inputs_A
+inputs_B
+inputs_C
 
 outputs/*.csv
 outputs/*.out
