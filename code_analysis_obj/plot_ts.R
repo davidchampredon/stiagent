@@ -186,5 +186,32 @@ plot.prev.risk <- function(sim, stiname,interv.info=NULL){
 	return(g)
 }
 
+plot.interv <- function(sim){
+	### PLOT NUMBER OF INDIVIDUALS
+	### TARGETED AND REACHED BY INTERVENTION
+	
+	# Retrieve simulations data:
+	df_i <- list()
+	nmc <- get.nMC(sim)
+	for(i in 1:nmc) df_i[[i]] <- as.data.frame(sim[[i]]$df_interv)
+	df <- dplyr::rbind_all(df_i)
+	names(df)[names(df)=="rowname"] <- "intervention"
+	
+	# Manipulate and summarizes:
+	df2 <- ddply(df,c("time","intervention"),summarize, 
+				 mean_reached=mean(n_reached),
+				 mean_targeted=mean(n_targeted))
+	df2$time2 <- floor(df2$time)
+	df3 <- ddply(df2,c("time2","intervention"),summarize,n=sum(mean_reached))
+	df4 <- ddply(df3,"intervention",transform,cum_reached=cumsum(n))
+	
+	# Plot:
+	g <- ggplot(df2) + geom_line(aes(x=time,y=mean_targeted))
+	g <- g + geom_step(data = df4, aes(x=time2,y=cum_reached), size=2)
+	g <- g + facet_wrap(~intervention)
+	g <- g + ggtitle("Indiv targeted & cum number indiv reached (stepline)") + ylab("Counts")
+	return(g)	
+}
+
 
 

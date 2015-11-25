@@ -76,7 +76,8 @@ plot.ts <- function(sim){
 								   title="Tp by risk group",
 								   interv.info=interv.info),
 		plot.prev.risk(sim, stiname="HIV",interv.info=interv.info),
-		plot.prev.risk(sim, stiname="Tp",interv.info=interv.info)
+		plot.prev.risk(sim, stiname="Tp",interv.info=interv.info),
+		plot.interv(sim)
 	)
 }
 
