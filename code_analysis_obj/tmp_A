@@ -1,0 +1,2 @@
+../setup-param
+Rscript test-baseline.R A
