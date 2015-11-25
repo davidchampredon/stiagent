@@ -10,6 +10,9 @@
 #include "dcDataFrame.h"
 
 
+bool dcDataFrame::is_empty(){
+	return (_value.getNbRows()==0);
+}
 
 
 // ==== MANIPULATIONS ====
@@ -40,15 +43,12 @@ void dcDataFrame::addrow(string varname, vector<double> values)
 	_value.addRowVector(values);
 }
 
-
 void dcDataFrame::addrow(string varname,double value)
 {
 	vector<double> tmp;
 	tmp.push_back(value);
 	addrow(varname,tmp);
 }
-
-
 
 void dcDataFrame::addcol(string colname, vector<double> values){
 	
@@ -202,7 +202,7 @@ void dcDataFrame::saveToCSV(string filename, bool col_headers)
 	if (col_headers)
 	{
 		f << "row_name,";
-		for(int i=0;i<M;i++)
+		for(unsigned int i=0;i<M;i++)
 		{
 			f<<_colname[i];
 			if(i< M-1) f<<",";
@@ -210,10 +210,10 @@ void dcDataFrame::saveToCSV(string filename, bool col_headers)
 		f << endl;
 	}
 	
-	for (int i=0;i<N;i++)
+	for (unsigned int i=0;i<N;i++)
 	{
 		f << _rowname[i] << ",";
-		for(int j=0;j<M;j++)
+		for(unsigned int j=0;j<M;j++)
 		{
 			f<<_value(i,j);
 			if(j< M-1) f<<",";

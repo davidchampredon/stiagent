@@ -129,18 +129,15 @@ public:
 		// Default column names
 		vector<string> tmp(0);
 		for (int j=0;j<ncol; j++)
-		{
 			tmp.push_back("C"+int2string(j));
-		}
-		_colname = tmp;
 		
+		_colname = tmp;
 		
 		// Default row names
 		tmp.clear();
 		for (int j=0;j<nrow; j++)
-		{
 			tmp.push_back("R"+int2string(j));
-		}
+		
 		_rowname = tmp;
 	}
 
@@ -203,12 +200,13 @@ public:
 	}
 	
 	
-	// ==== MANIPULATIONS ====
 	
+	bool is_empty();
+	
+	// ==== MANIPULATIONS ====
 	
 	void addrow(string varname, vector<double> values);
 	void addrow(string varname, double value);
-	
 	void addcol(string colname, vector<double> values);
 	
 	// ==== SET FUNCTIONS ====
@@ -227,6 +225,9 @@ public:
 	double	getValue(string varname, string valuename);
 	double	getValue(string varname, unsigned int j);
 	double	getValue(string varname);
+	
+	unsigned int get_nrows() {return _value.getNbRows();}
+	unsigned int get_ncols() {return _value.getNbCols();}
 	
 	
 	// ==== FILE MANIPULATION ====

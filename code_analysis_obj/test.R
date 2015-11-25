@@ -52,9 +52,12 @@ sim <- stiagent_runsim_one_scen(folder_inputs,
 t1 <- as.numeric(Sys.time())
 message(paste("Duration simulations:",round((t1-t0)/60,2),"minutes"))
 
+
 #################################################################
 ### Plots (plot_sim.R)
 #################################################################
+pdf("plot_test.pdf",width = 20, height = 12)
+
 message("plotting...")
 # plot time series:
 plot.ts(sim)
@@ -62,6 +65,8 @@ plot.ts(sim)
 # plot population:
 plot.pop.all(sim)
 message("... plotting done.")
+
+dev.off()
 
 # -----------------------------------------------------------------
 
