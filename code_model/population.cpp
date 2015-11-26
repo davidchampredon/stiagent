@@ -5633,7 +5633,6 @@ dcDataFrame Population::export_to_dataframe(){
 			sti_treat.push_back(_individual[i].get_STItreatDuration()[sti]);
 			sti_vacc_date.push_back(_individual[i].get_STI_vacc_time()[sti]);
 			sti_IC.push_back(_individual[i].STI_IC()[sti]);
-
 		}
 		string header = stiname + "duration";
 		df.addcol(header, sti_dur);
