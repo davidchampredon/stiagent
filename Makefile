@@ -26,7 +26,7 @@ TBSCRIPTS = code_analysis_obj/*.* code_analysis_obj/test-baseline
 
 test_baseline_prev.out: $(INPUTS) $(TBSCRIPTS) setup-param
 	./setup-param
-	./code_analysis_obj/test-baseline
+	./code_analysis_obj/test-baseline > $@
 
 
 
