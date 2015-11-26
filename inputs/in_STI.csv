@@ -24,7 +24,7 @@ HIV_proba_symptomatic_male,0
 HIV_circum_SF_reduction,0.5
 HIV_proba_MTCT,0.3
 ,
-Tp_probaMaxSexTransm,0.50
+Tp_probaMaxSexTransm,0.45
 Tp_reduc_probaTrans_loRisk,0.9
 Tp_clearance_duration,1
 Tp_proba_symptomatic_female,0.15
