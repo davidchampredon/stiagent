@@ -4,6 +4,7 @@ cp in_STI.csv $DIR
 cp in_STI_SFincrease.csv $DIR
 cp in_STI_vaccine.csv $DIR
 cp in_STItreatment.csv $DIR
+cp in_STI_initial_prevalence.csv $DIR
 cp in_paramBirth.csv $DIR
 cp in_paramDeath.csv $DIR
 cp in_paramDMG.csv $DIR
