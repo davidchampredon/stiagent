@@ -26,8 +26,10 @@ founder_file <- "in_populationFeatures_TEST.csv"
 # that will be run during this simulation:
 scenario_file <- list()
 scenario_file[[1]] <- "in_scenario_baseline.csv"
-scenario_file[[2]] <- "in_scenario_VaxMass.csv"
-scenario_file[[3]] <- "in_scenario_TrSympt.csv"
+scenario_file[[2]] <- "in_scenario_TrMass.csv"
+scenario_file[[3]] <- "in_scenario_VaxMass.csv"
+scenario_file[[4]] <- "in_scenario_VaxYoung.csv"
+scenario_file[[5]] <- "in_scenario_VaxHiRisk.csv"
 
 ps <- read.csv("prm_simul.csv",header = FALSE)
 n.mc <- ps[ps[,1]=="mc_iter",2]

@@ -1,0 +1,24 @@
+
+* * * READ THIS FIRST WHEN COME BACK TO THIS PROJECT * * * 
+- you were struggling to make easy to interpret results figures and/or tables: JD & CC’s comments should help you narrowing down. 
+
+How things are run:
+
+- generate csv input files with the Excel spreadsheet “STIagent_front_PRMSET_xxx.xls” (“code” folder); given the parameter set, you will generate the input files for ONE synthetic population only. For the 3 populations (“A”,”B” and “C”), you will have to do it 3 times…
+
+- in “code” folder (where the c++ files are), 
+“make runSimulScen.log” 
+will run the simulations with the scenario comparisons, for that synthetic population (the one associated with the csv input files generated at the previous step).
+ 
+- main results regarding scenarios was made running 
+“Rscript analyze_scenario.R A” 
+where A is the population label (you used A,B and C), from the “Analysis” directory where the sister folder “OUT” contains the output files of the associated simulation run. 
+
+- You did 3 of these runs on earnserv (each take about 6 hours), for populations A,B and C. The results are backed up on earnserv in “~PROJECTS/TpHIV/_BACKUP/2015-07-10-Scenario-LOW” (same for MEDIUM=B, HIGH=C)
+
+- When the “analyze_scenario” is made on the 3 populations (it produces csv file in “Analysis” with the suffix of the population label, e.g. “scenario_diff_summary_HIV_diff_cuminc_A.csv”, you imported all these files locally (use the script “import-scen-summary-backup” in local “Analysis”) and then merge the results with
+“Rscript merge_scenario_suffix.R” 
+that produces the PDF 
+“merged_scenario.pdf” 
+that was used to interpret the results.
+
