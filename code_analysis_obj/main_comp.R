@@ -4,6 +4,8 @@
 ###
 #####################################################################
 
+t0 <- as.numeric(Sys.time())
+
 source("run_one_scenario.R")
 source("reformat_obj.R")
 source("plot_comp_scen.R")
@@ -11,16 +13,19 @@ source("plot_comp_scen.R")
 library(parallel)
 cpumax <- parallel::detectCores()
 
-t0 <- as.numeric(Sys.time())
+### Command line arguments ------------------
+###
+args <- commandArgs(trailingOnly = TRUE)
+pop <- args[1]  # Population "A", "B" or "C"  # args<- "A"
+### -----------------------------------------
 
+### paths:
 path.stiagent.lib <- "../Rlibrary/lib"
-
-### path to model input files:
-folder_inputs = "../inputs/"
+folder_inputs = paste0("../inputs_",pop,"/")
 folder_calib = "../calibration/"
 
 ### Founder population parameters:
-founder_file <- "in_populationFeatures_TEST.csv"
+founder_file <- "in_populationFeatures.csv"
 
 # Scenario file defining interventions
 # that will be run during this simulation:
@@ -31,29 +36,44 @@ scenario_file[[3]] <- "in_scenario_VaxMass.csv"
 scenario_file[[4]] <- "in_scenario_VaxYoung.csv"
 scenario_file[[5]] <- "in_scenario_VaxHiRisk.csv"
 
+### Simulation parameters:
 ps <- read.csv("prm_simul.csv",header = FALSE)
 n.mc <- ps[ps[,1]=="mc_iter",2]
 n.cpu <- ps[ps[,1]=="ncpu",2]
 if (n.cpu<=0) n.cpu <- max(1,cpumax+n.cpu)
 
 
-### Run each scenario
-###
+### Information on this run:
+message(rep("=",80))
+message()
+message(" -- Running scenarios comparison --")
+message()
+message(paste0("  Population:   ",pop))
+message(paste0("  Founder file: ",founder_file))
+message("  Scenario files: ")
+message(paste("  ",scenario_file,collapse = '\n'))
+message()
+message(paste0("  MC iter: ",n.mc))
+message(paste0("  CPUs:    ",n.cpu))
+message()
+message(rep("=",80))
 
+### Run each scenario ###
+###
 all.scen <- lapply(X = scenario_file, 
 				   FUN = stiagent_runsim_one_scen,
-				   folder_inputs=folder_inputs,
-				   folder_calib=folder_calib,
+				   folder_inputs = folder_inputs,
+				   folder_calib = folder_calib,
 				   founder_file = founder_file,
-				   n.mc=n.mc,
-				   n.cpu=n.cpu,
-				   path.stiagent.lib=path.stiagent.lib)
-
+				   n.mc = n.mc,
+				   n.cpu = n.cpu,
+				   path.stiagent.lib = path.stiagent.lib)
 
 ### Calculate summary statistics for all scenario
 ###
 summ.scen <- summary.scenarios(all.scen, qLo = 0.1, qHi=0.9)
 
+save.image(file = paste0("compScen_pop_",pop,".RData"))
 
 ### Plots
 ###
@@ -64,7 +84,6 @@ dev.off()
 # =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
 t1 <- as.numeric(Sys.time())
-save.image(file = "main.RData")
 message()
-message(paste("|=== time elapsed:",round((t1-t0)/60,1),"minutes ===|"))
+message(paste("||=== Time elapsed:",round((t1-t0)/60,1),"minutes ===||"))
 
