@@ -1,0 +1,4 @@
+echo --------------------
+echo Scenarios comparison for population $1 launched!
+Rscript main_comp.R $1 &
+
