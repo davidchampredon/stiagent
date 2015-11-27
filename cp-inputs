@@ -1,2 +1,8 @@
+# Clean-up:
 rm -rf ./inputs_$1/*.csv
+
+# Copy common parameters:
+cp ./inputs/*.csv ./inputs_$1/
+
+# Copy (overwrite) population-specific parameters:
 cp ./inputs/_pop_$1/*.csv ./inputs_$1/

@@ -1,4 +1,0 @@
-cd $(dirname $0)
-./copy_common_param A
-./copy_common_param B
-./copy_common_param C

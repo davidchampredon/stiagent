@@ -4,7 +4,6 @@ echo = Population specific files are NOT generated
 echo = with this script use Excel spreadsheets
 echo ================================================
 cd $(dirname $0)
-./inputs/copy-all
 ./cp-inputs A
 ./cp-inputs B
 ./cp-inputs C
