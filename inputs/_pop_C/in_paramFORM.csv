@@ -11,5 +11,5 @@ formation_agegap_fmin,0.268
 formation_RiskGroup_1,0.3
 formation_RiskGroup_2,1.00
 formation_PartnDeficit_1,0.405
-formation_STIsymptom_f,0.9
-formation_STIsymptom_m,0.9
+formation_STIsymptom_f,0.85
+formation_STIsymptom_m,0.85
