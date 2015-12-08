@@ -77,7 +77,7 @@ save.image(file = paste0("compScen_pop_",pop,".RData"))
 
 ### Plots
 ###
-pdf("comp_scen.pdf", width=10)
+pdf( paste0("comp_scen_pop_",pop,".pdf"), width=10)
 plot.comp.scen(summ.scen)
 dev.off()
 
