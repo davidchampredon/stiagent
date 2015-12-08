@@ -7,9 +7,6 @@
 
 # test_baseline_prev.out = Test equilibrium prevalence 
 
-
-
-
 ### Tests for prevalence equilibrium
 ###
 
@@ -30,8 +27,3 @@ test_baseline_prev.out: $(INPUTS) $(TBSCRIPTS) setup-param
 
 
 
-### Comparison of outcomes between scenarios
-###
-
-comp_scen.out: $(INPUTS) $(TBSCRIPTS)
-	Rscript ./code_analysis_obj/main_comp.R
