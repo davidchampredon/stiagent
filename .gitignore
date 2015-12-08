@@ -20,6 +20,7 @@ inputs/~*
 inputs_A/*.csv
 inputs_B/*.csv
 inputs_C/*.csv
+inputs/_pop*/*.*
 
 outputs/*.csv
 outputs/*.out
