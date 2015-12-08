@@ -37,5 +37,7 @@ For now, these tests are done with `make test_baseline_prev.out`.
 
 Run the simulations with 3 main interventions, using 20 years waning immunity as central assumption (do 5y and no waning in supplements, discuss the differences)
 
-For now, this is done with ```main_comp.R```
+For now, this is done executing `./docompscen X`in the `code_analysis_obj` folder (where `X` is the population label, i.e., A,B or C).
+
+Time benchmark: with 6 MC iterations and 5 scenarios (including baseline), takes about 2 hours on 11 cpus (earnserv).
 
