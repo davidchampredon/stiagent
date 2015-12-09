@@ -47,5 +47,7 @@ Run the simulations with 3 main interventions, using 20 years waning immunity as
 
 For now, this is done executing `./docompscen X`in the `code_analysis_obj` folder (where `X` is the population label, i.e., A,B or C).
 
-Time benchmark: with 6 MC iterations and 5 scenarios (including baseline), takes about 2 hours on 11 cpus (earnserv).
+Time benchmarks: 
+ * with 6 MC iterations and 5 scenarios (including baseline), takes about 2 hours on 11 cpus (earnserv)
+ * with 30 MC iterations and 5 scenarios (including baseline), takes about 4 hours on 11 cpus (earnserv)
 
