@@ -19,6 +19,26 @@ get.interv.time <- function(folder_inputs,scenario_file){
 }
 	
 
+plot.final.prev <- function(sim){
+	### PLOT FINAL PREVALENCE ONLY
+	### (mostly used to test baseline intervention is on target prevalence)
+	
+	n <- sum(grepl(pattern = "MC_",x = names(sim)))
+	for(i in 1:n){
+		if(i==1) x <- sim[[i]]$prev_final
+		if(i>1) x <- rbind(x,sim[[i]]$prev_final)
+	}	
+	colnames(x) <- sim[[1]]$STInames
+	m <- apply(x, MARGIN = 2,FUN = mean)
+	
+	boxplot(x,col="lightgrey", main = "Prevalence at horizon")
+	points(x=factor(c(1,2)),y=m, cex=2,lwd=6, col="red")
+	abline(h=m,lty=2,col="red")
+	text(x=factor(c(1,2)),y=m,labels = round(m,4),col="red",pos = 3,font = 2)
+	grid()
+}
+
+
 plot.ts <- function(sim){
 	
 	### COLLECTION OF PLOTS 

@@ -56,6 +56,12 @@ message(paste("Duration simulations:",round((t1-t0)/60,2),"minutes"))
 ### Plots (plot_sim.R)
 #################################################################
 message("plotting...")
+
+# plot final prevalence:
+pdf(paste0("plot_finalprev_",pop,".pdf"),width=20,height=12)
+plot.final.prev(sim)
+dev.off()
+
 # plot time series:
 pdf(paste0("plot_ts_",pop,".pdf"),width=20,height=12)
 plot.ts(sim)

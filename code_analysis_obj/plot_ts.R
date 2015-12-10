@@ -199,8 +199,8 @@ plot.interv <- function(sim){
 	
 	# Manipulate and summarizes:
 	df2 <- ddply(df,c("time","intervention"),summarize, 
-				 mean_reached=mean(n_reached),
-				 mean_targeted=mean(n_targeted))
+				 mean_reached=mean(n_reached,na.rm = T),
+				 mean_targeted=mean(n_targeted,na.rm = T))
 	df2$time2 <- floor(df2$time)
 	df3 <- ddply(df2,c("time2","intervention"),summarize,n=sum(mean_reached))
 	df4 <- ddply(df3,"intervention",transform,cum_reached=cumsum(n))
