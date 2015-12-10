@@ -30,7 +30,7 @@ We want to compare various epidemiological outcomes under different intervention
 a) Parameters:
 
  * i) parameters that are *common* across all populations (e.g. STI features) must be specified in the Excel spreadsheet `inputs/STIagent_front.xlsm`. Run the VBA macros to save the parameters in ad hoc csv files.
- * ii) parameters that are *specific* to a population (e.g. partnership fomation) must be specified in the Excel spreadsheet `inputs/_pop_X/_specific_PRMSET_pop_X.xlsm`. Run the VBA macros to save the parameters in ad hoc csv files.
+ * ii) parameters that are *specific* to a population (e.g. partnership fomation, interventions) must be specified in the Excel spreadsheet `inputs/_pop_X/_specific_PRMSET_pop_X.xlsm`. Run the VBA macros to save the parameters in ad hoc csv files.
  * iii) execute `setup-param` to copy the parameters files at the correct locations.
 
 b) Equilibrium:
