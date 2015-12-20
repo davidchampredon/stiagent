@@ -11,8 +11,8 @@ _sexAct_reduce_age_param_1,20
 _sexAct_reduce_age_param_2,30
 _sexAct_reduce_age_param_3,5
 _sexAct_reduce_risk_param_1,0.4
-_sexAct_reduce_STIsymptom_param_male,0.1
-_sexAct_reduce_STIsymptom_param_female,0.2
+_sexAct_reduce_STIsymptom_param_male,0.8
+_sexAct_reduce_STIsymptom_param_female,0.8
 _sexAct_reduce_nPartner_param,2
 _sexAct_proba_distribute_partnerTypes_prefSpouse,2
 _sexAct_proba_distribute_partnerTypes_sexWorkParam_1,99999
