@@ -49,12 +49,8 @@ int main(int argc, const char * argv[])
 	double t1=tim.tv_sec+(tim.tv_usec/1000000.0);
 	// ------------------------------------------
 	
-	
-	
 	string _DIR_IN = "../inputs/";
-	
-	
-	
+
 	//	CODECHECK_mandatory();
 	
 	
@@ -110,7 +106,7 @@ int main(int argc, const char * argv[])
 		
 		bool debugInfo=true;
 		
-		unsigned long founder_size = 100;
+		unsigned long founder_size = 300;
 		double founder_femprop = 0.5;
 		double founder_cswprop = 0.01;
 		string folder_inputs = "../inputs/";
@@ -128,7 +124,7 @@ int main(int argc, const char * argv[])
 		
 		// ======================
 		// === Run simulation ===
-		// ======================
+		// ======================	
 		
 		double horizon	= getParameterFromFile("horizon_years", _DIR_IN + "in_simulation.csv");
 		double timeStep	= getParameterFromFile("timestep_days", _DIR_IN + "in_simulation.csv")/365.0;
@@ -177,6 +173,10 @@ int main(int argc, const char * argv[])
 				cout << "==== DEBUG: population"<<endl;
 				dcDataFrame export_pop = Sobj.get_population().export_to_dataframe();
 				if(0) export_pop.display();
+				
+				vector< vector<double> > x =Sobj.get_population().get_rec_sexact();
+				
+				
 			}
 			
 			//cout<<"GLOBAL DISTANCE FROM TARGETS:"<<S.calibration_distance_targets()<<endl;
