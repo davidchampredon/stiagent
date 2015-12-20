@@ -1,0 +1,64 @@
+\contentsline {section}{\numberline {1}Introduction and Summary}{3}{section.1}
+\contentsline {section}{\numberline {2}High level description}{5}{section.2}
+\contentsline {subsection}{\numberline {2.1}Conceptual structure}{5}{subsection.2.1}
+\contentsline {subsection}{\numberline {2.2}Implemented Features}{5}{subsection.2.2}
+\contentsline {subsection}{\numberline {2.3}Future implementations}{5}{subsection.2.3}
+\contentsline {subsection}{\numberline {2.4}Weaknesses}{5}{subsection.2.4}
+\contentsline {section}{\numberline {3}Demographics}{6}{section.3}
+\contentsline {subsection}{\numberline {3.1}Births}{6}{subsection.3.1}
+\contentsline {subsection}{\numberline {3.2}Youth arrival at sexual debut}{6}{subsection.3.2}
+\contentsline {subsection}{\numberline {3.3}Death}{7}{subsection.3.3}
+\contentsline {subsection}{\numberline {3.4}Immigration}{7}{subsection.3.4}
+\contentsline {section}{\numberline {4}Partnerships}{7}{section.4}
+\contentsline {subsection}{\numberline {4.1}Partnerships formation}{7}{subsection.4.1}
+\contentsline {subsubsection}{\numberline {4.1.1}Formation algorithm}{8}{subsubsection.4.1.1}
+\contentsline {subsubsection}{\numberline {4.1.2}Formation success random variable ($\Phi $)}{9}{subsubsection.4.1.2}
+\contentsline {subsubsection}{\numberline {4.1.3}Maximum number of sexual partners}{11}{subsubsection.4.1.3}
+\contentsline {subsection}{\numberline {4.2}Spousal union}{11}{subsection.4.2}
+\contentsline {subsubsection}{\numberline {4.2.1}Determinants}{11}{subsubsection.4.2.1}
+\contentsline {subsubsection}{\numberline {4.2.2}Algorithm}{12}{subsubsection.4.2.2}
+\contentsline {subsection}{\numberline {4.3}Partnerships dissolution}{13}{subsection.4.3}
+\contentsline {subsubsection}{\numberline {4.3.1}Dissolution algorithm}{13}{subsubsection.4.3.1}
+\contentsline {subsubsection}{\numberline {4.3.2}Dissolution success random variable ($\Psi $)}{13}{subsubsection.4.3.2}
+\contentsline {section}{\numberline {5}Sexual intercourses}{14}{section.5}
+\contentsline {subsection}{\numberline {5.1}Total number of sex acts}{15}{subsection.5.1}
+\contentsline {subsection}{\numberline {5.2}Distribution of sex acts among partner types}{16}{subsection.5.2}
+\contentsline {subsection}{\numberline {5.3}Distributing the number of sex acts between partners}{17}{subsection.5.3}
+\contentsline {subsection}{\numberline {5.4}Distributing sex acts types}{17}{subsection.5.4}
+\contentsline {subsection}{\numberline {5.5}Limits on the number of sex acts for females}{18}{subsection.5.5}
+\contentsline {subsection}{\numberline {5.6}Sex acts of males with no partnership}{18}{subsection.5.6}
+\contentsline {section}{\numberline {6}Commercial sex workers}{19}{section.6}
+\contentsline {subsection}{\numberline {6.1}Recruitment}{19}{subsection.6.1}
+\contentsline {subsection}{\numberline {6.2}Cessation}{19}{subsection.6.2}
+\contentsline {section}{\numberline {7}Disease transmission}{19}{section.7}
+\contentsline {subsection}{\numberline {7.1}Infectivity curve and susceptibility factor}{20}{subsection.7.1}
+\contentsline {subsection}{\numberline {7.2}Probability of sexual transmission}{20}{subsection.7.2}
+\contentsline {subsection}{\numberline {7.3}Probabilities of transmission for every STI}{21}{subsection.7.3}
+\contentsline {subsubsection}{\numberline {7.3.1}HIV}{21}{subsubsection.7.3.1}
+\contentsline {subsubsection}{\numberline {7.3.2}HSV2}{23}{subsubsection.7.3.2}
+\contentsline {subsubsection}{\numberline {7.3.3}HPV}{23}{subsubsection.7.3.3}
+\contentsline {subsubsection}{\numberline {7.3.4}Chlamydia (Ct)}{24}{subsubsection.7.3.4}
+\contentsline {subsubsection}{\numberline {7.3.5}Neisseria Gonorrhoeae (Ng)}{26}{subsubsection.7.3.5}
+\contentsline {subsubsection}{\numberline {7.3.6}Syphilis (Treponema pallidum, Tp)}{26}{subsubsection.7.3.6}
+\contentsline {subsubsection}{\numberline {7.3.7}Chancroids (Hd)}{28}{subsubsection.7.3.7}
+\contentsline {subsubsection}{\numberline {7.3.8}Trichomoniasis (Tv)}{29}{subsubsection.7.3.8}
+\contentsline {subsubsection}{\numberline {7.3.9}Bacterial vag (Bv)}{30}{subsubsection.7.3.9}
+\contentsline {subsection}{\numberline {7.4}Mother to child transmission (MTCT)}{30}{subsection.7.4}
+\contentsline {section}{\numberline {8}Treatment}{31}{section.8}
+\contentsline {subsection}{\numberline {8.1}Generic implementation}{31}{subsection.8.1}
+\contentsline {subsubsection}{\numberline {8.1.1}Treatment microbiological failure}{31}{subsubsection.8.1.1}
+\contentsline {subsubsection}{\numberline {8.1.2}Adherence}{32}{subsubsection.8.1.2}
+\contentsline {subsubsection}{\numberline {8.1.3}Treatment reduction effect}{32}{subsubsection.8.1.3}
+\contentsline {subsection}{\numberline {8.2}Treatment each STI}{33}{subsection.8.2}
+\contentsline {subsubsection}{\numberline {8.2.1}Bacterial STIs}{33}{subsubsection.8.2.1}
+\contentsline {subsubsection}{\numberline {8.2.2}Viral STIs}{33}{subsubsection.8.2.2}
+\contentsline {section}{\numberline {9}Vaccination}{33}{section.9}
+\contentsline {section}{\numberline {10}Migrations between populations}{33}{section.10}
+\contentsline {section}{\numberline {11}Simulation}{33}{section.11}
+\contentsline {subsection}{\numberline {11.1}Calibration}{33}{subsection.11.1}
+\contentsline {subsubsection}{\numberline {11.1.1}Newest stuff (feb-2015)}{33}{subsubsection.11.1.1}
+\contentsline {subsubsection}{\numberline {11.1.2}Response variable of the Model to be calibrated}{33}{subsubsection.11.1.2}
+\contentsline {subsubsection}{\numberline {11.1.3}Algorithm (high-level)}{34}{subsubsection.11.1.3}
+\contentsline {section}{\numberline {12}Miscellaneous Notes}{35}{section.12}
+\contentsline {subsection}{\numberline {12.1}Pseudo-beta shape function}{35}{subsection.12.1}
+\contentsline {section}{\numberline {13}Model Parameters Summary}{36}{section.13}
