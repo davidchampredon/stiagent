@@ -105,8 +105,8 @@ plot.ts <- function(sim){
 plot.pop.all <- function(sim){
 	
 	
-	plot.durPrtn.rskgrp(sim)
-	plot.prtn.distrib(sim)
+	try(plot.durPrtn.rskgrp(sim),silent = TRUE)
+	try(plot.prtn.distrib(sim), silent = TRUE)
 	grid.arrange(
 		plot.lifePtrn(sim),
 		plot.curr.life.prtn(sim),
