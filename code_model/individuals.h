@@ -176,7 +176,7 @@ public:
 	int							get_nCurrSexPartner() {return _nCurrSexPartner;}
 	int							get_nMaxCurrSexPartner() {return _nMaxCurrSexPartner;}
 	int							get_nCurrSpouse() {return _nCurrSpouse;}
-	int							getnCurrCasual() {return _nCurrSexPartner-_nCurrSpouse;}
+	int							get_nCurrCasual() {return _nCurrSexPartner-_nCurrSpouse;}
 	
 	int							get_nLifetimePartner() {return _nLifetimePartner;}
 	int							get_nLifetimeSpouse() {return _nLifetimeSpouse;}

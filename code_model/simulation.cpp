@@ -496,10 +496,7 @@ void Simulation::runAllEvents_timeStep_obj(int numTimeStep,
 		update_cure(stiname);
 		update_vacc(stiname);
 	}
-	
-	// STI Vaccination
-	
-	
+
 	// Deaths
 	if (debugflag) cout << "deathEvents"<<endl;
 	_population.deathEvents(_timeStep,false /*_save_trace_files*/); //force not write trace file because huge!

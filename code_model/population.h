@@ -177,12 +177,15 @@ class Population
 	vector<unsigned long>	_UID_pot_preg; // UIDs of all potential pregenant females
 	
 	
+	
+	// Record calculation details
+	vector< vector<double> > _rec_sexact;
+
+	
 	// -----------------
 	// Private functions
 	// -----------------
-	
-
-	
+		
 	void		sexAct_distrib_within_prtnrType(unsigned long uid,
 												string prtnrType,
 												int nPrtnr, int nsexact,
@@ -329,7 +332,9 @@ public:
 	vector<unsigned long>	get_UID_pot_preg() {return _UID_pot_preg;}
 	vector<unsigned long>	get_STI_mtct_cumcount() { return _STI_mtct_cumcount;}
 	
+	vector< vector<double> >	get_rec_sexact() {return _rec_sexact ;}
 		
+	
 	// === Subset Functions ===
 	
 	vector<Individual>	subsetIndividual(Gender g); // return all individuals of gender g
@@ -743,7 +748,6 @@ public:
 	
 	void			dissolvePartnershipEvents(double prd, int seed); // DELETE?
 	
-	void			formPartnershipEvents(double prd, int seed); // DELETE?
 	
 		// --- CSW
 	

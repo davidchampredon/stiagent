@@ -200,6 +200,11 @@ public:
 	}
 	
 	
+	void clear(){
+		_value.resize(0);
+		_colname.clear();
+		_rowname.clear();
+	}
 	
 	bool is_empty();
 	

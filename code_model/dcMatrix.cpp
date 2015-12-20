@@ -341,10 +341,7 @@ void dcMatrix::addRowVector(vector<double> v)
 		
 		dcMatrix tmp(1,v.size());
 		
-		for (unsigned int j=0; j<v.size(); j++) 
-		{
-			tmp(0,j) = v[j];
-		}
+		for (unsigned int j=0; j<v.size(); j++) tmp(0,j) = v[j];
 		res = tmp;
 	}
 	
@@ -420,28 +417,21 @@ void dcMatrix::addColVector(vector<double> v)
 {        
     unsigned int nrow = this->nbRows;
     unsigned int ncol = this->nbCols;
-    
-    if(nrow != v.size())
-	{
-		cout<<"CAN'T ADD Col VECTOR TO MATRIX, SIZES DO NOT MATCH: dcMatrix rows = "<<nrow
-		<<" vs Vector size = "<<v.size()<<endl;
-		exit(1);
-	}
-    
+
+	string errmsg = "CAN'T ADD Col VECTOR TO MATRIX, SIZES DO NOT MATCH: dcMatrix rows = ";
+	errmsg = errmsg + to_string(nrow) + " vs Vector size = " + to_string(v.size());
+
+	
+	stopif(nrow != v.size(),errmsg);
+	
     dcMatrix tmp(nrow,ncol+1);
     
-    for(unsigned int i=0; i<nrow; i++)
-    {
+    for(unsigned int i=0; i<nrow; i++){
         for(unsigned int j=0; j<ncol;j++)
-        {
             tmp(i,j) = this->val[i*ncol+j];
-        }
     }
     
-    for(unsigned int i=0; i<nrow; i++)
-    {
-        tmp(i,ncol) = v[i];
-    }
+    for(unsigned int i=0; i<nrow; i++) tmp(i,ncol) = v[i];
     
     *this = tmp;
 }

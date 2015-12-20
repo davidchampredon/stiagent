@@ -285,6 +285,8 @@ void Population::setup_for_simulation(unsigned long founder_size,
 	// update the list of UIDs of females
 	// that could potentially become pregnant
 	set_UID_pot_preg(pregnantPotentialFemales());
+	
+	_rec_sexact.clear();
 }
 
 
@@ -1351,8 +1353,7 @@ void Population::addIndividual(Individual I)
 	
 }
 
-unsigned long Population::getMaxUID()
-{
+unsigned long Population::getMaxUID(){
 	/// Returns the largest UID (alive or not)
 	return _size-1;
 }
@@ -1397,7 +1398,7 @@ void Population::youthArrivals(double prd, bool save_trace_file)
 	// TO DO: do not hard code!
 	double reducMortalityAfter5yrs = 0.2;
 	
-	double rate =	_birthRate
+	double rate = _birthRate
 	*(1-_infantMortality)
 	*pow(1-_childMortality,4)
 	*pow(1-_childMortality*reducMortalityAfter5yrs,y-5);
@@ -1416,40 +1417,30 @@ void Population::youthArrivals(double prd, bool save_trace_file)
 	
 	// Set features of young new comers
 	
-	for (int i=0; i<nPrd; i++)
-	{
-		
+	for (int i=0; i<nPrd; i++){
 		// Modelled population enters
 		// at minimum age of sexual debut
-		
 		double age = _ageSexMin;
 		
 		// 50% chance female
-		
 		double u_gender = uniform01();
 		Gender g = female;
 		if (u_gender<0.5) g = male;
 		
-		
 		// ==== Sexual Activity ====
-		
 		
 		// Risk Group
 		// is selected according
 		// to the population-wide proportions
-		
 		vector<int>		rskgrp;
 		vector<double>	proba_rskgrp;
 		
-		for (int i=0; i<=_maxRiskGroup; i++)
-		{
+		for (int i=0; i<=_maxRiskGroup; i++){
 			rskgrp.push_back(i);
 			proba_rskgrp.push_back(_propRiskGroup[i]);
 		}
 		
 		int riskgroup = probaHistogramInt(rskgrp, proba_rskgrp);
-		
-		
 		
 		// Maximum number of concurrent sex partners:
 		double p_maxPrtn = proba_nMaxCurrSexPartner(g,riskgroup);
@@ -1473,12 +1464,10 @@ void Population::youthArrivals(double prd, bool save_trace_file)
 		// Chance of male being circumcised same as
 		// proportion of already circumcised men in the population
 		bool isCircum = false;
-		if (g==male)
-		{
+		if (g==male){
 			double u_circum = uniform01();
 			if (u_circum < _proportion_circum) isCircum=true;
 		}
-		
 		
 		Individual I(0, g, age,
 					 maxSexPartner,
@@ -2441,32 +2430,22 @@ void Population::formPartnership(unsigned long uid1, unsigned long uid2)
 	/// FORMS A PARTNERSHIP BETWEEN UID1 AND UID2
 	/// (IT'S A CASUAL BY DEFAULT, FOR ANY NEWLY FORMED PARTNERSHIP)
 	
-	if (!_individual[uid1].isAlive() || !_individual[uid2].isAlive())
-	{
-		cout << "ERROR: formPartnership: trying to partner with a dead individual ("
-		<<uid1<<"or"<<uid2<<" is dead)"<<endl;
-		exit(1);
-	}
+	// Integrity checks:
 	
-	// Heterosexual Partnerships only
-	if (_individual[uid1].get_gender()==_individual[uid2].get_gender())
-	{
-		cout << "ERROR: formPartnership: trying to partner same gender ("
-		<<uid1<<"--"<<uid2<<")"<<endl;
-		exit(1);
-	}
-	
-	stopif(uid1>=_size,"there's a problem!");
-	stopif(uid2>=_size,"there's a problem!");
+	string errmsg_dead = "Trying to partner with a dead individual ("+ to_string(uid1) + "or" + to_string(uid2) + " is dead)";
+	string errmsg_g = "Trying to partner same ("+ to_string(uid1) + "or" + to_string(uid2) + ")";
+	string errmsg_prtnnum = "Maximum and current number of partners inconsistent";
 	
 	_individual[uid1].addPartner(uid2);
 	_individual[uid2].addPartner(uid1);
 	
-	string errmsg="Maximum and current number of partners inconsistent";
-	stopif(_individual[uid1].get_nMaxCurrSexPartner()<_individual[uid1].get_nCurrSexPartner(),errmsg);
-	stopif(_individual[uid2].get_nMaxCurrSexPartner()<_individual[uid2].get_nCurrSexPartner(),errmsg);
+	stopif(!_individual[uid1].isAlive() || !_individual[uid2].isAlive(),errmsg_dead);
+	stopif (_individual[uid1].get_gender()==_individual[uid2].get_gender(),errmsg_g);
+	stopif(uid1>=_size || uid2>=_size,"UID outside population size!");
+	stopif(_individual[uid1].get_nMaxCurrSexPartner()<_individual[uid1].get_nCurrSexPartner(),errmsg_prtnnum);
+	stopif(_individual[uid2].get_nMaxCurrSexPartner()<_individual[uid2].get_nCurrSexPartner(),errmsg_prtnnum);
 	
-	// == All partnerships start with one sex act ==
+	// All partnerships start with one sex act:
 	bool save_trace_file = false;
 	add_sexAct(uid1, uid2, 1, save_trace_file);
 	unsigned long uid_male = (_individual[uid1].get_gender()==male)?uid1:uid2;
@@ -2481,13 +2460,11 @@ void Population::formPartnership(unsigned long uid1, unsigned long uid2)
 	if (u>0.66) sextype[2]=1;
 	_individual[uid_male].set_UID_n_sexAct_Type_period(sextype);
 	
-	
 	// Update '_partnershipsMatrix'
 	vector<double> tmp(2);
 	tmp[0] = uid1;
 	tmp[1] = uid2;
-	if (_individual[uid1].get_gender()==male)
-	{
+	if (_individual[uid1].get_gender()==male){
 		tmp[0] = uid2;
 		tmp[1] = uid1;
 	}
@@ -2666,8 +2643,6 @@ double Population::form_age(double age_f)
 	/// FOR PARTNERSHIP FORMATION
 	/// BASED ON FEMALE AGE
 	
-	//af-amin / astart-amin
-	
 	double tmp;
 	
 	if(age_f<=_formation_age_fullstart){
@@ -2688,8 +2663,6 @@ double Population::form_age_male(double age_m)
 	/// FOR PARTNERSHIP FORMATION
 	/// BASED ON MALE'S AGE
 	
-	//af-amin / astart-amin
-	
 	double tmp;
 	
 	if(age_m<=_formation_age_fullstart)	{
@@ -2709,19 +2682,15 @@ double Population::form_ageGap(double ageGap)
 	/// FOR PARTNERSHIP FORMATION
 	/// BASED ON PARTNERSHIP'S AGE GAP
 	
-	double gapmin = _formation_agegap_shape[0];
-	
-	
+	double gapmin	= _formation_agegap_shape[0];
 	double gapavg	= _formation_agegap_mean;
 	double a		= _formation_agegap_shape[1];
 	double d		= _formation_agegap_shape[2];
 	
-	double b = a/(d*pow(gapavg-gapmin,d));
-	
-	double fmax = pow(a/(b*d*exp(1)),(a/d));
-	
-	double xx = ageGap - gapmin;
-	double tmp = 0.0;
+	double b		= a/(d*pow(gapavg-gapmin,d));
+	double fmax		= pow(a/(b*d*exp(1)),(a/d));
+	double xx		= ageGap - gapmin;
+	double tmp		= 0.0;
 	if (xx>0) tmp = pow(xx,a)*exp(-b*pow(xx,d))/fmax;
 	
 	return _formation_agegap_fmin + (1-_formation_agegap_fmin)*tmp;
@@ -2762,7 +2731,8 @@ double Population::form_STIsymptom(unsigned long uid_f,unsigned long uid_m)
 }
 
 
-bool Population::isFormationPossible(unsigned long uid1, unsigned long uid2,
+bool Population::isFormationPossible(unsigned long uid1,
+									 unsigned long uid2,
 									 bool save_trace_file)
 {
 	/// DETERMINES IF PARTNERSHIP FORMATION
@@ -2770,46 +2740,36 @@ bool Population::isFormationPossible(unsigned long uid1, unsigned long uid2,
 	
 //	ofstream tracefile(_DIR_OUT + "partnership_tentatives.out",ios::app);
 	
-	
 	// Check both are alive
 	bool alive = _individual[uid1].isAlive() && _individual[uid2].isAlive();
-	
 	string errmsg;
-	
 	errmsg = " Trying to form partnership with at least a dead individual";
 	stopif(!alive, errmsg);
 	
-	
-	// Check in genders are different
+	// Check if genders are different
 	Gender g1 = _individual[uid1].get_gender();
 	Gender g2 = _individual[uid2].get_gender();
 	bool genderCheck = (g1 != g2);
-	
 	errmsg="trying to form partnership with same gender individuals";
 	stopif(!genderCheck,errmsg);
-	
-	
-	// Check if individual is open to new partnership
+
+	// Check they are not already in partnership
+	bool alreadyPartner = alreadyPartners(uid1, uid2);
+	if (alreadyPartner) return false;
+
+	// if individual is not open to new partnership, then impossible:
 	bool open1 = _individual[uid1].isOpenToNewPartnership();
 	bool open2 = _individual[uid2].isOpenToNewPartnership();
-	if (!open1 || !open2)
-	{
+	if (!open1 || !open2){
 //		if(save_trace_file) tracefile << "not_open,,,,0"<<endl;
 		return false;
 	}
 	
-	// Check they are not already in partnership
-	bool alreadyPartner = alreadyPartners(uid1, uid2);
-	if (alreadyPartner) return false;
-	
-	
-	// === Check Age preferences ===
+	// === Age preferences ===
 	
 	double ageGap = getAgeGap(uid1,uid2);
-	
 	double age_female=0.0;
 	double age_male=0.0;
-	
 	if (g1==female) {age_female = _individual[uid1].get_age(); age_male = _individual[uid2].get_age();}
 	if (g2==female) {age_female = _individual[uid2].get_age(); age_male = _individual[uid1].get_age();}
 	
@@ -2817,57 +2777,30 @@ bool Population::isFormationPossible(unsigned long uid1, unsigned long uid2,
 	double f_age_male	= form_age_male(age_male);
 	double f_ageGap		= form_ageGap(ageGap);
 	
-	bool debug = false;
-	if (debug)
-	{
-		cout << endl << "open1:"<<open1;
-		cout << " ; open2:"<< open2;
-		cout << " ; \t alreadyPartnered:"<< alreadyPartner;
-		cout << " ; \t ageGap("<< _formation_agegap_mean<<"~"<<ageGap<<"~" << "):"<< f_age;
-		cout << endl;
-	}
-	
 	// === Risk Group ===
 	
-	double f_riskgroup = form_riskGroup(_individual[uid1].get_riskGroup(), _individual[uid2].get_riskGroup());
+	double f_riskgroup = form_riskGroup(_individual[uid1].get_riskGroup(),
+										_individual[uid2].get_riskGroup());
 	
 	// === Partnership deficit ===
 	
 	int n1 = _individual[uid1].get_nCurrSexPartner();
 	int n2 = _individual[uid2].get_nCurrSexPartner();
-	
 	int m1 = _individual[uid1].get_nMaxCurrSexPartner();
 	int m2 = _individual[uid2].get_nMaxCurrSexPartner();
 	
 	double d1 = (double)(m1-n1)/m1;
 	double d2 = (double)(m2-n2)/m2;
-	
 	double f_deficit = form_deficit(d1, d2);
 	
 	// === STI symptom ===
 	
 	unsigned long uid_f = _individual[uid1].get_gender()==female? uid1:uid2;
 	unsigned long uid_m = (uid_f==uid1)?uid2:uid1;
-	
 	double f_STIsymptom = form_STIsymptom(uid_f, uid_m);
-	
-	
-	// DEBUG -----------
-	if(debug)
-	{
-		cout << endl<<uid1<<"-"<<uid2;
-		cout << " age("<< f_age <<") ; ";
-		cout << " risk("<< f_riskgroup << ") ; ";
-		cout << " deficit("<< f_deficit << ") ; ";
-		//cout << endl;
-	}
-	// -----------------
-	
-	
+
 	// Bernoulli probability for formation event
 	double proba = f_age_male * f_age * f_ageGap * f_riskgroup * f_deficit* f_STIsymptom;
-	
-	// Draw random variable
 	double u = uniform01();
 	
 	if(save_trace_file)
@@ -2883,8 +2816,6 @@ bool Population::isFormationPossible(unsigned long uid1, unsigned long uid2,
 
 
 
-// ==== Spousal progression ====
-
 bool Population::spousalProgression(unsigned long uid1, unsigned long uid2)
 {
 	/// DETERMINES IF UID1 AND UID2 CAN
@@ -2895,8 +2826,7 @@ bool Population::spousalProgression(unsigned long uid1, unsigned long uid2)
 	// Determines who is the female
 	unsigned long uid_f = uid2;
 	unsigned long uid_m = uid1;
-	if (_individual[uid1].get_gender()==female)
-	{
+	if (_individual[uid1].get_gender()==female){
 		uid_f = uid1;
 		uid_m = uid2;
 	}
@@ -2913,14 +2843,21 @@ bool Population::spousalProgression(unsigned long uid1, unsigned long uid2)
 	double Af = _individual[uid_f].get_age();
 	double gap = getAgeGap(uid1,uid2);
 	
-	double s = expGauss(Af,_spousalProgress_meanAge_f, _spousalProgress_varAge_f)
-	*expGauss(gap,_spousalProgress_meanGap, _spousalProgress_varGap);
+	double s1 = expGauss(Af,
+						 _spousalProgress_meanAge_f,
+						 _spousalProgress_varAge_f);
+	double s2 = expGauss(gap,
+						 _spousalProgress_meanGap,
+						 _spousalProgress_varGap);
+	double s = s1*s2;
 	
 	// Duration of this casual partnership
 	int ip		= _individual[uid1].getPartnershipPosition(uid2);
 	double tau	= _individual[uid1].getPartnershipDuration()[ip];
 	
-	double d_tau = expGauss(tau, _spousalProgress_durationK1, _spousalProgress_durationK2);
+	double d_tau = expGauss(tau,
+							_spousalProgress_durationK1,
+							_spousalProgress_durationK2);
 	
 	// If male has already other spouses, then age gap of
 	// new candidate spouse is compared to other spouses'
@@ -2929,11 +2866,10 @@ bool Population::spousalProgression(unsigned long uid1, unsigned long uid2)
 	double K=0;
 	int hasOtherSpouse = nSpouses>0 ? 1 : 0;
 	
-	if (hasOtherSpouse)
-	{
+	if (hasOtherSpouse){
 		// Retrieve all age gaps with spouses only
 		vector<unsigned long> sp_uid = _individual[uid_m].getSpouseUID();
-		int nSp = sp_uid.size();
+		unsigned long nSp = sp_uid.size();
 		vector<double> ageGaps;
 		
 		for (int is=0; is<nSp; is++){
@@ -2949,35 +2885,17 @@ bool Population::spousalProgression(unsigned long uid1, unsigned long uid2)
 		double delta = ageGapMin - getAgeGap(uid_m, uid_f);
 		
 		K = expGauss(delta, _spousalProgress_meanDiffAgeGap, _spousalProgress_varDiffAgeGap);
-		
-		
-		// DEBUG:
-		/*cout << endl << "Soupsal progression >>>>>" << uid_m<< " has "<< nSp ;
-		 cout << " other spouse ; K="<<K << " (delta="<<delta<<", mean="<<_spousalProgress_meanDiffAgeGap;
-		 cout << ", var="<<_spousalProgress_varDiffAgeGap<<" )";
-		 cout << endl;*/
 	}
 	
 	
-	// Draw random variable that will determine spousal progression or not
+	// Draw random variable that will
+	// determine spousal progression or not
 	
 	bool spouseProgression = false;
-	
 	double proba = s*( (1-hasOtherSpouse) + hasOtherSpouse*K )*d_tau * _spousalProgress_maxRate;
 	double u = uniform01();
 	
 	if (u<proba) spouseProgression = true;
-	
-	// DEBUG
-	if (debug){
-		cout << endl << "age f: "<< Af;
-		cout << endl << "age gap: "<< gap;
-		cout << endl << "s: "<< s;
-		cout << endl << "ip: "<< ip;
-		cout << endl << "tau: "<< tau;
-		cout << endl << "proba: "<< proba;
-		cout<<endl;
-	}
 	
 	// If first time spousal partnership,
 	// then record age
@@ -3093,8 +3011,7 @@ void Population::formOnePartnershipFromFemale_rand(unsigned long uid_fem,
 	bool matched = isFormationPossible(uid_fem, uid_male,save_trace_file);
 	
 	// --- DEBUG ---
-	if (debug)//uid_fem==2240)
-	{
+	if (debug){
 		cout << endl << uid_fem << "<?>"<<uid_male<< " : ";
 		cout << matched;
 		cout << " ; maxPartn=" << _individual[uid_fem].get_nMaxCurrSexPartner();
@@ -3102,10 +3019,7 @@ void Population::formOnePartnershipFromFemale_rand(unsigned long uid_fem,
 		//displayVector(males_availble);
 	}
 	
-	if (matched)
-	{
-		formPartnership(uid_fem,uid_male);
-	}
+	if (matched) formPartnership(uid_fem,uid_male);
 }
 
 
@@ -3169,8 +3083,11 @@ void Population::formPartnerships(double prd, bool save_trace_file)
 
 
 
-void Population::dissolvePartnerships(double prd, bool save_trace_file)
-{
+void Population::dissolvePartnerships(double prd,
+									  bool save_trace_file){
+	
+	/// DISSOLVE PARTNERSHIPS
+	
 	// prd = period considered, in years (e.g. 1 day=1/365)
 	
 	double proportion = prd*_dissolution_MaxRate;
@@ -3180,23 +3097,15 @@ void Population::dissolvePartnerships(double prd, bool save_trace_file)
 	// Number of partnerships candidate for dissolution
 	unsigned long Dc = binom(proportion, N);
 	
-	// DEBUG
-	//cout << "Partnerships considered for dissolution: "<< Dc
-	//<< " ~ Binom("<< proportion<<"," << N << ")" << endl;
-	
 	// Retrieve all partnerships
 	dcMatrix P = getPartnershipsUID();
 	
 	// Select which partnerships will be candidate for dissolution
 	vector<long> random_index = uniformIntVectorUnique(Dc,0,N-1);
 	
-	// Trace file
-//	ofstream tracefile(_DIR_OUT + "partner_dissol_tentatives.out",ios::app);
-	
 	// Scan all selected partnerships
 	// and draw a random variable for each of them
 	// to determine dissolution or not:
-	
 	for (int i=0; i<Dc; i++)
 	{
 		// By convention, 1st col is female's UID
@@ -3205,8 +3114,6 @@ void Population::dissolvePartnerships(double prd, bool save_trace_file)
 		
 		Individual I_f = _individual[uid_f];
 		Individual I_m = _individual[uid_m];
-		
-		//cout << "Trying to dissolve ["<<uid_f<<"--"<<uid_m<<"] ; dissolution =";
 		
 		double g_Spouse		= dissolve_spouse(uid_f,uid_m);
 		double g_RG			= dissolve_riskGroup(uid_f,uid_m);
@@ -3458,8 +3365,7 @@ double Population::dissolve_spouse(unsigned long uid1, unsigned long uid2)
 }
 
 
-double Population::dissolve_riskGroup_fct(int r1, int r2)
-{
+double Population::dissolve_riskGroup_fct(int r1, int r2){
 	double shape = _dissolution_RiskGroup[0];
 	return exp(shape*(double)(r1+r2 - 2*_maxRiskGroup));
 }
@@ -3481,29 +3387,24 @@ double Population::dissolve_riskGroup(unsigned long uid1, unsigned long uid2)
 }
 
 
-double Population::dissolve_duration_fct(double prtnr_duration)
-{
+double Population::dissolve_duration_fct(double prtnr_duration){
 	double a = _dissolution_duration[0];
 	double b = _dissolution_duration[1];
 	double c = _dissolution_duration[2];
-	
 	return a+b*exp(-c*prtnr_duration);
 }
 
-double Population::dissolve_duration(unsigned long uid1, unsigned long uid2)
-{
+
+double Population::dissolve_duration(unsigned long uid1, unsigned long uid2){
 	/// PROBABILITY TO DISSOLVE - PARTNERSHIP DURATION COMPONENT
-	
 	return dissolve_duration_fct(getPartnershipDuration(uid1, uid2));
 }
 
 
-double Population::dissolve_age_fct(double age1, double age2)
-{
+double Population::dissolve_age_fct(double age1, double age2){
 	double d1	= _dissolution_age[0];
 	double d2	= _dissolution_age[1];
 	double pmin	= _dissolution_age[2];
-	
 	return pmin + (1-pmin)/(1+exp(d2*(age1+age2-d1)));
 }
 
@@ -3519,11 +3420,9 @@ double Population::dissolve_age(unsigned long uid1, unsigned long uid2)
 }
 
 
-double Population::dissolve_partnerDeficit_fct(double d1, double d2)
-{
+double Population::dissolve_partnerDeficit_fct(double d1, double d2){
 	double q	= _dissolution_PartnerDeficit[0];
 	double pmin	= _dissolution_PartnerDeficit[1];
-	
 	return pmin + (1-pmin)*pow( (1-d1)*(1-d2), q);
 }
 
@@ -3534,7 +3433,6 @@ double Population::dissolve_partnerDeficit(unsigned long uid1, unsigned long uid
 	
 	int n1 = _individual[uid1].get_nCurrSexPartner();
 	int n2 = _individual[uid2].get_nCurrSexPartner();
-	
 	int m1 = _individual[uid1].get_nMaxCurrSexPartner();
 	int m2 = _individual[uid2].get_nMaxCurrSexPartner();
 	
@@ -3573,10 +3471,6 @@ double Population::dissolve_STIsymptoms(unsigned long uid1, unsigned long uid2)
 // ======================================================================
 
 
-void Population::formPartnershipEvents(double prd, int seed)
-{
-	//	TO DELETE
-}
 
 unsigned long Population::chooseRandomCSW()
 {
@@ -3666,7 +3560,8 @@ void Population::updateAllAges(double timeStep)
 
 
 
-void Population::sexActs_number_males(unsigned long uid, double period,
+void Population::sexActs_number_males(unsigned long uid,
+									  double period,
 									  bool save_trace_file)
 {
 	/// Calculates the number of sex acts
@@ -3737,8 +3632,6 @@ void Population::sexActs_number_males(unsigned long uid, double period,
 		double avg_age_f = meanAgePartners(uid);
 		Rf = sexAct_reduce_age(avg_age_f);
 		Rsex *= Rm*Rf;
-		//DEBUG
-		//cout<<"avg_age_f="<<avg_age_f<<" ; Rf="<<Rf<<endl;
 	}
 	
 	// If males does NOT have partners => only sex workers
@@ -3756,6 +3649,19 @@ void Population::sexActs_number_males(unsigned long uid, double period,
 	// update the number of sex acts
 	// that will be performed by this male during this period
 	_individual[uid].set_nSexActs_period(nSexActs);
+	
+	if(true /*save_trace_file*/){
+		
+		vector<double> newrow;
+		vector<string> cname;
+		
+		newrow.push_back(uid); cname.push_back("uid");
+		newrow.push_back(rg_m); cname.push_back("riskgrp");
+		newrow.push_back(nSexActs); cname.push_back("nsex");
+
+		_rec_sexact.push_back(newrow);
+	}
+	
 }
 
 
@@ -3833,7 +3739,7 @@ void Population::sexAct_distribute_partnerTypes(gsl_rng* r, unsigned long uid,
 		double alpha = _sexAct_proba_distribute_partnerTypes_prefSpouse;
 		
 		int ns = _individual[uid].get_nCurrSpouse();
-		int nc = _individual[uid].getnCurrCasual();
+		int nc = _individual[uid].get_nCurrCasual();
 		
 		bool onenc = (nc>0)? 1 : 0;
 		
@@ -3871,7 +3777,7 @@ void Population::sexAct_distribute_partnerTypes(gsl_rng* r, unsigned long uid,
 		}
 	}
 	
-	// Males single => only sex acts with sex workers
+	// Single males => only sex acts with sex workers
 	if (N>0 && nPartn==0)
 	{
 		_individual[uid].set_nSexActs_sexworker_period(N);
@@ -3912,7 +3818,7 @@ void Population::sexAct_distrib_within_prtnrType(unsigned long uid,
 	
 	if (nPrtnr>0 && nsexact>0)
 	{
-		// Define probabilities for individual partners
+		// Define probabilities for individual partners.
 		// Equal weight
 		// ((think about including age, STI, HIV dependence,...))
 		
@@ -3982,7 +3888,7 @@ void Population::sexAct_distribute_individualPartners(gsl_rng* r,unsigned long u
 	
 	// Number of spouses and casual partners
 	int ns = _individual[uid].get_nCurrSpouse();
-	int nc = _individual[uid].getnCurrCasual();
+	int nc = _individual[uid].get_nCurrCasual();
 	
 	// Number of sex acts with spouses
 	int N_sexacts_s = _individual[uid].get_nSexActs_spouse_period();
@@ -4048,8 +3954,7 @@ void Population::sexAct_distribute_ActTypes(gsl_rng* r, unsigned long uid)
 		
 		for (int p=0; p<Np; p++)
 		{
-			// TO DO: implement the correct formula ;
-			// segregate spouse vs casual
+			// TO DO: segregate spouse vs casual
 			
 			// Risk group of the female partner
 			int rg_p = _individual[UIDpartners_sex[p]].get_riskGroup();
@@ -4466,7 +4371,7 @@ vector<double> Population::STI_CalcProbaTransmission(unsigned long uid_infect,
 			
 			// Susceptibility factor of the partner for this sti
 			double susceptFactor = _individual[uid_suscep].get_STIsusceptFactor()[sti];
-			
+						
 			// Max probability of transmission per sex act
 			double maxProba = _individual[uid_infect].get_STI()[sti].get_probaMaxSexTransm();
 			
@@ -5123,6 +5028,7 @@ vector< vector<double> > Population::get_infectivityCurve(STIname stiname, Gende
 	}
 	return x;
 }
+
 
 
 bool  Population::STI_isDiscordPartner(unsigned long uid1,unsigned long uid2)

@@ -211,6 +211,16 @@ List stiagent_runsim(List params) {
 	IC.attr("names") = stiname_str;
 
 	
+	// Detailed records (if requested)
+	
+	
+	// * * * code below is TOO SLOW. Find a way to speed it up...
+//	vector< vector<double> > rec_sexact = Sobj.get_population().get_rec_sexact();
+//	Rcpp::List rec_sexact_R;
+//	for(int i=0;i<rec_sexact.size();i++) rec_sexact_R.push_back(rec_sexact[i]);
+	// * * * ======
+	
+	
 	
 	// =========================================================================
 	// =========================================================================
