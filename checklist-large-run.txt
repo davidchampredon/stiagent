@@ -1,0 +1,17 @@
+= = = = = = = = = = = = = = = = = = = = 
+===== CHECK LIST BEFORE LARGE RUNS =====
+= = = = = = = = = = = = = = = = = = = = 
+
+1/ common inputs (STIagent_front.xlsm) 
+	-> 'STIfeatures' tab: VRE, vacc_waneRate and failure
+	-> 'main' tab (horizon, timestep, founder size, ...)
+
+2/ pop-specific inputs (_specfic_PRMSET_pop_X.xlsm)
+	-> 'sex-activity' tab: risk group proportions
+	-> 'intervention' tab: dates and coverage rate interventions
+
+3/ code_analysis_obj/prm_simul.csv: nCpus, nMC
+
+4/ setup-param
+
+5/ code_analysis_obj/docompscen X
