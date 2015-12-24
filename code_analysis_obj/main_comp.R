@@ -62,6 +62,18 @@ message(paste0("  CPUs:    ",n.cpu))
 message()
 message(rep("=",80))
 
+
+
+### Retrieve value of important parameters ###
+###
+
+# Vaccine features:
+vaxdata <- read.csv(file = paste0(folder_inputs,"in_STI_vaccine.csv"),header = F)
+vax.fail <- vaxdata[vaxdata$V1=="Tp_vaccine_fail",2]
+vax.VRE <- vaxdata[vaxdata$V1=="Tp_VRE",2]
+vax.wane <- vaxdata[vaxdata$V1=="Tp_vacc_waneRate",2]
+
+
 ### Run each scenario ###
 ###
 all.scen <- lapply(X = scenario_file, 
@@ -75,21 +87,30 @@ all.scen <- lapply(X = scenario_file,
 				   ,displayProgress = 0  # <-- added this to fix bug.
 				   )  
 
+### File name to save results to
+###
+vax.wane2 <- gsub(pattern = ".",replacement = "p",x = vax.wane,fixed = T)
+fname <- paste("compScen",pop,vax.fail,vax.VRE,vax.wane2,sep="_")
+
 ### Calculate summary statistics for all scenario
 ###
 summ.scen <- summary.scenarios(all.scen, qLo = 0.1, qHi=0.9)
+write.csv(x = summ.scen,
+		  quote = FALSE,
+		  file = paste0(fname,".csv"))
 
-save.image(file = paste0("compScen_pop_",pop,".RData"))
+t1 <- as.numeric(Sys.time())
+save.image(file = paste0(fname,".RData"))
 
 ### Plots
 ###
-pdf( paste0("comp_scen_pop_",pop,".pdf"), width=10)
+pdf( paste0(fname,".pdf"), width=10)
 plot.comp.scen(summ.scen)
 dev.off()
 
 # =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
-t1 <- as.numeric(Sys.time())
+t2 <- as.numeric(Sys.time())
 message()
-message(paste("||=== Time elapsed:",round((t1-t0)/60,1),"minutes ===||"))
+message(paste("||=== Time elapsed:",round((t2-t0)/60,1),"minutes ===||"))
 

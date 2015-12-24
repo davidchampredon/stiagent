@@ -1,6 +1,16 @@
+2015-12-22
+
+Scenario comparison with wane rate at 0.00001 retrieved. No bug any more (has it ever existed?!). Not much difference b/w wane rate 0 vs 5%... 
+Next (last?) simulations must have:
+- nMC = 50
+- timestep = 2 days
+- wane rate = 0 ; 0.05 (halflife=14yrs) ; 0.70 (halflife=1yr)
+
+
 2015-12-21
 
 Scenario comparison launched with wane rate at 0.00001. 
+Work on documentation (stopped at section 7, transmission)
 
 
 2015-12-20
@@ -11,7 +21,7 @@ Scenario comparison completed with wane rate at 0.05.
 
 
 2015-12-18
-
+	
 try to make an object that records detailed calculations of sexual activity (_rec_sexact), but too slow at execution, so gave up. Must come back to fix my slow code.
 
 work on documentation (stopped at section 6 CSW)

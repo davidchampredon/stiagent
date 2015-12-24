@@ -3,7 +3,10 @@
 = = = = = = = = = = = = = = = = = = = = 
 
 1/ common inputs (STIagent_front.xlsm) 
-	-> 'STIfeatures' tab: VRE, vacc_waneRate and failure
+	-> 'STIfeatures' tab: 
+		- VRE, 
+		- vacc_waneRate
+		- failure
 	-> 'main' tab (horizon, timestep, founder size, ...)
 
 2/ pop-specific inputs (_specfic_PRMSET_pop_X.xlsm)

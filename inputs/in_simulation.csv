@@ -1,5 +1,5 @@
 horizon_years,50
-timestep_days,7
+timestep_days,2
 horizon_prtn_years,50
 timestep_prtn_days,20
 MCiter,2

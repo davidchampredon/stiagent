@@ -687,16 +687,17 @@ It is assumed commercial sex workers (CSW) are recruited in the population at a 
 $$N_{csw}^{\mathrm{new}} \sim \text{Poisson}\left(R_{csw}\,N\,dt\right)$$
 with 
 $$ R_{csw} = \frac{1+e^{-ab}}{1+e^{a(x-b)}}R_{csw}^{\star}$$
-where $x$ is the proportion of the number of CSW to the total population and $a$ and $b$ two constants to be estimated \warning{[calibrated or from publication?]}. The multiplicative logistic term is introduced to translate a saturation of the demand for CSW: recruitment tends to 0 as the proportion of CSW in the population grows.
+where $x$ is the proportion of the number of CSW to the total population and $a$ and $b$ two constants to be estimated. The multiplicative logistic term is introduced to translate a saturation of the demand for CSW: recruitment tends to 0 as the proportion of CSW in the population grows.
 
-The age of the newly recruited CSW is uniformly distributed between [[15 and 35]] years old \warning{[find data]}.
+The age of the newly recruited CSW is uniformly distributed between the pre-specified minimum and maximum age of commercial sex activity (set at 15 and 35 years old).
 
 The infection status with respect to each STI is also set stochastically. We denote $A_s$ the number of a newly recruited CSW infected with STI $s$. We assume that
 $$A_s \sim \text{Binomial}(N_{csw}^{\mathrm{new}},p_s)$$
 where $p_s$ is the current population prevalence of the associated STI ($s$). The $A_s$ individuals are picked randomly among the new $N_{csw}^{\mathrm{new}}$ CSWs.
 A new CSWs who has been (stochastically) infected, is assumed to have just contracted the infection (STI duration is set to 1 day).
 
-Previous number of partner is arbitrarily set to Poisson((age-minsexage)/2) and the widow prevalence is set at the same level as the general population.
+Previous number of partners is arbitrarily set to a random number drawn from the Poisson distribution with a rate set to (current age-minsexage)/2 (this number actually doesn't really matter as the number of sexual partners while in sex work will be much larger than the arbitrarily chosen one before sex work starts). 
+The widow prevalence is set at the same level as the general population.
 
 \subsection{Cessation}
 
@@ -704,7 +705,7 @@ Among all the current CSW in the population ($N_{csw}$), we assume the rate of i
 $$N_{csw}^{\mathrm{quit}} \sim \text{Binomial}\left(q_{csw}\,dt,N_{csw}\right)$$
 
 The risk group of the quitting CSWs is assigned randomly (multinomial among all risk groups). Note that only the risk group (set at a distinctive high value) identifies a CSW from the rest of the population. 
-The maximum number of concurrent partners for quitting CSWs is also reset to a number drawn from $Poisson(1+2r)$, with $r$ the new risk group attribute upon cessation. \warning{poisson parameter hard-coded: change that}
+The maximum number of concurrent partners for quitting CSWs is also reset to a number drawn from $Poisson(1+2r)$, with $r$ the new risk group attribute upon cessation.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

@@ -1487,10 +1487,12 @@ void Population::youthArrivals(double prd, bool save_trace_file)
 
 void Population::CSWrecruitment(double prd)
 {
+	/// Recruits commercial sex workers in the population
+	
 	// Retrieve the proportion of CSW in the population
-	unsigned long Ncsw = census_CSW().size();
-	unsigned long N = census_alive();
-	double prop_csw = (Ncsw==0)?0:((double)(Ncsw)/N);
+	unsigned long Ncsw	= census_CSW().size();
+	unsigned long N		= census_alive();
+	double prop_csw		= (Ncsw==0)?0:((double)(Ncsw)/N);
 	
 	// Effective recruitment rate
 	double a = _CSW_recruitment_saturPrm_1;
@@ -1501,16 +1503,12 @@ void Population::CSWrecruitment(double prd)
 	// New CSWs recruited
 	unsigned int NewCSW = poisson(effRate*N*prd);
 	
-	//DEBUG
-	//cout<<_simulationTime<<" DEBUG - CSW recruit="<<NewCSW<< "/"<< census_CSW().size() <<endl;
-	// -------------
-	
 	// STI prevalences
 	vector<unsigned long> STIprevN = census_STIinfected();
 	
 	// Widow prevalence
-	unsigned long Nw = census_widow();
-	unsigned long Ndiv = census_divorced();
+	unsigned long Nw	= census_widow();
+	unsigned long Ndiv	= census_divorced();
 	
 	
 	// DEBUG
@@ -1555,8 +1553,8 @@ void Population::CSWrecruitment(double prd)
 		}
 		
 		// Prevalence of widow/divorced the same as in general population
-		bool isWidow = binom((double)(Nw)/N,1)>0?true:false;
-		bool isDivorced = binom((double)(Ndiv)/N,1)>0?true:false;
+		bool isWidow	= binom((double)(Nw)/N,1)>0?true:false;
+		bool isDivorced	= binom((double)(Ndiv)/N,1)>0?true:false;
 		
 		// Circumcision not relevant here, all CSW are females
 		bool isCircum = false;
@@ -1588,7 +1586,7 @@ void Population::CSWcessation(double prd)
 	
 	if (Nquit>0)
 	{
-		// Choose which CSW actually dropt out
+		// Choose which CSW actually drops out
 		vector<long> choosen = uniformIntVectorUnique(Nquit, 0, Ncsw-1);
 		
 		// Set the risk group to a non-CSW value (this is the only variable that defines CSW)
