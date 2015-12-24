@@ -1,3 +1,8 @@
+2015-12-24
+
+Launched long scenario (as detailed on Dec22nd) for pop A,B,C, wane @5%. When finished, do same for other wane rates.
+
+
 2015-12-22
 
 Scenario comparison with wane rate at 0.00001 retrieved. No bug any more (has it ever existed?!). Not much difference b/w wane rate 0 vs 5%... 
