@@ -4,7 +4,6 @@
 
 library(snowfall)
 
-
 stiagent_runsim_one_scen <- function(folder_inputs,
                                      folder_calib,
 									 founder_file,
@@ -17,30 +16,22 @@ stiagent_runsim_one_scen <- function(folder_inputs,
 	### Information messages
 	prmsim <- read.csv(paste0(folder_inputs,"in_simulation.csv"),header = F)
 	
-	message(rep("=",80))
-	message()
-	message("  STIAGENT started...")
-	message()
-	message(paste("  Founder pop file :",founder_file))
-	message()
-	message(paste("  Scenario defined in file: ",scenario_file))
-	message()
-	message(paste("  Horizon   :",prmsim[prmsim[,1]=="horizon_years",2],"years"))
-	message(paste("  Time step :",prmsim[prmsim[,1]=="timestep_days",2],"days"))
-	message()
-	message(paste("  MC iters:",n.mc))
-	message(paste("  CPU used:",n.cpu))
-	message()
-	message(paste("  Inputs read in      :",folder_inputs))
-	message(paste("  Calibration read in :",folder_calib))
-	message()
-	message(rep("=",80))
+	print("----")
+	print(" STIAGENT started for one scenario...")
+	print(paste("  Inputs read in      :     ",folder_inputs))
+	print(paste("  Calibration read in :     ",folder_calib))
+	print(paste("  Founder pop file :        ",founder_file))
+	print(paste("  Scenario defined in file: ",scenario_file))
+	print(paste("  Horizon   :",prmsim[prmsim[,1]=="horizon_years",2],"years"))
+	print(paste("  Time step :",prmsim[prmsim[,1]=="timestep_days",2],"days"))
+	print(paste("  MC iters:",n.mc))
+	print(paste("  CPU used:",n.cpu))
+	print("----")
 	
 	ff <- read.csv(paste0(folder_inputs,founder_file),header = F)
 	founder.size <- ff[ff[,1]=="founder_size",2]
 	founder.fem.prop <- ff[ff[,1]=="founder_femprop",2]
 	founder.csw.prop <- ff[ff[,1]=="founder_cswprop",2]
-
 	
     #### Initialize snowfall (parallel execution)
     sfInit(parallel = TRUE, cpu = n.cpu)
@@ -52,8 +43,8 @@ stiagent_runsim_one_scen <- function(folder_inputs,
                                          folder_calib,
                                          scenario_file,
     									 displayProgress){
-        
-        x <- stiagent_runsim(params = list(folder_inputs = folder_inputs,
+
+    	        x <- stiagent_runsim(params = list(folder_inputs = folder_inputs,
                                            folder_calib = folder_calib,
                                            scenario_file = scenario_file,
         								   founder_size = founder.size,
@@ -77,6 +68,19 @@ stiagent_runsim_one_scen <- function(folder_inputs,
     sfStop()
     
     names(res)<-paste0("MC_",1:n.mc)
+    
+    # ----
+    
+    x<- ls()
+    N=length(x)
+    ### Retrieve their size:
+    mem <- vector()
+    for(i in 1:N){
+    	# print(paste(x[i],"-->",object.size(get(x[i]))/1000,"Mb"))
+    	mem[i] <- object.size(get(x[i]))
+    }
+    print(paste("memory one scenario:",log10(sum(mem,na.rm = TRUE))))
+    # ----
     
     return(c(res,list(scenario_file=scenario_file)))   
 }
@@ -116,7 +120,7 @@ if(FALSE){
     
     save.image(file = "onescen.RData")
     t1 <- Sys.time()
-    message(paste("time elapsed:",round(t1-t0,1),"sec"))
+    print(paste("time elapsed:",round(t1-t0,1),"sec"))
 }
 # ====================================================================
 # ====================================================================

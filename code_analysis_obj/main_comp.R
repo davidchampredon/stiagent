@@ -48,21 +48,13 @@ n.cpu <- ps[ps[,1]=="ncpu",2]
 if (n.cpu<=0) n.cpu <- max(1,cpumax+n.cpu)
 
 ### Information on this run:
-message(rep("=",80))
-message()
-message(" -- Running scenarios comparison --")
-message()
-message(paste0("  Population:   ",pop))
-message(paste0("  Founder file: ",founder_file))
-message("  Scenario files: ")
-message(paste("  ",scenario_file,collapse = '\n'))
-message()
-message(paste0("  MC iter: ",n.mc))
-message(paste0("  CPUs:    ",n.cpu))
-message()
-message(rep("=",80))
-
-
+message("Scenarios comparison started...")
+print(" -- Running scenarios comparison --")
+print(paste0("  Population:   ",pop))
+print("  Scenario files: ")
+print(paste("  ",scenario_file,collapse = ";"))
+print(paste0("  MC iter: ",n.mc))
+print(paste0("  CPUs:    ",n.cpu))
 
 ### Retrieve value of important parameters ###
 ###
@@ -72,10 +64,17 @@ vaxdata <- read.csv(file = paste0(folder_inputs,"in_STI_vaccine.csv"),header = F
 vax.fail <- vaxdata[vaxdata$V1=="Tp_vaccine_fail",2]
 vax.VRE <- vaxdata[vaxdata$V1=="Tp_VRE",2]
 vax.wane <- vaxdata[vaxdata$V1=="Tp_vacc_waneRate",2]
-
+### File name to save results to
+###
+vax.wane2 <- gsub(pattern = ".",
+				  replacement = "p",
+				  x = vax.wane,fixed = T)
+fname <- paste("compScen",pop,vax.fail,vax.VRE,vax.wane2,sep="_")
 
 ### Run each scenario ###
 ###
+print(paste(">> starting simulations",fname))
+
 all.scen <- lapply(X = scenario_file, 
 				   FUN = stiagent_runsim_one_scen,
 				   folder_inputs = folder_inputs,
@@ -84,13 +83,22 @@ all.scen <- lapply(X = scenario_file,
 				   n.mc = n.mc,
 				   n.cpu = n.cpu,
 				   path.stiagent.lib = path.stiagent.lib
-				   ,displayProgress = 0  # <-- added this to fix bug.
+				   ,displayProgress = 0 
 				   )  
 
-### File name to save results to
-###
-vax.wane2 <- gsub(pattern = ".",replacement = "p",x = vax.wane,fixed = T)
-fname <- paste("compScen",pop,vax.fail,vax.VRE,vax.wane2,sep="_")
+x<- ls()
+N=length(x)
+### Retrieve their size:
+mem <- vector()
+for(i in 1:N){
+	# print(paste(x[i],"-->",object.size(get(x[i]))/1000,"Mb"))
+	mem[i] <- object.size(get(x[i]))
+}
+print(paste("memory comparison scenarios:",log10(sum(mem,na.rm = TRUE))))
+# ----
+
+print(" * * * * * * * * * * * * * * * * * * * * * * * * * * * * ")
+print(paste("* * * SCENARIO COMPARISON COMPLETED FOR:",fname,"* * * "))
 
 ### Calculate summary statistics for all scenario
 ###
@@ -111,6 +119,6 @@ dev.off()
 # =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
 t2 <- as.numeric(Sys.time())
-message()
-message(paste("||=== Time elapsed:",round((t2-t0)/60,1),"minutes ===||"))
+print("")
+print(paste("||=== Time elapsed:",round((t2-t0)/60,1),"minutes ===||"))
 

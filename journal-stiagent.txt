@@ -1,3 +1,15 @@
+2015-12-26
+
+Added messages in out file for memory usage. I suspect nMC=50 is too high for memory. 
+--> must try nMC = 25 (time step=2 days)
+
+
+2015-12-25
+
+Problem with Dec24th simulation: crash, but no error message is retrieved. I suspect I'm asking too much. 
+Launch with timestep 4 days (instead of 2 days), just on pop A, to see ==> crash
+
+
 2015-12-24
 
 Launched long scenario (as detailed on Dec22nd) for pop A,B,C, wane @5%. When finished, do same for other wane rates.
