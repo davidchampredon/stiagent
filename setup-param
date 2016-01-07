@@ -3,6 +3,7 @@ echo = Warning:
 echo = Population specific files are NOT generated 
 echo = with this script use Excel spreadsheets
 echo ================================================
+echo executed from this directory: $(dirname $0)
 cd $(dirname $0)
 ./cp-inputs A
 ./cp-inputs B

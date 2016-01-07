@@ -69,7 +69,12 @@ vax.wane <- vaxdata[vaxdata$V1=="Tp_vacc_waneRate",2]
 vax.wane2 <- gsub(pattern = ".",
 				  replacement = "p",
 				  x = vax.wane,fixed = T)
-fname <- paste("compScen",pop,vax.fail,vax.VRE,vax.wane2,sep="_")
+fname <- paste("compScen",
+			   pop,
+			   vax.fail,
+			   vax.VRE,
+			   vax.wane2,
+			   sep="_")
 
 ### Run each scenario ###
 ###

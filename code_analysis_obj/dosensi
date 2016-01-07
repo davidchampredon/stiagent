@@ -1,0 +1,27 @@
+cp ../inputs/in_STI_vaccine.csv ../inputs/in_STI_vaccine.csv.bckup
+cp ../inputs/in_STI_vaccine_sensi_Tp_vaccine_fail_0.csv ../inputs/in_STI_vaccine.csv
+echo executing sensi Tp_vaccine_fail 0
+../setup-param
+Rscript main_comp.R $1 > main_comp_pop_$1.out &
+wait $!
+cp ../inputs/in_STI_vaccine_sensi_Tp_vaccine_fail_0.5.csv ../inputs/in_STI_vaccine.csv
+echo executing sensi Tp_vaccine_fail 0.5
+../setup-param
+Rscript main_comp.R $1 > main_comp_pop_$1.out &
+wait $!
+cp ../inputs/in_STI_vaccine_sensi_Tp_VRE_0.5.csv ../inputs/in_STI_vaccine.csv
+echo executing sensi Tp_VRE 0.5
+../setup-param
+Rscript main_comp.R $1 > main_comp_pop_$1.out &
+wait $!
+cp ../inputs/in_STI_vaccine_sensi_Tp_vacc_waneRate_0.csv ../inputs/in_STI_vaccine.csv
+echo executing sensi Tp_vacc_waneRate 0
+../setup-param
+Rscript main_comp.R $1 > main_comp_pop_$1.out &
+wait $!
+cp ../inputs/in_STI_vaccine_sensi_Tp_vacc_waneRate_0.7.csv ../inputs/in_STI_vaccine.csv
+echo executing sensi Tp_vacc_waneRate 0.7
+../setup-param
+Rscript main_comp.R $1 > main_comp_pop_$1.out &
+wait $!
+cp ../inputs/in_STI_vaccine.csv.bckup ../inputs/in_STI_vaccine.csv

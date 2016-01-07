@@ -43,11 +43,25 @@ For now, these tests are done with `make test_baseline_prev.out`.
 
 *3) Comparisons*
 
-Run the simulations with 3 main interventions, using 20 years waning immunity as central assumption (do 5y and no waning in supplements, discuss the differences)
+Run the simulations with 3 main interventions.
 
-For now, this is done executing `./docompscen X`in the `code_analysis_obj` folder (where `X` is the population label, i.e., A,B or C).
+For now, this is done executing `./docompscen X`in the `code_analysis_obj` folder (where `X` is the population label, i.e., A, B or C).
 
 Time benchmarks: 
  * with 6 MC iterations and 5 scenarios (including baseline), takes about 2 hours on 11 cpus (earnserv)
  * with 30 MC iterations and 5 scenarios (including baseline), takes about 4 hours on 11 cpus (earnserv)
+
+
+*Sensitivity analysis*
+
+Sensitivity to vaccine features can be tested by just changing the value of the variable of interest. 
+
+ * i) Generate all necessary input files for the sensitivity analysis by running `Rscript generate_sense_files.R`
+ * ii) Run the sensitivity analysis with `dosensi X&` (where X=A,B or C)
+
+Note that `docompscen` on one population is included in the sensitivity analysis. 
+
+Note that the output files from the sensitivity analysis will record within their names the parameter values used. 
+
+
 

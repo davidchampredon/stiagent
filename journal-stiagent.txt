@@ -1,3 +1,40 @@
+2016-01-07
+
+1/ run with wane rate = 8888.88 (see 2016-01-03) for pop A ==> XXX
+
+2/ Scenario output name must include (because of sensi analysis):
+- population
+- vax failure proba (default 0.20; 0.0 ; 0.5)
+- vax VRE (default 1.0; 0.5)
+- waning rate (default 0.05; 0.0; 0.7)
+
+3/ script for running sensitivity analysis in a 'pipeline'
+
+
+2016-01-03
+
+Launched nMC=12 timestep=4, (NEW:)waneRate=0.7 on population A[serv1],B[serv2],C[serv2] ==> OK - But results very (too?) similar to wane rate at 5%... investigate. It may not be a mistake. Wane rate was double checked and output file name is indeed "0p7". 
+
+==> Try with super-fast waning rate
+
+
+2016-01-01
+
+(@1am EST) Launched nMC=12 timestep=4 (waneRate=0.05) on population A[serv1],B[serv2],C[serv2] ==> works for all pops.
+
+
+
+2015-12-31
+
+(@3am EST) Launched nMC=25 timestep=4 on population A[serv1],B[serv2],C[serv2] ==> B,C failed, not A... ==> A saved on 'ms' in GitHub/__TOKEEP/2015-12-31
+
+
+
+2015-12-29
+
+@22:00(Reunion's time): Launched nMC=25 timestep=2 on population A[serv1],B[serv2],C[serv2] ==> FAILED!
+
+
 2015-12-26
 
 Added messages in out file for memory usage. I suspect nMC=50 is too high for memory. 
