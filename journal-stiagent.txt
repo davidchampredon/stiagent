@@ -1,6 +1,13 @@
+2016-01-08
+
+Launched sensitivity analysis (@3:50am) on population A (MC=12, timestep=4 days) ==> XXX
+
+
+
+
 2016-01-07
 
-1/ run with wane rate = 8888.88 (see 2016-01-03) for pop A ==> XXX
+1/ run with wane rate = 8888.88 (see 2016-01-03) for pop A ==> OK, results make sense (that is it's like there is no vaccination)
 
 2/ Scenario output name must include (because of sensi analysis):
 - population

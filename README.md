@@ -52,9 +52,9 @@ Time benchmarks:
  * with 30 MC iterations and 5 scenarios (including baseline), takes about 4 hours on 11 cpus (earnserv)
 
 
-*Sensitivity analysis*
+**Sensitivity analysis**
 
-Sensitivity to vaccine features can be tested by just changing the value of the variable of interest. 
+Sensitivity to vaccine features can be tested by just changing the value of the variable of interest. For now, it's only variables defined in `in_STI_vaccine.csv` that are concerned. 
 
  * i) Generate all necessary input files for the sensitivity analysis by running `Rscript generate_sense_files.R`
  * ii) Run the sensitivity analysis with `dosensi X&` (where X=A,B or C)
@@ -63,5 +63,5 @@ Note that `docompscen` on one population is included in the sensitivity analysis
 
 Note that the output files from the sensitivity analysis will record within their names the parameter values used. 
 
-
+*warning:* make sure the file `in_STI_vaccine.csv` has the BASELINE values before running the sensitivity analysis. (run the excel macro first).
 
