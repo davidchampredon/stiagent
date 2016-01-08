@@ -80,9 +80,8 @@ for(i in 1:length(varname)){
 													newval = val[[i]][j])," ",f0)
 		cmdline[cnt+1] <- paste0("echo executing sensi ",varname[i]," ",val[[i]][j])
 		cmdline[cnt+2] <- "../setup-param"
-		cmdline[cnt+3] <- "Rscript main_comp.R $1 > main_comp_pop_$1.out &"
-		cmdline[cnt+4] <- "wait $!"
-		cnt <- cnt+5
+		cmdline[cnt+3] <- "Rscript main_comp.R $1"
+		cnt <- cnt+4
 	}
 }
   # restore initial parameter file
