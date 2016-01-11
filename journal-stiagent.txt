@@ -1,6 +1,31 @@
+2016-01-10
+
+- "dosensi" does not manage to launch sequentially large simulations whereas each single simulation (scencomp) is ok. I don't understand why... 
+
+- give up: do sensi "manually" (overwritting in_STI_vaccine.csv). MC=30, timestep=5 days, init pop=1250)
+
+(DON'T FORGET 'setup-param')
+
+	* vax fail @ 0: done
+	* vax fail @ 0.2: xxx (baseline)
+	* vax fail @ 0.5: xxx
+	* vax VRE @ 0.5: xxx
+	* vax wane @ 0.7: xxx
+	* vax wane @ 0: xxx
+	* pop done: 
+	* pop to do: A,B,C
+
+
+2016-01-09
+
+TESTING SIMULATION SIZE THAT DOES NOT CRASH:
+Launched comp scen (@7:50am) on population A (MC=10, timestep=5 days, init pop=1250) ==> OK
+Launched comp scen (@12:30pm) on population A (MC=20, timestep=5 days, init pop=1250) ==> OK (3h30min)
+Launched comp scen (@12:30pm) on population A (MC=40, timestep=5 days, init pop=1250) ==> OK (6h)
+
 2016-01-08
 
-Launched sensitivity analysis (@3:50am) on population A (MC=12, timestep=4 days) ==> XXX
+Launched sensitivity analysis (@3:50am) on population A (MC=12, timestep=4 days,, init pop=1500) ==> failed - suspect too large for memory
 
 
 
