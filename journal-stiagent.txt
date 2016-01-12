@@ -6,14 +6,13 @@
 
 (DON'T FORGET 'setup-param')
 
-	* vax fail @ 0: done
-	* vax fail @ 0.2: xxx (baseline)
-	* vax fail @ 0.5: xxx
-	* vax VRE @ 0.5: xxx
+	* vax fail @ 0: done A
+	* vax fail @ 0.2 (baseline): done A,B,C 
+	* vax fail @ 0.5: done A,B,C 
+	* vax VRE @ 0.5: running A,B  (C)
 	* vax wane @ 0.7: xxx
 	* vax wane @ 0: xxx
-	* pop done: 
-	* pop to do: A,B,C
+
 
 
 2016-01-09
