@@ -6,12 +6,12 @@
 
 (DON'T FORGET 'setup-param')
 
-	* vax fail @ 0: done A (B,C not done)
+	* vax fail @ 0: done A,B,C
 	* vax fail @ 0.2 (baseline): done A,B,C 
 	* vax fail @ 0.5: done A,B,C 
-	* vax VRE @ 0.5: done A,B  (C not done)
+	* vax VRE @ 0.5: done A,B  RUNNING C (earnserv2)
 	* vax wane @ 0.7: done A,B (C not done)
-	* vax wane @ 0: running A,B (C not done)
+	* vax wane @ 0: done A,B (C not done)
 
 
 
