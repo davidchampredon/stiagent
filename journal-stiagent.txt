@@ -6,12 +6,12 @@
 
 (DON'T FORGET 'setup-param')
 
-	* vax fail @ 0: done A
+	* vax fail @ 0: done A (B,C not done)
 	* vax fail @ 0.2 (baseline): done A,B,C 
 	* vax fail @ 0.5: done A,B,C 
-	* vax VRE @ 0.5: running A,B  (C)
-	* vax wane @ 0.7: xxx
-	* vax wane @ 0: xxx
+	* vax VRE @ 0.5: done A,B  (C not done)
+	* vax wane @ 0.7: done A,B (C not done)
+	* vax wane @ 0: running A,B (C not done)
 
 
 
@@ -25,8 +25,6 @@ Launched comp scen (@12:30pm) on population A (MC=40, timestep=5 days, init pop=
 2016-01-08
 
 Launched sensitivity analysis (@3:50am) on population A (MC=12, timestep=4 days,, init pop=1500) ==> failed - suspect too large for memory
-
-
 
 
 2016-01-07
