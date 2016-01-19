@@ -1,3 +1,8 @@
+2016-01-19
+
+- run with baseline values, except susceptibility to Tp when HIV infected (in_STI_SFincrease.csv) increased from 1.0 to 3.0 : [1:49pm] runing: A,B (not done C)
+
+
 2016-01-10
 
 - "dosensi" does not manage to launch sequentially large simulations whereas each single simulation (scencomp) is ok. I don't understand why... 
