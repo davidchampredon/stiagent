@@ -232,7 +232,7 @@ This probability has to be evaluated at every time step, for every individuals. 
 
 \begin{figure}[!ht]
 \centering
-    \includegraphics[angle=0,width=0.9\textwidth]{hazard_death.pdf}
+    \includegraphics[angle=0,width=0.9\textwidth]{./figures/hazard_death.pdf}
 \caption{Death hazard. The red dot represents the age of HIV acquisition. Vertical dashed lines are set at 5, 7 and 10 years after HIV acquisition.}
 \label{fig:deathHazard}
 \end{figure}
@@ -322,8 +322,8 @@ See figure \ref{fig:formationAge} for an illustrative example.
 
 \begin{figure}[ht]
 \centering
-    \includegraphics[angle=0,width=0.4\textwidth]{formation_curves/formation_age.pdf}
-    \includegraphics[angle=0,width=0.4\textwidth]{formation_curves/formation_agegap.pdf}
+    \includegraphics[angle=0,width=0.4\textwidth]{./figures/formation_age.pdf}
+    \includegraphics[angle=0,width=0.4\textwidth]{./figures/formation_agegap.pdf}
 \caption{Partnership formation probability component for age and age gap}
 \label{fig:formationAge}
 \end{figure}
@@ -340,8 +340,8 @@ with $q\geq 1$ a parameter to calibrate globally.
 
 \begin{figure}[ht]
 \centering
-    \includegraphics[angle=0,width=0.4\textwidth]{formation_curves/formation_riskgroup.pdf}
-    \includegraphics[angle=0,width=0.4\textwidth]{formation_curves/formation_deficit.pdf}
+    \includegraphics[angle=0,width=0.4\textwidth]{./figures/formation_riskgroup.pdf}
+    \includegraphics[angle=0,width=0.4\textwidth]{./figures/formation_deficit.pdf}
 \caption{Partnership formation probability component for risk group and partnership deficit}
 \label{fig:formationRiskDeficit}
 \end{figure}
@@ -537,7 +537,7 @@ A male will have a specified number of sex acts during a period of time. The mod
 
 \begin{figure}[ht]
 \centering
-    \includegraphics[angle=0,width=0.8\textwidth]{sex_distribution.pdf}
+    \includegraphics[angle=0,width=0.8\textwidth]{./figures/sex_distribution.pdf}
 \caption{.}
 \label{fig:sexDistribution}
 \end{figure}
@@ -926,7 +926,7 @@ $$IC_{HPV}(t) = 1- e^{-t'/\eta_0 }$$
 The resulting infectivity curve for HPV are represented in Figure \ref{fig:ICHPV}.
 \begin{figure}[!ht]
 \centering
-    \includegraphics[angle=0,width=0.8\textwidth]{./infectivity_curves/IC_HPV.pdf}
+    \includegraphics[angle=0,width=0.8\textwidth]{./figures/IC_HPV.pdf}
 \caption{Infectivity curve for HPV. Dash line represent persistent infection.}
 \label{fig:ICHPV}
 \end{figure}
@@ -955,7 +955,7 @@ $$IC_{Ct,sympt}(t) = \mathcal{B}\left(\frac{(t-L_{Ct})^+}{D_{Ct.s}},a_{Ct.s},b_{
 
 \begin{figure}[!ht]
 \centering
-    \includegraphics[angle=0,width=0.8\textwidth]{./infectivity_curves/IC_Ct.pdf}
+    \includegraphics[angle=0,width=0.8\textwidth]{./figures/IC_Ct.pdf}
 \caption{Infectivity curve for Chlamydia. Dash line represents asymptomatic infection.}
 \label{fig:ICCt}
 \end{figure}
@@ -975,7 +975,7 @@ $$IC_{Ng}(t) = \mathcal{B}\left(\frac{(t-L_{Ng})^+}{D_{Ng}},a_{Ng},b_{Ng}\right)
 with $L_{Ng}$ the latent period (suggested: 1 week), $D_{Ng}$ duration of infection (suggested 5 months) and $a$ and $b$ shape parameters.
 \begin{figure}[!ht]
 \centering
-    \includegraphics[angle=0,width=0.8\textwidth]{./infectivity_curves/IC_Ng.pdf}
+    \includegraphics[angle=0,width=0.8\textwidth]{./figures/IC_Ng.pdf}
 \caption{Infectivity curve for Gonorrohea.}
 \label{fig:ICNg}
 \end{figure} 
@@ -1032,7 +1032,7 @@ A graphical representation is given in Figure \ref{fig:ICTp}
 
 \begin{figure}[!ht]
 \centering
-    \includegraphics[angle=0,width=0.8\textwidth]{./infectivity_curves/IC_Tp.pdf}
+    \includegraphics[angle=0,width=0.8\textwidth]{./figures/IC_Tp.pdf}
 \caption{Infectivity curve for Syphilis. The thin curve in the secondary syphilis stage represents the case when highly infectious condolymata develop.}
 \label{fig:ICTp}
 \end{figure} 
@@ -1052,7 +1052,7 @@ $$IC_{Hd,sympt}(t) = \mathcal{B}\left(\frac{(t-L_{Hd})^+}{D_{Hd.s}},a_{Hd.s},b_{
 
 \begin{figure}[!ht]
 \centering
-   \includegraphics[angle=0,width=0.8\textwidth]{./infectivity_curves/IC_Hd.pdf}
+   \includegraphics[angle=0,width=0.8\textwidth]{./figures/IC_Hd.pdf}
 \caption{Infectivity curve for Chancroid (Hd). Dash line represents asymptomatic infection.}
 \label{fig:ICHd}
 \end{figure}
@@ -1090,7 +1090,7 @@ Values for different cases (male/female and symptomatic or not) are given in Tab
 
 \begin{figure}[!ht]
 \centering
-   \includegraphics[angle=0,width=0.8\textwidth]{./infectivity_curves/IC_Tv.pdf}
+   \includegraphics[angle=0,width=0.8\textwidth]{./figures/IC_Tv.pdf}
 \caption{Infectivity curve for Trichomanas vagionisis (Tv). Dash line represents asymptomatic infection.}
 \label{fig:ICTv}
 \end{figure}
@@ -1161,7 +1161,7 @@ Function $TRE^*$ will be defined specifically for each STI.
 
 \begin{figure}[!ht]
 \centering
-    \includegraphics[angle=0,width=0.5\textwidth]{TRE.JPG}
+    \includegraphics[angle=0,width=0.5\textwidth]{./figures/TRE.JPG}
 \caption{Treatment reduction effect.}
 \label{fig:TRE}
 \end{figure}
@@ -1219,7 +1219,7 @@ There is a concept of calibration schedule: various response variables are targe
 
 \begin{figure}[!ht]
 \centering
-    \includegraphics[angle=0,width=0.9\textwidth]{calibration_schedule.jpg}
+    \includegraphics[angle=0,width=0.9\textwidth]{./figures/calibration_schedule.jpg}
 \end{figure}
 
 

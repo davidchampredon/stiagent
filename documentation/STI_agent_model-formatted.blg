@@ -1,0 +1,50 @@
+This is BibTeX, Version 0.99d (TeX Live 2013)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: STI_agent_model-formatted.aux
+The style file: vancouver.bst
+Reallocated glb_str_ptr (elt_size=4) to 20 items from 10.
+Reallocated global_strs (elt_size=20001) to 20 items from 10.
+Reallocated glb_str_end (elt_size=4) to 20 items from 10.
+Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
+Database file #1: papers.bib.bib
+You've used 15 entries,
+            3169 wiz_defined-function locations,
+            754 strings with 8772 characters,
+and the built_in function-call counts, 35990 in all, are:
+= -- 4550
+> -- 260
+< -- 2
++ -- 136
+- -- 65
+* -- 3107
+:= -- 3824
+add.period$ -- 60
+call.type$ -- 15
+change.case$ -- 4
+chr.to.int$ -- 0
+cite$ -- 15
+duplicate$ -- 2887
+empty$ -- 3453
+format.name$ -- 78
+if$ -- 8417
+int.to.chr$ -- 0
+int.to.str$ -- 15
+missing$ -- 179
+newline$ -- 78
+num.names$ -- 17
+pop$ -- 287
+preamble$ -- 1
+purify$ -- 0
+quote$ -- 0
+skip$ -- 309
+stack$ -- 0
+substring$ -- 7442
+swap$ -- 434
+text.length$ -- 2
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 0
+warning$ -- 0
+while$ -- 168
+width$ -- 17
+write$ -- 168

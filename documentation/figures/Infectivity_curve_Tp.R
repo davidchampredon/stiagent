@@ -1,6 +1,6 @@
 ### Infectivity curve for Syphilis (Tp) ###
 
-savetofile = 0#TRUE
+savetofile = TRUE
 
 pseudo.beta <- function(x,alpha,beta)
 {
