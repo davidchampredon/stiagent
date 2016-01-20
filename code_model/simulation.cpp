@@ -160,7 +160,7 @@ void Simulation::update_pregnancies(double timestep)
 	if (uid_pot_preg.size()>0)
 	{
 		// loop through all mothers-to-be
-		// calculates the proba ased on number of sex acts (types 1 or 2)
+		// calculates the proba b	ased on number of sex acts (types 1 or 2)
 		// draw random variable for actual pregnancy
 		
 		for (int i=0; i<uid_pot_preg.size(); i++)

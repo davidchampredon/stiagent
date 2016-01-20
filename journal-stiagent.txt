@@ -1,7 +1,12 @@
+2016-01-20
+- run with baseline values, but change intervention TrMass level from 0.3 coverage to 0.9 (in "interv_Tp_treatmass.csv", in EACH population folder after running "setup-param")
+[3:11pm] running A,B (not done C)
+
+
 2016-01-19
 
 - run with baseline values, except susceptibility to Tp when HIV infected (in_STI_SFincrease.csv) increased from 1.0 to 3.0 : 
-[1:49pm] done: A,B (running C)
+[1:49pm] done: A,B,C
 
 
 2016-01-10

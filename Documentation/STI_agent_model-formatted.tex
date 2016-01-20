@@ -215,9 +215,6 @@ The probability component regarding the STI infection is
 $$ f_{STI}(s_f,s_m)= \left(a_{sympt,f} \one{s_f=1} +\one{s_f=0}\right) \left(a_{sympt,m} \one{s_m=1} +\one{s_m=0}\right)$$
 where the product is over all STIs modelled.
 
-
-\item \textbf{Children.} It is not clear of the impact of the female looking after children in couple formation. On the one hand, there may be an incentive for a mother to seek (financial) support from another man when the biological father of the children is not here anymore. On the other hand, caring for children is time consuming and may reduce the opportunities of the mother to form new partnerships. Hence, children under the care of the female is not a determinant of couple formation. (It will be for spousal relationships)
-
 \end{itemize}
 
 
@@ -541,6 +538,13 @@ Compared to $R_M$ for males in partnerships, the factor related to the number of
 A new factor representing the transaction cost of sex work services is introduced, $R_{cost}$. For simplicity, it is set to a constant. Its aim is to limit the number of visits to CSW.
 
 
+\subsection{New born}
+
+After every sexual contact, the chance a female gets pregnant is determined by a Bernoulli random variable and its probability (becoming pregnant per sex act) is a model parameter. 
+
+All new borns and their potential acquired infection are recorded (so that we can keep track of MTCT incidence in a simulation).
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -818,8 +822,6 @@ If the infection is symptomatic, the shape parameter is increased in order to sh
 
 \subsubsection{Neisseria Gonorrhoeae (Ng)}
 
-
- 
  The infectivity curve is similar to Chlamydia's one:
 $$IC_{Ng}(t) = \mathcal{B}\left(\frac{(t-L_{Ng})^+}{D_{Ng}},a_{Ng},b_{Ng}\right)$$
 with $L_{Ng}$ the latent period (suggested: 1 week), $D_{Ng}$ duration of infection (suggested 5 months) and $a$ and $b$ shape parameters.
@@ -836,6 +838,16 @@ with $L_{Ng}$ the latent period (suggested: 1 week), $D_{Ng}$ duration of infect
  
  Duration of infection: 4-6 months \cite{Chen:2010hx,Korenromp:2002gt}
 
+ 
+ \subsection{Mother-to-child (vertical) transmission}
+ 
+ When a female is both pregnant and infected with a STI, transmission of the pathogen to the children is modeled as a stochastic event. For all STI except syphilis, the probability of mother-to-child transmission is assumed constant (it does not depend on pregnancy stage and duration of infection):
+ $$ p_{MTCT} = \mathbf{constant}$$
+ For syphilis, there is some evidence \cite{Karumudi:2005jb,Karp:2009hy} that risk of vertical transmission is higher during the early stages of syphilis infection. Hence, a decreasing logistic shape is assumed for the probability of syphilis mother-to-child transmission:
+ $$p_{MTCT}^{Tp} = \frac{a}{1+e^{b(\tau-c)}}$$
+ with $\tau$ the duration of syphilis infection and $a,b,c$ shape parameters.
+ 
+For every pregnant female infected with an STI, the vertical transmission to the new born is decided by drawing a random variable from a Bernoulli distribution with probability $p_{MTCT}$.
  
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
