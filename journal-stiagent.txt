@@ -1,6 +1,6 @@
 2016-01-20
 - run with baseline values, but change intervention TrMass level from 0.3 coverage to 0.9 (in "interv_Tp_treatmass.csv", in EACH population folder after running "setup-param")
-[3:11pm] running A,B (not done C)
+[3:11pm] Done A,B running C(21th, 11am)
 
 
 2016-01-19
