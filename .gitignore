@@ -33,3 +33,11 @@ SF_MC_timestamp.txt
 *.gz
 
 Documentation/STI_agent_model.synctex.gz
+
+*.aux
+
+*.bbl
+
+*.blg
+
+*.toc
