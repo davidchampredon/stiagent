@@ -729,6 +729,64 @@ It is implicitly assumed that co-infections cannot increase HIV infectivity beyo
 \end{figure}
 
 
+
+ \subsubsection{Syphilis (Treponema pallidum, Tp)}
+
+Primary syphilis: After initial exposure, a primary chancre develops at the site of entry (usually genital) after 3-90 days (average 3 weeks) \cite{Kent:2008ch,Horvath:2011fw}. It takes about 4-6 weeks for spontaneous resolution (without treatment) of the primary chancre.
+
+Secondary syphilis: Up to 85\% of cases will progress to generalized lesions\cite{Horvath:2011fw}, within 4-10 weeks after the appearance of the initial chancre\cite{Kent:2008ch,Horvath:2011fw}. A small proportion of cases, 10\%\cite{Horvath:2011fw} 5-22\%\cite{Kent:2008ch}, will develop highly infectious chancres (condylomata lata). Spontaneaous resolution occurs within less than 3 months\cite{Horvath:2011fw} or several weeks\cite{Kent:2008ch}.
+
+Early latent syphilis: About 25\% of cases experiences a recurrence of secondary syphilis symptoms during a window period of about 6 months
+
+Syphilis (untreated) is expected to be sexually transmissible during 2 years after initial infection\cite{Horvath:2011fw}. Late latent and tertiary phases are not infectious. Tertiary phase occurs 15-30 years later and is associated with increased mortality in some cases. 
+
+Co-infection with HIV might be associated with a higher Tp virulence, but syphilis treatment is the same as HIV-uninfected patients\cite{Kent:2008ch}.
+The infectivity curve is defined with respect to the syphilitic stages.
+
+Primary syphilis infectivity curve is represented with the pseudo-beta function defined in appendix \ref{sec:pseudobeta}:
+$$IC_{Tp.1}(t) = v_{Tp.1}\times\mathcal{B} \left(\frac{(t-L_{Tp.1})^
++}{D_{Tp.1}}, a_{Tp.1},b_{Tp.1} \right) $$
+with $a_{Tp.1}$ and $b_{Tp.1}$ shape parameters, $L_{Tp.1}$ the latent period before being infectious (suggested 30 days), $D_{Tp.1}$ the infectiousness duration of primary syphilis (suggested 5 weeks) and $v_{Tp.1}$ the relative virulence of this primary stage (suggested 0.7) compared to peak infectivity (when the value of the infectivity curve is 1).
+
+Secondary syphilis is defined similarly, but with two possibilities for the infectivity curve reflecting the fact that some cases will develop highly infectious condylomata lata.
+
+In the absence of condylomata:
+$$IC_{Tp.2}^{no\,condy}(t) = v_{Tp.2}\times\mathcal{B} \left(\frac{(t-L_{Tp.2})^
++}{D_{Tp.2}}, a_2,b_2 \right) $$
+when condylomata develop:
+$$IC_{Tp.2}^{condy}(t) = v_{Tp.2}^{condy}\times\mathcal{B} \left(\frac{(t-L_{Tp.2})^
++}{D_{Tp.2}^{condy}}, a_2^{condy},b_2^{condy} \right) $$
+
+with $a_2$ and $b_2$ shape parameters, $L_{Tp.2}$ the latent period from infection before secondary syphilis is triggered(suggested $L_{Tp}$ plus 7 weeks), $D_{Tp.2}$ the infectiousness duration of secondary syphilis (suggested 8 weeks) and $v_{Tp.2}$ the relative virulence of this secondary stage (suggested 0.7) compared to peak infectivity. 
+
+The parameters with the superscript $condy$ apply to the case when condylomata develop. In this case, the parameters are assumed to be different.
+
+The probability that condolymata develop is represented by the binary random variable $\kappa_{condy}$ that takes value 1 with probability $p_{condy}$ (suggested 0.15), else is 0.
+
+Hence, for secondary syphilis we have:
+$$IC_{Tp.2}(t)  = \kappa_{condy}IC_{Tp.2}^{condy}(t) +(1-\kappa_{condy})IC_{Tp.2}^{no\,condy}(t) $$
+
+Early latent syphilis is considered as a repeat of symptoms that occurred during secondary syphilis, hence it is defined similarly:
+
+$$IC_{Tp.el}(t) = v_{Tp.el}\times\mathcal{B} \left(\frac{(t-L_{Tp.el})^
++}{D_{Tp.el}}, a_{el},b_1{el} \right) $$
+with $a_{el}$ and $b_{el}$ shape parameters, $L_{Tp.el}$ the latent period before earl latent stage is triggered (suggested $L_{Tp}$ plus 12 months), $D_{Tp.1}$ the infectiousness duration of primary syphilis (suggested 5 weeks) and $v_{Tp.el}$ the relative virulence of this primary stage compared to peak infectivity.
+
+Finally, the total infectivity curve for syphilis is:
+$$IC_{Tp.el}(t) = IC_{Tp.1}(t) +\kappa_{Tp.2}IC_{Tp.2}(t) +\kappa_{Tp.el}IC_{Tp.el}(t) $$
+with $\kappa_{Tp.2}$ (resp. $\kappa_{Tp.el}$ ) the binary random variable taking value 1 with probability $p_{Tp.2}$ (resp. $\kappa_{Tp.el)}$ representing the probability to develop secondary (resp. early latent) syphilis. (suggested: $p_{Tp.2}=0.85$ and $\kappa_{Tp.el}=0.20$)
+
+A graphical representation is given in Figure \ref{fig:ICTp}
+
+\begin{figure}[!ht]
+\centering
+    \includegraphics[angle=0,width=0.8\textwidth]{./figures/IC_Tp.pdf}
+\caption{Infectivity curve for Syphilis. The thin curve in the secondary syphilis stage represents the case when highly infectious condolymata develop.}
+\label{fig:ICTp}
+\end{figure} 
+
+
+
 \subsubsection{HSV2}
 
 References: \cite{Tronstein:2011vs,Schiffer:2014cc}.
@@ -967,6 +1025,17 @@ The high-level steps below are a suggestion to perform an epidemiological analys
 \item calibration to target demographic and partnership data should be performed at that step
 \item introduce STI into the population and make epidemiological analysis.
 \end{enumerate}
+
+
+\section{Appendix}
+\subsection{Pseudo-beta shape function} \label{sec:pseudobeta}
+
+For infectivity curves associated with STIs of limited duration, the shape function was inspired from the beta distribution density (because it has a bounded support).
+$$\mathcal{B}(x,a,b) = x^{a-1}(1-x)^{b-1}/C$$
+where $C$ is the normalizing constant such that the maximum value of $\mathcal{B}$ is 1 on the interval [0;1]:
+$$C=\left(\frac{a-1}{a+b-2}\right)^{a-1}\left(\frac{b-1}{a+b-2}\right)^{b-1}$$
+It is assumed that for any $a,b>1$ and  $x<0$ and $x>1$ we have $\mathcal{B}(x,a,b)=0$.
+The maximum of $\mathcal{B}$ is reached at $x_{max}=(a-1)/(a+b-2)$.
 
 
 \newpage
