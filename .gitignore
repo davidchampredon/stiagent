@@ -34,7 +34,7 @@ SF_MC_timestamp.txt
 
 Documentation/STI_agent_model.synctex.gz
 
-*.aux
+documentation/*.aux
 
 *.bbl
 
