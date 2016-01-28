@@ -919,7 +919,7 @@ vector<double> Individual::STI_IC()
 				}
 				// Final infectivity curve for STI "i"
 				// taking into account all other co-infections:
-				IC[i] = min(1.0, IC[i]*(1+incr_infect)*treat_reduction);
+				IC[i] = min(1.0, IC[i]*(1+incr_infect));
 				// DEBUG
 //				cout << endl << _UID << " increased HIV IC="<<IC[i]<<endl<<endl;
 			}
