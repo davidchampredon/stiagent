@@ -1,3 +1,18 @@
+
+
+* * * * * * * * * * 
+
+2016-01-27
+- Following Marek's comment: run with baseline values, except Tp's HIV rebound set at 1.0 (from 0.5): -- not done --
+
+'treat_reduction' seems to appear 2 times in individuals::STI_IC()
+==> must run with corrected code and compare with previous results in 'TMP_previousrun' (on earnservs):
+9:05am: running A,B (C not done)
+(NOTE: individuals.cpp edited on earnserv so must recompile Rlibrary)
+==> No visible impact on results (as kind of expected). c++ code corrected
+
+
+
 2016-01-20
 - run with baseline values, but change intervention TrMass level from 0.3 coverage to 0.9 (in "interv_Tp_treatmass.csv", in EACH population folder after running "setup-param")
 Done A,B,C
