@@ -39,7 +39,7 @@ plot.final.prev <- function(sim){
 }
 
 
-plot.ts <- function(sim){
+plot.ts <- function(sim, folder_inputs, scenario_file){
 	
 	### COLLECTION OF PLOTS 
 	### FOR TIME SERIES OF VARIOUS OUTCOMES
@@ -85,7 +85,8 @@ plot.ts <- function(sim){
 					   stiname="Tp", 
 					   type="rate", 
 					   title="Incidence rate Tp",
-					   interv.info=interv.info),
+					   interv.info=interv.info))
+	grid.arrange(
 		plot.proportion.timeseries(sim,varname=c("HIV","Tp"),
 								   title="Prevalence proportions",
 								   interv.info=interv.info),
@@ -96,9 +97,9 @@ plot.ts <- function(sim){
 								   title="Tp by risk group",
 								   interv.info=interv.info),
 		plot.prev.risk(sim, stiname="HIV",interv.info=interv.info),
-		plot.prev.risk(sim, stiname="Tp",interv.info=interv.info),
-		plot.interv(sim)
+		plot.prev.risk(sim, stiname="Tp",interv.info=interv.info)
 	)
+	try(plot.interv(sim), silent = TRUE)
 }
 
 
@@ -113,12 +114,15 @@ plot.pop.all <- function(sim){
 		plot.everVisitCSW(sim)
 	)
 	
-	plot.stipos.age(sim,stiname="HIV",excl.csw=TRUE)
-	plot.stipos.age(sim,stiname="Tp",excl.csw=TRUE)
+	try(plot.stipos.age(sim,stiname="HIV",excl.csw=TRUE), silent = TRUE)
+	try(plot.stipos.age(sim,stiname="Tp",excl.csw=TRUE), silent = TRUE)
 	
-	grid.arrange(ncol=2,
-				 plot.stipos.prtn(sim,stiname="HIV",excl.csw=TRUE),
-				 plot.stipos.prtn(sim,stiname="Tp",excl.csw=TRUE)
-	)
-	plot.immunity(sim,stiname="Tp")
+	try(
+		grid.arrange(ncol=2,
+					 plot.stipos.prtn(sim,stiname="HIV",excl.csw=TRUE),
+					 plot.stipos.prtn(sim,stiname="Tp",excl.csw=TRUE)
+		),
+		silent = TRUE)
+	
+	try(plot.immunity(sim,stiname="Tp"), silent=TRUE)
 }

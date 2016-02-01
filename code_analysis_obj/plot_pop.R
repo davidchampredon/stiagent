@@ -130,12 +130,14 @@ plot.curr.life.prtn <- function(sim){
 	g <- g + geom_smooth(method="lm", formula=y~poly(x, degree=5),size=3,alpha=0.1)
 	# try(expr = g <- g + scale_y_log10()+annotation_logticks(sides="lr"),silent = T )
 	g <- g + ggtitle("Current vs Lifetime number of partners")
-	g <- g + scale_x_continuous(breaks=c(1:10),labels=c(1:10))
+	g <- g + scale_x_continuous(breaks=c(1:10),labels=c(1:10)) 
+	g <- g + coord_cartesian(ylim = c(0, 100))
 	return(g)
 }
 
 
 plot.durPrtn.rskgrp <- function(sim){
+	
 	grid.arrange(
 		plot.density.summ(sim,outcome="durPrtn1",categ="riskgroup",title="Duration partnership #1",excl.zero=T,plotline=T),
 		plot.density.summ(sim,outcome="durPrtn2",categ="riskgroup",title="Duration partnership #2",excl.zero=T,plotline=T),
@@ -180,12 +182,13 @@ plot.stipos.age <- function(sim,stiname,excl.csw=TRUE){
 	spline.order <- 5
 	g1 <- ggplot(P.all)+ geom_smooth(aes(x=age,y=stipos,colour=Gender),
 									 method="glm", 
-									 family="binomial",
+									 # family="binomial",
+									 method.args = list(family = "binomial"),
 									 formula=y~ns(x, spline.order),
 									 alpha=0.1, size=2)
 	g2 <- ggplot(P.all)+ geom_smooth(aes(x=age,y=stipos,colour=factor(riskgroup)),
 									 method="glm", 
-									 family="binomial",
+									 method.args = list(family = "binomial"),
 									 formula=y~ns(x, spline.order),
 									 alpha=0.1, size=2)
 	g2 <- g2 + scale_color_brewer(palette = "Reds")
@@ -209,7 +212,7 @@ plot.stipos.prtn <- function(sim,stiname,excl.csw=TRUE){
 	spline.order <- 3
 	g1 <- ggplot(P.all)+ geom_smooth(aes(x=1+nLifetimePartner,y=stipos,colour=Gender),
 									 method="glm", 
-									 family="binomial",
+									 method.args = list(family="binomial"),
 									 formula=y~ns(x, spline.order),
 									 alpha=0.1, size=2)
 	

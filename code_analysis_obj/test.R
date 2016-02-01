@@ -60,7 +60,7 @@ pdf("plot_test.pdf",width = 20, height = 12)
 
 message("plotting...")
 # plot time series:
-plot.ts(sim)
+plot.ts(sim,folder_inputs,scenario_file)
 
 # plot population:
 plot.pop.all(sim)
