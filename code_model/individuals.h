@@ -85,6 +85,8 @@ class Individual
 	int				_nSexActs_casual_period;	// Number of sex acts for a given period with all casual only (for males only)
 	int				_nSexActs_sexworker_period;	// Number of sex acts for a given period with sex workers only (for males only)
 	
+	unsigned long	_nSexActs_lifetime;			// Number of sex act during lifetime.
+	
 	double			_ageFirstSex;				// Age at first sex
 	
 	
@@ -206,6 +208,7 @@ public:
 	int							get_nSexActs_spouse_period() {return _nSexActs_spouse_period;}
 	int							get_nSexActs_casual_period() {return _nSexActs_casual_period;}
 	int							get_nSexActs_sexworker_period() {return _nSexActs_sexworker_period;}
+	unsigned long				get_nSexActs_lifetime() {return _nSexActs_lifetime;}
 	
 	bool						get_ever_visited_CSW() {return _ever_visited_CSW;}
 	double						get_lastVisitCSWDuration() {return _lastVisitCSWDuration;}
@@ -308,9 +311,10 @@ public:
 	void		set_ageFirstPartner(double x) {_ageFirstPartner=x;}
 	void		set_ageFirstSpouse(double x) {_ageFirstSpouse=x;}
 	
-	void		increase_nSexActs_period(int n) {_nSexActs_period++;}
-	void		increase_nSexActs_spouse_period(int n) {_nSexActs_spouse_period++;}
-	void		increase_nSexActs_casual_period(int n) {_nSexActs_casual_period++;}
+	void		increase_nSexActs_period(int n) {_nSexActs_period+=n;}
+	void		increase_nSexActs_spouse_period(int n) {_nSexActs_spouse_period+=n;}
+	void		increase_nSexActs_casual_period(int n) {_nSexActs_casual_period+=n;}
+	void		increase_nSexActs_lifetime(int n) {_nSexActs_lifetime += n;}
 	
 	void		add_sexAct(unsigned long uid_partner, int n);
 	

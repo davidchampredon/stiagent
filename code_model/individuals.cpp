@@ -52,7 +52,7 @@ void Individual::construct(unsigned long uid, Gender g, double age,
 	_nSexActs_period		= 0;	// Number of sex acts for a given period (with all partners)
 	_nSexActs_spouse_period = 0;	// Number of sex acts for a given period with all spouses only (for males only)
 	_nSexActs_casual_period = 0;	// Number of sex acts for a given period with all casual only (for males only)
-	
+	_nSexActs_lifetime		= 0;
 
 	_nSexActs_sexworker_period	= 0;
 	_ever_visited_CSW			= false;
@@ -111,8 +111,7 @@ void Individual::addPartner(unsigned long uid)
 	// If this is the first partner ever,
 	// then record Individual's age
 	
-	if (_ageFirstPartner<0)
-	{
+	if (_ageFirstPartner<0){
 		_ageFirstPartner = _age;
 	}
 	
@@ -121,13 +120,9 @@ void Individual::addPartner(unsigned long uid)
 	
 	_nCurrSexPartner++;			// One more concurrent sex partner
 	_partnerUID.push_back(uid);	// Vector of partner increased
-	
 	_nLifetimePartner++;		// One more sex partner in lifetime
-	
 	_partnershipDuration.push_back(0); // New partnership just began => duration=0
-	
 	_isSpousalPartner.push_back(0);		// New partnership is not spousal at begining
-
 }
 
 
@@ -140,17 +135,14 @@ void Individual::erasePartner(unsigned long uid2)
 	bool check=false;
 	unsigned long p2=0; // index of partner uid2
 	
-	for (int p=0; p<_nCurrSexPartner; p++)
-	{
-		if (_partnerUID[p]==uid2)
-		{
+	for (int p=0; p<_nCurrSexPartner; p++)	{
+		if (_partnerUID[p]==uid2){
 			check=true;
 			p2 = p;
 		}
 	}
 	
-	if (!check)
-	{
+	if (!check)	{
 		cout << "ERROR [erasePartner]: trying to dissolve a partnership that is not formed! ("
 		<< _UID <<"-X-"<<uid2<<")"<<endl;
 		displayInfo();
@@ -173,8 +165,7 @@ void Individual::erasePartner(unsigned long uid2)
 	
 	_nCurrSexPartner-- ; // Number of current partners decreased by 1
 	
-	if (isAspouse) 
-	{
+	if (isAspouse) {
 		_nCurrSpouse --;	// If it was a spouse, then decrease count by one
 		_isDivorced = true;
 	}
@@ -254,7 +245,6 @@ vector<unsigned long> Individual::getPartnerUID()
 }
 
 
-
 unsigned long Individual::getPartnerUID(int nPartner) 
 {
 	unsigned long res = 0;
@@ -284,6 +274,7 @@ vector<unsigned long> Individual::getSpouseUID()
 	
 	return res;
 }
+
 
 vector<unsigned long> Individual::getCasualUID() 
 {

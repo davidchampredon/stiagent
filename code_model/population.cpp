@@ -4063,6 +4063,9 @@ void Population::add_sexAct(unsigned long uid1, unsigned long uid2,
 	_individual[uid1].add_sexAct(uid2, nSexActs);
 	_individual[uid2].add_sexAct(uid1, nSexActs);
 	
+	_individual[uid1].increase_nSexActs_lifetime(nSexActs);
+	_individual[uid2].increase_nSexActs_lifetime(nSexActs);
+	
 	// trace file
 	if(save_trace_file)
 	{
@@ -5466,6 +5469,8 @@ dcDataFrame Population::export_to_dataframe(){
 	vector<double> nChild;
 	for(unsigned long i=0; i<_size; i++) nChild.push_back(_individual[i].get_nChildBorn());
 	
+	vector<double> nSexActs_lifetime;
+	for(unsigned long i=0; i<_size; i++) nSexActs_lifetime.push_back((double)(_individual[i].get_nSexActs_lifetime()));
 	
 	// Construct the data frame:
 	
@@ -5488,7 +5493,7 @@ dcDataFrame Population::export_to_dataframe(){
 	df.addcol("isPregnant", isPregnant);
 	df.addcol("gestDur", gestDur);
 	df.addcol("nChild", nChild);
-
+	df.addcol("nSexActs_lifetime", nSexActs_lifetime);
 	
 	// Partnerships:
 	
