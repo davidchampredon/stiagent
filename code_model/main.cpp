@@ -106,10 +106,10 @@ int main(int argc, const char * argv[])
 		
 		bool debugInfo=true;
 		
-		unsigned long founder_size = 300;
-		double founder_femprop = 0.5;
-		double founder_cswprop = 0.01;
-		string folder_inputs = "../inputs/";
+		unsigned long founder_size	= 300;
+		double founder_femprop		= 0.5;
+		double founder_cswprop		= 0.01;
+		string folder_inputs		= "../inputs/";
 		
 		P.setup_for_simulation(founder_size,
 							   founder_femprop,
@@ -132,13 +132,13 @@ int main(int argc, const char * argv[])
 		
 		if (doSingleRun)
 		{
-			double horizon_prtn = 20.0;
-			double timestep_prtn = 1.0/12.0;
-			bool TraceNetwork = false;
-			unsigned int iter_mc = 1;
-			int displayProgress = 11;
+			double horizon_prtn		= 20.0;
+			double timestep_prtn	= 1.0/12.0;
+			bool TraceNetwork		= false;
+			unsigned int iter_mc	= 1;
+			int displayProgress		= 11;
 			
-			string file_init_STI = _DIR_IN + "in_STI_initial_prevalence.csv";
+			string file_init_STI	= _DIR_IN + "in_STI_initial_prevalence.csv";
 			
 			vector<string> file_intervention;
 			string file_interv_base =_DIR_IN + "in_interv_baseline_wrapper.csv";
