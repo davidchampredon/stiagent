@@ -283,15 +283,10 @@ public:
 	vector<double>	get_formation_RiskGroup() {return _formation_RiskGroup;}
 	vector<double>	get_formation_PartnDeficit() {return _formation_PartnDeficit;}
 	
-	
-	
-	
 	double			get_formation_age_fullstart() {return _formation_age_fullstart;}
 	double			get_formation_age_pivot() {return _formation_age_pivot;}
 	double			get_formation_age_shape() {return _formation_age_shape;}
 	double			get_formation_age_fmin() {return _formation_age_fmin;}
-	
-	
 	
 //	double			get_formation_meanAge_female() {return _formation_meanAge_female;}
 //	double			get_formation_varAge_female() {return _formation_varAge_female;}
@@ -299,7 +294,6 @@ public:
 	double			get_formation_agegap_var() {return _formation_agegap_var;}
 //	double			get_formation_correl_Age_AgeGap() {return _formation_correl_Age_AgeGap;}
 //	double			get_formation_shapeAge() {return _formation_shapeAge;}
-	
 	
 	double			get_spousalProgress_maxRate() {return _spousalProgress_maxRate;}
 	double			get_spousalProgress_meanAge_f() {return _spousalProgress_meanAge_f;}	
@@ -311,9 +305,7 @@ public:
 	double			get_spousalProgress_durationK2() {return _spousalProgress_durationK2;}			
 	
 	double			get_spousalProgress_meanDiffAgeGap() {return _spousalProgress_meanDiffAgeGap;}		
-	double			get_spousalProgress_varDiffAgeGap() {return _spousalProgress_varDiffAgeGap;}		
-	
-	
+	double			get_spousalProgress_varDiffAgeGap() {return _spousalProgress_varDiffAgeGap;}
 	
 	double			get_dissolution_MaxRate() { return _dissolution_MaxRate;}
 	vector<double>	get_dissolution_duration() { return _dissolution_duration;}
@@ -519,8 +511,6 @@ public:
 	void			set_STI_recurrence_freq(STIname name, double x);
 	void			set_STI_recurrence_duration(STIname name, double x);
 	void			set_STI_minInfectiousness(STIname name, double x);
-
-	
 	
 	// CSW
 	
@@ -650,6 +640,7 @@ public:
 	void			sexAct_distribute_individualPartners(gsl_rng* r, unsigned long uid, bool save_trace_file);
 	void			sexAct_distribute_ActTypes(gsl_rng* r, unsigned long uid);
 
+	unsigned long	count_sexActs(int riskgroup);
 	
 	vector<unsigned long>	pregnantPotentialFemales(); // count number of females who can become pregnant (must had sex)
 	

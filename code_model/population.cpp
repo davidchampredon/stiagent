@@ -3905,6 +3905,21 @@ void Population::sexAct_distribute_individualPartners(gsl_rng* r,unsigned long u
 }
 
 
+unsigned long Population::count_sexActs(int riskgroup){
+	/// Counts the number of sex acts during a time step
+	/// for a given risk group
+	
+	unsigned long count = 0 ;
+	
+	for (int uid=0; uid<_size; uid++) {
+		if(_individual[uid].isAlive() &&
+		   _individual[uid].get_riskGroup()==riskgroup){
+			count += _individual[uid].get_nSexActs_period();
+		}
+	}
+	return count;
+}
+
 
 double Population::probaSex_type0(int r1,int r2)
 {
@@ -5551,6 +5566,9 @@ dcDataFrame Population::export_to_dataframe(){
 		header = stiname + "_IC";
 		df.addcol(header, sti_IC);
 	}
+	
+	
+	
 	return df;
 }
 

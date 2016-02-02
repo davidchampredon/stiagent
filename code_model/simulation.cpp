@@ -580,6 +580,18 @@ void Simulation::runAllEvents_timeStep_obj(int numTimeStep,
 		v.push_back(_population.Reff_cum_mean(HIV));
 		v.push_back(_population.Reff_cum_mean(Tp));
 		
+		// Count of sex acts
+		v.push_back(_population.count_sexActs(0));
+		v.push_back(_population.count_sexActs(1));
+		v.push_back(_population.count_sexActs(2));
+		v.push_back(_population.count_sexActs(9));
+		
+		// * * * * WARNING * * * *
+		//
+		// ORDER MUST BE SAME AS DEFINED
+		// BY HEADERS IN "runAllEvents_horizon_obj"
+		// * * * * * * * * * * * *
+		
 		// Update data frame:
 		_df_sim.addrow(to_string(numTimeStep), v);
 	}
@@ -901,6 +913,11 @@ void Simulation::runAllEvents_horizon_obj(bool doSex,
 		
 		colnames.push_back("Reff_HIV");
 		colnames.push_back("Reff_Tp");
+		
+		colnames.push_back("nSexActRisk0");
+		colnames.push_back("nSexActRisk1");
+		colnames.push_back("nSexActRisk2");
+		colnames.push_back("nSexActRisk9");
 		
 		_df_sim.set_colname(colnames);
 	}
