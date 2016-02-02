@@ -66,6 +66,13 @@ plot.ts <- function(sim, folder_inputs, scenario_file){
 								   title="Risk group proportions",
 								   interv.info=interv.info)
 	)
+	 
+	grid.arrange(
+		plot.timeseries(sim,varname="nSexActRisk0",title="nSexActsRisk0",interv.info=interv.info),
+		plot.timeseries(sim,varname="nSexActRisk1",title="nSexActsRisk1",interv.info=interv.info),
+		plot.timeseries(sim,varname="nSexActRisk2",title="nSexActsRisk2",interv.info=interv.info),
+		plot.timeseries(sim,varname="nSexActRisk9",title="nSexActsRisk9",interv.info=interv.info)
+	)
 	
 	### Diseases ###
 	

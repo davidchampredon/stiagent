@@ -58,15 +58,17 @@ calc.incidence.rate <- function(sim,period,stiname){
 	z = unlist(c(DF[,stiname]))
 	DF$inc <- c(0,pmax(0,diff(z)))
 	# Manage the transition b/w 2 MC iterations
-	# (the 'diff' did not managa that):
+	# (the 'diff' did not manage that):
 	DF$inc[DF$time==0] <- 0
 	
 	DF.summ <- ddply(DF,c(period,"mc"),summarize, 
 					 sinc = sum(inc), 
 					 avgpop = mean(nAlive))
 	
-	DF.summ$incrate <- DF.summ$sinc/DF.summ$avgpop
-	DF.summ$incrate[DF.summ$avgpop==0] <- 0
+	head(DF.summ$avgpop)
+	str(DF.summ$avgpop)
+	DF.summ$incrate <- DF.summ$sinc / DF.summ$avgpop
+	DF.summ$incrate[DF.summ$avgpop == 0] <- 0
 	
 	names(DF.summ)[names(DF.summ)=="sinc"] <- paste("inc",period,stiname,sep=".")
 	names(DF.summ)[names(DF.summ)=="incrate"] <- paste("incrate",period,stiname,sep=".")

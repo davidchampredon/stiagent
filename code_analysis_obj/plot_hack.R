@@ -1,10 +1,10 @@
 library(gridExtra)
-library(snowfall)
 source("plot_sim.R")
 
-
 # load an existing .RData of scenario comparison first!
-load("/Users/davidchampredon/Dropbox/MyStudies/Syphilis_vax/simul-results/2016-01-10/baseline/compScen_B_0.2_1_0p05.RData")
+# load("/Users/davidchampredon/Dropbox/MyStudies/Syphilis_vax/simul-results/2016-01-10/baseline/compScen_B_0.2_1_0p05.RData")
+load("/Users/davidchampredon/Dropbox/MyStudies/Syphilis_vax/simul-results/2016-02-01/small/compScen_A_0.2_1_0p05.RData")
+t1 <- as.numeric(Sys.time())
 
 folder_inputs <- "../inputs/"
 
@@ -28,5 +28,6 @@ for (i in 1:NN) {
 	dev.off()
 }
 
-
+t2 <- as.numeric(Sys.time())
+message(paste("Plots finished in",round((t2-t1)/60,2),"minutes"))
 
