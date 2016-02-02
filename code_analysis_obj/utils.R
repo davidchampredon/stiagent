@@ -66,6 +66,7 @@ calc.incidence.rate <- function(sim,period,stiname){
 					 avgpop = mean(nAlive))
 	
 	DF.summ$incrate <- DF.summ$sinc/DF.summ$avgpop
+	DF.summ$incrate[DF.summ$avgpop==0] <- 0
 	
 	names(DF.summ)[names(DF.summ)=="sinc"] <- paste("inc",period,stiname,sep=".")
 	names(DF.summ)[names(DF.summ)=="incrate"] <- paste("incrate",period,stiname,sep=".")

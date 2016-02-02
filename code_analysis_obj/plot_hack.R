@@ -1,8 +1,10 @@
 library(gridExtra)
+library(snowfall)
+source("plot_sim.R")
+
+
 # load an existing .RData of scenario comparison first!
 load("/Users/davidchampredon/Dropbox/MyStudies/Syphilis_vax/simul-results/2016-01-10/baseline/compScen_B_0.2_1_0p05.RData")
-
-source("plot_sim.R")
 
 folder_inputs <- "../inputs/"
 
