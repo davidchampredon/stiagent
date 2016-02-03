@@ -1,3 +1,10 @@
+2016-02-02
+
+[6:55pm] Run with no sex act reduction (0.8 => 1.0) to see if HIV prevalence still increases after Tp vax.
+These results must be copied in Syphilis_vax/simul-results/2016-02-01/without-sex-reduction.
+running: A,B (not done C)
+
+
 2016-02-01
 
 [9:50am ; 10:52pm] Comparison of scenario (pop A only) with record of lifetime number of sex acts (to answer JD's question: how much sex activity is reduced)
