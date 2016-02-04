@@ -1,3 +1,11 @@
+2016-02-04
+
+Fixed bugs linked to random seed initialization. 
+
+Rerun everything A,B started at 2:30pm. C not done]. 
+-> I expect results will not be hugely impacted, but that wil make it easier to investigate why HIV prevalence increases when syphilis vax (if it's still the case now...)
+
+
 2016-02-02
 
 [6:55pm] Run with no sex act reduction (0.8 => 1.0) to see if HIV prevalence still increases after Tp vax.
