@@ -141,7 +141,7 @@ int main(int argc, const char * argv[])
 			string file_init_STI	= _DIR_IN + "in_STI_initial_prevalence.csv";
 			
 			vector<string> file_intervention;
-			string file_interv_base =_DIR_IN + "in_interv_baseline_wrapper.csv";
+			string file_interv_base =_DIR_IN + "in_intervention_wrapper2.csv";
 			vectorFromCSVfile_string(file_intervention,file_interv_base.c_str(), 1);
 			
 			displayVector(file_intervention);

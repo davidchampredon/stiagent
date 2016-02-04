@@ -28,7 +28,7 @@ founder_file <- "in_populationFeatures.csv"
 
 # Scenario file defining interventions
 # that will be run during this simulation:
-scenario_file <-  "in_scenario_test.csv"
+scenario_file <-  "in_scenario_test2.csv"
 
 ps <- read.csv("prm_simul.csv",header = FALSE)
 n.mc <- ps[ps[,1]=="mc_iter",2]
@@ -45,7 +45,7 @@ sim <- stiagent_runsim_one_scen(folder_inputs,
 								folder_calib,
 								founder_file,
 								scenario_file,
-								n.mc = 2,
+								n.mc = n.mc,
 								n.cpu,
 								path.stiagent.lib,
 								displayProgress=0)

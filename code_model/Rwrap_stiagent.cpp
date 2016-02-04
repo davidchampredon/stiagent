@@ -234,7 +234,8 @@ List stiagent_runsim(List params) {
 						Named("STInames") = stiname_str,
 						Named("infCurves") = IC,
 						Named("population") = pop_last_R,
-						Named("df_interv") = df_interv_R
+						Named("df_interv") = df_interv_R,
+						Named("seed") = MC_id
 						);
 }
 

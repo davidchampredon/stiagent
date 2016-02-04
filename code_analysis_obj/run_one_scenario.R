@@ -34,7 +34,7 @@ stiagent_runsim_one_scen <- function(folder_inputs,
 	founder.csw.prop <- ff[ff[,1]=="founder_cswprop",2]
 	
     #### Initialize snowfall (parallel execution)
-    sfInit(parallel = TRUE, cpu = n.cpu)
+    sfInit(parallel = (n.cpu>1), cpu = n.cpu)
     sfLibrary(stiagent, lib.loc=path.stiagent.lib)
     
     # snowfall wrap function:

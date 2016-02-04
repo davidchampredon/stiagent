@@ -264,7 +264,7 @@ Simulation	runSimulation_one_obj(Population P_init,
 {
 	/// RUNS A SINGLE ITERATION FOR A MC SIMULATION
 	/// The random generator seed is reset in this function
-	/// with a unique seed value (iter_mc=[jobnum-1]+iMC)
+
 	
 	
 	// Create Simulation object
