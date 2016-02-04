@@ -54,10 +54,49 @@ int main(int argc, const char * argv[])
 	//	CODECHECK_mandatory();
 	
 	
-	//	Intervention ii("in_treatment.csv");
-	//	ii.displayInfo();
-	//	exit(99);
-	//
+//	gsl_rng * r = GSL_generator(123456);
+//	
+//	int n = 30;
+//	vector<double> pp(n,1.0/n);
+//	displayVector(pp);
+//
+//	vector<unsigned int> a = multinomial_gsl(r, pp.size(), pp);
+//	displayVector(a);
+//	
+//	gsl_rng_set(r, 123456);
+//	vector<unsigned int> b = multinomial_gsl(r, pp.size(), pp);
+//	displayVector(b);
+//
+//	cout << " shuffle"<<endl;
+//	
+//	std::vector<int> v = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+//	std::vector<int> v2 = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+//	
+//	std::srand ( 1234567 );
+//	random_shuffle(v.begin(), v.end());
+//	displayVector(v);
+//
+//	std::srand ( 1234567 );
+//	random_shuffle(v2.begin(), v2.end());
+//	displayVector(v2);
+	
+//	std::vector<int> v = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+//	std::vector<int> v2 = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+//	std::random_device rd;
+//	std::mt19937 g(123);
+// 
+//	std::shuffle(v.begin(), v.end(), g);
+//	std::copy(v.begin(), v.end(), std::ostream_iterator<int>(std::cout, " "));
+//	std::cout << "\n";
+//
+//	std::mt19937 g2(123);
+//	std::shuffle(v2.begin(), v2.end(), g2);
+//	std::copy(v2.begin(), v2.end(), std::ostream_iterator<int>(std::cout, " "));
+//	std::cout << "\n";	
+//	exit(99);
+	
+	// =-=-=-=-=-=-=-=-=-=-=
+	
 	
 	// Switches to determine what will be done
 	// for this program execution
@@ -103,10 +142,11 @@ int main(int argc, const char * argv[])
 		
 		// Initialize empty Population object
 		Population P(0);
+		Population P2(0);
 		
 		bool debugInfo=true;
 		
-		unsigned long founder_size	= 300;
+		unsigned long founder_size	= 50;
 		double founder_femprop		= 0.5;
 		double founder_cswprop		= 0.01;
 		string folder_inputs		= "../inputs/";
@@ -121,6 +161,22 @@ int main(int argc, const char * argv[])
 							    "in_STItreatment.csv",
 							    "in_STI_vaccine.csv",
 							   debugInfo);
+		
+		cout << " ~~ 2 ";
+		
+		P2.setup_for_simulation(founder_size,
+							   founder_femprop,
+							   founder_cswprop,
+							   folder_inputs,
+							   "in_STI.csv",
+							   "in_STI_SFincrease.csv",
+							   "in_HIVrebound.csv",
+							   "in_STItreatment.csv",
+							   "in_STI_vaccine.csv",
+							   debugInfo);
+		
+//		P.displayInfo(true);
+		exit(0);
 		
 		// ======================
 		// === Run simulation ===
@@ -143,10 +199,17 @@ int main(int argc, const char * argv[])
 			vector<string> file_intervention;
 			string file_interv_base =_DIR_IN + "in_intervention_wrapper2.csv";
 			vectorFromCSVfile_string(file_intervention,file_interv_base.c_str(), 1);
-			
 			displayVector(file_intervention);
-			
 			file_intervention = trim(file_intervention);
+
+			// DEBUG SEED
+			vector<string> file_intervention2;
+			string file_interv_base2 =_DIR_IN + "in_intervention_wrapper3.csv";
+			vectorFromCSVfile_string(file_intervention2,file_interv_base2.c_str(), 1);
+			displayVector(file_intervention2);
+			file_intervention2 = trim(file_intervention2);
+			// -----------
+			
 			
 			Simulation S;
 			
@@ -167,6 +230,23 @@ int main(int argc, const char * argv[])
 														folder_inputs,
 														folder_calib
 														);
+				
+				cout << "~~~~ #2 "<<endl;
+				Simulation Sobj2 = runSimulation_one_obj(P2,
+														file_init_STI,
+														file_intervention2, // <--- changed from above
+														horizon_prtn,
+														timestep_prtn,
+														horizon,
+														timeStep,
+														TraceNetwork,
+														displayProgress,
+														iter_mc,
+														folder_inputs,
+														folder_calib
+														);
+				
+				
 				dcDataFrame df = Sobj.get_df_sim();
 				//df.display();
 				

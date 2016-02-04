@@ -22,7 +22,7 @@ void force_seed_reset()
 void force_seed_reset(unsigned int manual_seed)
 {
 	// DEBUG
-	cout << "SEED IS SET TO: "<<manual_seed<<endl;
+	// cout << "SEED IS SET TO: "<<manual_seed<<endl;
 	// -----
 	_RANDOM_GENERATOR.seed(manual_seed);
 }
@@ -211,14 +211,9 @@ gsl_rng * GSL_generator(unsigned int seed)
 	gsl_rng_env_setup();
 	T = gsl_rng_default;
 	r = gsl_rng_alloc(T);
-	
 	gsl_rng_set(r, seed);
-	
 	return r;
-	
 	//gsl_rng_free(r);
-	
-	
 }
 
 

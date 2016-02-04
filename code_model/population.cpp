@@ -325,10 +325,19 @@ void Population::setup_for_simulation_old(string file_startpopulation,
 }
 
 
-void Population::create_founder_population(unsigned long size, double female_ratio, double prop_csw){
+void Population::create_founder_population(unsigned long size,
+										   double female_ratio,
+										   double prop_csw){
 	
 	/// CREATE THE INITIAL POPULATION
 	/// BASED ON POPULATION PARAMETERS (must be already set)
+	
+	// force same seed such that
+	// always start w/ same population for all MC iterations
+	force_seed_reset(123456);		// for c++ random functions defined in RV.cpp
+	gsl_rng * r = GSL_generator(123456);
+	gsl_rng_set(r, 123456);			// for GSL random function ('multinomial_gsl()')
+	std::mt19937 rndg(123456);		// for 'shuffle' random function
 	
 	_size = size;
 	
@@ -353,14 +362,13 @@ void Population::create_founder_population(unsigned long size, double female_rat
 	vector<unsigned int> rskgrp;
 	
 	// csw first (because we know firsts are females and csw must be females):
-	unsigned long n_csw = (unsigned long) (n_fem * female_ratio);
+	unsigned long n_csw = (unsigned long) (n_fem * prop_csw);
 	_CSWriskGroup = 9;
 	for(unsigned long i=0; i<n_csw; i++)
 		rskgrp.push_back(_CSWriskGroup);
 	
 	// Draw risk group values according
 	// to the pre-specified risk group proportions:
-	gsl_rng * r = GSL_generator(_RANDOM_SEED);
 	vector<unsigned int> rsk_n = multinomial_gsl(r, size-n_csw, _propRiskGroup);
 	vector<unsigned int> rsk_tmp;
 	
@@ -370,7 +378,8 @@ void Population::create_founder_population(unsigned long size, double female_rat
 	// Shuffle all risk group values
 	// bc they are ordered and thus want to avoid
 	// having all same values for females:
-	random_shuffle(rsk_tmp.begin(), rsk_tmp.end());
+	shuffle(rsk_tmp.begin(), rsk_tmp.end(),rndg);
+	
 	// Finally, add the (shuffled) risk groups to the
 	// first ones created (for CSW):
 	for(unsigned int i=0; i<rsk_tmp.size(); i++) rskgrp.push_back(rsk_tmp[i]);
@@ -383,7 +392,7 @@ void Population::create_founder_population(unsigned long size, double female_rat
 		double p_maxPrtn = proba_nMaxCurrSexPartner(g[i],rskgrp[i]);
 		stopif((p_maxPrtn<=0 || p_maxPrtn>=1),
 			   "'_nMaxCurrSexPartner_param' are not properly set because p_maxPrtn is <0 or >1");
-		double mxp = g[i]==_CSWriskGroup?999:(1+geometric(p_maxPrtn));
+		double mxp = (rskgrp[i]==_CSWriskGroup)?999:(1+geometric(p_maxPrtn));
 		maxCurrSexPartners.push_back(mxp);
 	}
 	
@@ -435,7 +444,6 @@ void Population::create_founder_population(unsigned long size, double female_rat
 	_partnershipsMatrix.resize(0, 0);
 	_totalNumberPartnerships = 0;
 	_totalNumberSpousalPartnerships = 0;
-
 }
 
 
@@ -4172,6 +4180,8 @@ void Population::STI_set_initial_prevalence(string filename)
 	/// FOURTH COLUMN:	PREVALENCE FOR RISK GROUP "2"
 	/// LAST COLUMN:	PREVALENCE FOR CSW (HIGHEST RISK GROUP)
 	
+
+	force_seed_reset();
 	
 	vector<string> stiname;
 	vectorFromCSVfile_string(stiname,filename.c_str(),1);
@@ -4185,8 +4195,7 @@ void Population::STI_set_initial_prevalence(string filename)
 	
 	// Store in a column	vector all STI prevalence for a given risk group
 	
-	for (int j=0; j<_maxRiskGroup+2; j++)
-	{
+	for (int j=0; j<_maxRiskGroup+2; j++){
 		vectorFromCSVfile(prevRiskGroup[j], filename.c_str(), j+2);
 		//DEBUG: cout << endl << "J="<<j;
 		//displayVector(prevRiskGroup[j]);
@@ -4207,8 +4216,7 @@ void Population::STI_set_initial_prevalence(string filename)
 			
 			bool isInfected = binom(prev, 1);
 			
-			if (isInfected)
-			{
+			if (isInfected){
 				// Define (randomly) duration of infection
 				double maxDuration = -999;
 				
@@ -4238,12 +4246,8 @@ void Population::STI_set_initial_prevalence(string filename)
 				//cout <<uid<< " -> RG="<<rg<<" ; STI="<<currSTI<<" ; prev="<<prev;
 				//cout <<" ; DURATION="<<duration<<" ;SYMPT="<<isSymptomatic<< endl;
 			}
-			
 		}
-		
-	}
-	
-	
+	} // end for 'uid'
 }
 
 

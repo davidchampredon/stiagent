@@ -122,6 +122,10 @@ List stiagent_runsim(List params) {
 						    "in_STI_vaccine.csv",
 						   debugInfo);
 	
+	// Detailed population:
+	dcDataFrame pop_init	= P.export_to_dataframe();
+	Rcpp::List pop_init_R	= dcDataFrameToRcppList(pop_init,false);
+	
 	
 	// ======================
 	// === Run simulation ===
@@ -233,6 +237,7 @@ List stiagent_runsim(List params) {
 						Named("popsize_alive") = POP.census_alive(),
 						Named("STInames") = stiname_str,
 						Named("infCurves") = IC,
+						Named("population_inital") = pop_init_R,
 						Named("population") = pop_last_R,
 						Named("df_interv") = df_interv_R,
 						Named("seed") = MC_id
