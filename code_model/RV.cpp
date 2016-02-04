@@ -21,6 +21,9 @@ void force_seed_reset()
 
 void force_seed_reset(unsigned int manual_seed)
 {
+	// DEBUG
+	cout << "SEED IS SET TO: "<<manual_seed<<endl;
+	// -----
 	_RANDOM_GENERATOR.seed(manual_seed);
 }
 

@@ -28,7 +28,7 @@ s1 <- stiagent_runsim(params = list(folder_inputs = folder_inputs,
 								   founder_size = 333,
 								   founder_femprop = 0.5,
 								   founder_cswprop = 0.01,
-								   displayProgress = 0,
+								   displayProgress = 11,
 								   MC_id = 1)
 )
 
@@ -38,7 +38,7 @@ s2 <- stiagent_runsim(params = list(folder_inputs = folder_inputs,
 									founder_size = 333,
 									founder_femprop = 0.5,
 									founder_cswprop = 0.01,
-									displayProgress = 0,
+									displayProgress = 11,
 									MC_id = 1)
 )
 
