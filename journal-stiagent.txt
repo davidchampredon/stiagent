@@ -1,9 +1,17 @@
+2016-02-05
+
+run pop B with no sex reduc when STI infected to see if this is the cause of HIV increase in this population... 
+[started @ 1:pm]
+
+
 2016-02-04
 
 Fixed bugs linked to random seed initialization. 
 
-Rerun everything A,B started at 2:30pm. C not done]. 
+Rerun everything on A,B,C
 -> I expect results will not be hugely impacted, but that wil make it easier to investigate why HIV prevalence increases when syphilis vax (if it's still the case now...)
+-> A,C do not have increase in HIV anymore! But B still has: investigate!
+
 
 
 2016-02-02
