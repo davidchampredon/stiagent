@@ -1,10 +1,13 @@
 2016-02-07
 
-Run pop B with no partnership formation (in_paramFORM.csv: 'formation_STIsymptom_[f/m]' from 0.82 to 1.0) and dissolution (in_paramDISSOL.csv: 'dissolution_STI_symptom' from 0.54 to 1.0) impact when STI symptoms.
+[7:37am] Run pop B with no partnership formation (in_paramFORM.csv: 'formation_STIsymptom_[f/m]' from 0.82 to 1.0) and dissolution (in_paramDISSOL.csv: 'dissolution_STI_symptom' from 0.54 to 1.0) impact when STI symptoms.
 
 Because the HIV increase in pop B was clearly present in _every_ MC iterations, do no need to run 30 for this test, just 12 (=ncpus on earnserv). Also, no need for 5 scenarios, just baseline and vaxmass
 
 ==> no, that does not explain. 
+
+[3:55pm] clean repo, reset everything on 2 scen (base and vaxmass), rerun pop A,B just to make sure there's no silly mistake with inputs...
+
 
 
 
