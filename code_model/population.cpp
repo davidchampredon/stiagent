@@ -3846,10 +3846,10 @@ void Population::sexAct_distrib_within_prtnrType(unsigned long uid,
 			// If she does, then reduce the number of sex act with her.
 			if(_individual[uid_prtnr_i].is_symptomatic()){
 				// DEBUG
-				cout<< "symptomatic partner:";
-				displayVector(_individual[uid_prtnr_i].get_STIduration());
-				cout<< "STI[0]:"<<STInameString(_individual[uid_prtnr_i].get_STI()[0].get_name()) << endl;
-				cout<<"reduction:"<<_sexAct_reduce_STIsymptom_param[1]<<endl;
+//				cout<< "symptomatic partner:";
+//				displayVector(_individual[uid_prtnr_i].get_STIduration());
+//				cout<< "STI[0]:"<<STInameString(_individual[uid_prtnr_i].get_STI()[0].get_name()) << endl;
+//				cout<<"reduction:"<<_sexAct_reduce_STIsymptom_param[1]<<endl;
 				// ------
 				N_sexacts_indiv[i] = (int)(_sexAct_reduce_STIsymptom_param[1]*N_sexacts_indiv[i]);
 			}
