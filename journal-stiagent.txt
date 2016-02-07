@@ -1,7 +1,18 @@
+2016-02-07
+
+Run pop B with no partnership formation (in_paramFORM.csv: 'formation_STIsymptom_[f/m]' from 0.82 to 1.0) and dissolution (in_paramDISSOL.csv: 'dissolution_STI_symptom' from 0.54 to 1.0) impact when STI symptoms.
+
+Because the HIV increase in pop B was clearly present in _every_ MC iterations, do no need to run 30 for this test, just 12 (=ncpus on earnserv). Also, no need for 5 scenarios, just baseline and vaxmass
+
+==> no, that does not explain. 
+
+
+
 2016-02-05
 
 run pop B with no sex reduc when STI infected to see if this is the cause of HIV increase in this population... 
-[started @ 1:pm]
+==> no, that does not explain. 
+
 
 
 2016-02-04

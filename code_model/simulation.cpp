@@ -2912,9 +2912,8 @@ void Simulation::activate_intervention(int i)
 			if(doVacc_hiRisk){
 				// only the highest risk group
 				int mxrg = _population.get_maxRiskGroup();
-				indivIsTargeted = (indiv.get_riskGroup()==mxrg) && !alreadyVacc;
+				indivIsTargeted = (indiv.get_riskGroup()== mxrg) && !alreadyVacc;
 			}
-			
 			
 			// == Apply intervention on filtered individuals ==
 			

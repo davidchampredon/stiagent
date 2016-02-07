@@ -468,44 +468,46 @@ void Population::initSingleDuration(){
 
 void Population::initPartnershipDuration()
 {
+	// DELETE WHEN SURE (commented 2016-02-06)
+	
 	// PUT THE BELOW AS THIS FUNCTION PARAMETER ???
 	
-	double minSexAge = _ageSexMin;
-	
-	// TO DO: Get rid of thESE VALUES hard coded
-	
-	double adjAge = 1; // age adjustment
-	double adjRisk = 0.5; //risk group adjustment
-	double adjConc = 0.2; // number of concurent partneship adjustment
-	
-	for (int i=0; i<_size; i++)
-	{
-		int nConc = _individual[i].get_nCurrSexPartner();
-		
-		_individual[i].initPartnershipDuration(); // initialize vector (at _INDIVIDUAL_ level!)
-		
-		if(nConc>0)
-		{
-			double age	= _individual[i].get_age();
-			int risk	= _individual[i].get_riskGroup();
-			
-			for (int p=0; p<nConc; p++)
-			{
-				// Loop on all partners
-				unsigned long uid_partner = _individual[i].getPartnerUID(p);
-				
-				double age_p	= _individual[uid_partner].get_age();
-				int risk_p		= _individual[uid_partner].get_riskGroup();
-				int nConc_p		= _individual[uid_partner].get_nCurrSexPartner();
-				
-				double duration = ( min(age,age_p)-minSexAge )*adjAge/(1+adjRisk*(risk+risk_p))/(1+adjConc*(nConc+nConc_p));
-				
-				_individual[i].setPartnershipDuration(p,duration);
-				
-			}
-			
-		}
-	}
+//	double minSexAge = _ageSexMin;
+//	
+//	// TO DO: Get rid of thESE VALUES hard coded
+//	
+//	double adjAge = 1; // age adjustment
+//	double adjRisk = 0.5; //risk group adjustment
+//	double adjConc = 0.2; // number of concurent partneship adjustment
+//	
+//	for (int i=0; i<_size; i++)
+//	{
+//		int nConc = _individual[i].get_nCurrSexPartner();
+//		
+//		_individual[i].initPartnershipDuration(); // initialize vector (at _INDIVIDUAL_ level!)
+//		
+//		if(nConc>0)
+//		{
+//			double age	= _individual[i].get_age();
+//			int risk	= _individual[i].get_riskGroup();
+//			
+//			for (int p=0; p<nConc; p++)
+//			{
+//				// Loop on all partners
+//				unsigned long uid_partner = _individual[i].getPartnerUID(p);
+//				
+//				double age_p	= _individual[uid_partner].get_age();
+//				int risk_p		= _individual[uid_partner].get_riskGroup();
+//				int nConc_p		= _individual[uid_partner].get_nCurrSexPartner();
+//				
+//				double duration = ( min(age,age_p)-minSexAge )*adjAge/(1+adjRisk*(risk+risk_p))/(1+adjConc*(nConc+nConc_p));
+//				
+//				_individual[i].setPartnershipDuration(p,duration);
+//				
+//			}
+//			
+//		}
+//	}
 }
 
 
@@ -3577,9 +3579,9 @@ void Population::sexActs_number_males(unsigned long uid,
 	string errmsg = "individual"+ to_string(uid)+ " must be a male, but is not!";
 	stopif (_individual[uid].get_gender()==female, errmsg);
 	
-	// Rate of sexual activity initiated with highes value
-	double Rsex = _sexAct_maxRate_male;
-	int nSexActs = 0;
+	// Rate of sexual activity initiated with highest value
+	double	Rsex		= _sexAct_maxRate_male;
+	int		nSexActs	= 0;
 	
 	// Trace files ---
 //	string filename = _DIR_OUT + "sexReduction.out";
@@ -3602,8 +3604,8 @@ void Population::sexActs_number_males(unsigned long uid,
 	double age_m = _individual[uid].get_age();
 	double h_age = sexAct_reduce_age(age_m);
 	// Reduction due to risk group:
-	double rg_m = _individual[uid].get_riskGroup();
-	double h_risk = sexAct_reduce_riskGroup(rg_m);
+	double rg_m		= _individual[uid].get_riskGroup();
+	double h_risk	= sexAct_reduce_riskGroup(rg_m);
 	
 	// Reduction due to STI symptoms
 	vector<bool> stiSympt	= _individual[uid].get_STIsymptom();
@@ -3827,7 +3829,6 @@ void Population::sexAct_distrib_within_prtnrType(unsigned long uid,
 		// Define probabilities for individual partners.
 		// Equal weight
 		// ((think about including age, STI, HIV dependence,...))
-		
 		double ps = 1.0/nPrtnr;
 		vector<double> proba(nPrtnr,ps);
 		
@@ -3843,8 +3844,15 @@ void Population::sexAct_distrib_within_prtnrType(unsigned long uid,
 			
 			// Determine if female partner has any symptomatic STI.
 			// If she does, then reduce the number of sex act with her.
-			if(_individual[uid_prtnr_i].is_symptomatic())
+			if(_individual[uid_prtnr_i].is_symptomatic()){
+				// DEBUG
+				cout<< "symptomatic partner:";
+				displayVector(_individual[uid_prtnr_i].get_STIduration());
+				cout<< "STI[0]:"<<STInameString(_individual[uid_prtnr_i].get_STI()[0].get_name()) << endl;
+				cout<<"reduction:"<<_sexAct_reduce_STIsymptom_param[1]<<endl;
+				// ------
 				N_sexacts_indiv[i] = (int)(_sexAct_reduce_STIsymptom_param[1]*N_sexacts_indiv[i]);
+			}
 			
 			add_sexAct(uid, uid_prtnr_i, N_sexacts_indiv[i],saveTraceFile);
 		}
@@ -3856,7 +3864,6 @@ void Population::sexAct_choose_CSW(unsigned long uid,
 								   bool saveTraceFile){
 	/// Given the total number of sex acts with CSWs,
 	/// assign sex acts to _ONE_ randomly chosen CSW.
-	
 	
 	if (nsexact>0 && at_least_one_CSW()){
 		
@@ -3883,7 +3890,8 @@ void Population::sexAct_choose_CSW(unsigned long uid,
 }
 
 
-void Population::sexAct_distribute_individualPartners(gsl_rng* r,unsigned long uid,
+void Population::sexAct_distribute_individualPartners(gsl_rng* r,
+													  unsigned long uid,
 													  bool save_trace_file)
 {
 	/// FOR A GIVEN NUMBER OF SEX ACTS BY PARTNER TYPES,
@@ -4560,7 +4568,7 @@ vector<unsigned long>  Population::STI_transmissions(double timeStep,
 					
 					for (int sti=0; sti<_nSTImodelled; sti++)
 					{
-						// Loop only through STIs that
+						// Loop only through STIs t`hat
 						// have a chance to be transmissible
 						
 						if (probaTransm[sti]>0)
@@ -4718,17 +4726,11 @@ double Population::STI_prevalence(STIname s, int riskGroup)
 	unsigned long infected=0;	// total number of infected individuals with this STI, given risk group
 	
 	
-	for (int uid=0; uid<_size; uid++)
-	{
-		if (_individual[uid].isAlive()
-			&& _individual[uid].get_riskGroup()==riskGroup)
-		{
+	for (int uid=0; uid<_size; uid++){
+		if (_individual[uid].isAlive() &&
+			_individual[uid].get_riskGroup()==riskGroup){
 			N++;
-			//DELETE WHE SURE: if (_individual[uid].get_STIduration()[s]>0)
-			if (_individual[uid].get_STIduration(s)>0)
-			{
-				infected++;
-			}
+			if (_individual[uid].get_STIduration(s)>0)	infected++;
 		}
 	}
 	return (double)(infected)/N;
@@ -6201,18 +6203,7 @@ void Population::vaccinate_indiv(unsigned long uid, STIname stiname)
 	double u = uniform01();
 	if(u<p) vaxSuccess = 0.0;
 	_individual[uid].set_STI_immunity(i_sti, vaxSuccess);
-	
-
-	// DELETE WHEN SURE (2015-11-13)
-	//
-	// if immunization not successful,
-	// but achieve reduction in susceptibility:
-//	if(vaxSuccess<0.001){
-//		double previousSF	= _individual[uid].get_STIsusceptFactor(stiname);
-//		double susc_vacc	= 1-_individual[uid].get_STI_immunity()[i_sti];
-//		_individual[uid].set_STIsusceptFactor(i_sti, susc_vacc * previousSF);
-//	}
-	
+		
 	//DEBUG
 	//cout<<endl<<"VAX DEBUG::: UID "<<uid<< STInameString(stiname)<<"vax: "<<vaxSuccess<<endl;
 	// ----

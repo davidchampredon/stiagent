@@ -176,7 +176,7 @@ int main(int argc, const char * argv[])
 							   debugInfo);
 		
 //		P.displayInfo(true);
-		exit(0);
+//		exit(0);
 		
 		// ======================
 		// === Run simulation ===
