@@ -54,46 +54,6 @@ int main(int argc, const char * argv[])
 	//	CODECHECK_mandatory();
 	
 	
-//	gsl_rng * r = GSL_generator(123456);
-//	
-//	int n = 30;
-//	vector<double> pp(n,1.0/n);
-//	displayVector(pp);
-//
-//	vector<unsigned int> a = multinomial_gsl(r, pp.size(), pp);
-//	displayVector(a);
-//	
-//	gsl_rng_set(r, 123456);
-//	vector<unsigned int> b = multinomial_gsl(r, pp.size(), pp);
-//	displayVector(b);
-//
-//	cout << " shuffle"<<endl;
-//	
-//	std::vector<int> v = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-//	std::vector<int> v2 = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-//	
-//	std::srand ( 1234567 );
-//	random_shuffle(v.begin(), v.end());
-//	displayVector(v);
-//
-//	std::srand ( 1234567 );
-//	random_shuffle(v2.begin(), v2.end());
-//	displayVector(v2);
-	
-//	std::vector<int> v = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-//	std::vector<int> v2 = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-//	std::random_device rd;
-//	std::mt19937 g(123);
-// 
-//	std::shuffle(v.begin(), v.end(), g);
-//	std::copy(v.begin(), v.end(), std::ostream_iterator<int>(std::cout, " "));
-//	std::cout << "\n";
-//
-//	std::mt19937 g2(123);
-//	std::shuffle(v2.begin(), v2.end(), g2);
-//	std::copy(v2.begin(), v2.end(), std::ostream_iterator<int>(std::cout, " "));
-//	std::cout << "\n";	
-//	exit(99);
 	
 	// =-=-=-=-=-=-=-=-=-=-=
 	
@@ -146,7 +106,7 @@ int main(int argc, const char * argv[])
 		
 		bool debugInfo=true;
 		
-		unsigned long founder_size	= 50;
+		unsigned long founder_size	= 250;
 		double founder_femprop		= 0.5;
 		double founder_cswprop		= 0.01;
 		string folder_inputs		= "../inputs/";
@@ -162,8 +122,6 @@ int main(int argc, const char * argv[])
 							    "in_STI_vaccine.csv",
 							   debugInfo);
 		
-		cout << " ~~ 2 ";
-		
 		P2.setup_for_simulation(founder_size,
 							   founder_femprop,
 							   founder_cswprop,
@@ -175,6 +133,7 @@ int main(int argc, const char * argv[])
 							   "in_STI_vaccine.csv",
 							   debugInfo);
 		
+		cout <<endl<< "  Populaitons setup done."<<endl;
 //		P.displayInfo(true);
 //		exit(0);
 		
@@ -183,28 +142,28 @@ int main(int argc, const char * argv[])
 		// ======================	
 		
 		double horizon	= getParameterFromFile("horizon_years", _DIR_IN + "in_simulation.csv");
-		double timeStep	= getParameterFromFile("timestep_days", _DIR_IN + "in_simulation.csv")/365.0;
+		double timeStep	= 5.0/365.0; //getParameterFromFile("timestep_days", _DIR_IN + "in_simulation.csv")/365.0;
 		
 		
 		if (doSingleRun)
 		{
-			double horizon_prtn		= 20.0;
-			double timestep_prtn	= 1.0/12.0;
-			bool TraceNetwork		= false;
-			unsigned int iter_mc	= 1;
-			int displayProgress		= 11;
+			double			horizon_prtn		= 40.0;
+			double			timestep_prtn		= 1.0/12.0;
+			bool			TraceNetwork		= false;
+			unsigned int	iter_mc				= 1;
+			int				displayProgress		= 11;
 			
 			string file_init_STI	= _DIR_IN + "in_STI_initial_prevalence.csv";
 			
 			vector<string> file_intervention;
-			string file_interv_base =_DIR_IN + "in_intervention_wrapper2.csv";
+			string file_interv_base =_DIR_IN + "in_scenario_baseline.csv";
 			vectorFromCSVfile_string(file_intervention,file_interv_base.c_str(), 1);
 			displayVector(file_intervention);
 			file_intervention = trim(file_intervention);
 
 			// DEBUG SEED
 			vector<string> file_intervention2;
-			string file_interv_base2 =_DIR_IN + "in_intervention_wrapper3.csv";
+			string file_interv_base2 =_DIR_IN + "in_scenario_VaxMass.csv";
 			vectorFromCSVfile_string(file_intervention2,file_interv_base2.c_str(), 1);
 			displayVector(file_intervention2);
 			file_intervention2 = trim(file_intervention2);
@@ -246,15 +205,8 @@ int main(int argc, const char * argv[])
 														folder_calib
 														);
 				
-				
 				dcDataFrame df = Sobj.get_df_sim();
-				//df.display();
-				
-				cout << "==== DEBUG: population"<<endl;
 				dcDataFrame export_pop = Sobj.get_population().export_to_dataframe();
-				if(0) export_pop.display();
-				
-				vector< vector<double> > x =Sobj.get_population().get_rec_sexact();
 				
 				
 			}
@@ -460,3 +412,43 @@ int main(int argc, const char * argv[])
 
 
 
+//	gsl_rng * r = GSL_generator(123456);
+//
+//	int n = 30;
+//	vector<double> pp(n,1.0/n);
+//	displayVector(pp);
+//
+//	vector<unsigned int> a = multinomial_gsl(r, pp.size(), pp);
+//	displayVector(a);
+//
+//	gsl_rng_set(r, 123456);
+//	vector<unsigned int> b = multinomial_gsl(r, pp.size(), pp);
+//	displayVector(b);
+//
+//	cout << " shuffle"<<endl;
+//
+//	std::vector<int> v = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+//	std::vector<int> v2 = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+//
+//	std::srand ( 1234567 );
+//	random_shuffle(v.begin(), v.end());
+//	displayVector(v);
+//
+//	std::srand ( 1234567 );
+//	random_shuffle(v2.begin(), v2.end());
+//	displayVector(v2);
+
+//	std::vector<int> v = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+//	std::vector<int> v2 = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+//	std::random_device rd;
+//	std::mt19937 g(123);
+//
+//	std::shuffle(v.begin(), v.end(), g);
+//	std::copy(v.begin(), v.end(), std::ostream_iterator<int>(std::cout, " "));
+//	std::cout << "\n";
+//
+//	std::mt19937 g2(123);
+//	std::shuffle(v2.begin(), v2.end(), g2);
+//	std::copy(v2.begin(), v2.end(), std::ostream_iterator<int>(std::cout, " "));
+//	std::cout << "\n";
+//	exit(99);
