@@ -4440,10 +4440,10 @@ vector<double> Population::STI_CalcProbaTransmission(unsigned long uid_infect,
 					double oddsratio = STI_coInfection_oddsRatio(uid_suscep,sti);
 					
 					// proba taking into account the odds-ratio
-					double proba_T_coinf = oddsratio*proba_T/(1+(oddsratio-1)*proba_T);
+					double proba_T_coinf = oddsratio * proba_T / (1 + (oddsratio-1) * proba_T);
 					
 					// product
-					double tmp = pow(1-proba_T_coinf, nSexType[T]);
+					double tmp = pow(1.0 - proba_T_coinf, nSexType[T]);
 					MPT_sti = MPT_sti*tmp;
 					
 					// BEFORE DELETING IMPLEMENT OBJECT EQUIVALENT TO THIS FILE SAVE:

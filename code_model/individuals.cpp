@@ -785,14 +785,12 @@ bool Individual::STI_anyInfection()
 	bool infected = false;	
 	int i=0;
 	
-	while ( !infected && i<_STIduration.size() ) 
-	{
+	while ( !infected && i<_STIduration.size() ) {
 		infected = _STIduration[i]>0 ? true : infected ;
 		i++;
 	}	
 	return infected;
 }
-
 
 
 int Individual::STI_nModelled(){
@@ -821,7 +819,6 @@ int Individual::STI_find_index_position(STIname s){
 }
 
 
-
 void Individual::STI_updateSusceptFactor()
 {
 	// TO DO
@@ -832,19 +829,14 @@ vector<string>	Individual::STI_listInfection()
 {
 	vector<string>	res(0);
 	
-	if ( STI_anyInfection() )
-	{
+	if ( STI_anyInfection() ){
 		int n = _STIduration.size();
-
-		for (int i=0; i<n; i++) 
-		{
-			if (_STIduration[i]>0) 
-			{
+		for (int i=0; i<n; i++) {
+			if (_STIduration[i]>0) {
 				res.push_back(STInameString(_STI[i].get_name()));
 			}
 		}
 	}
-	
 	return res;	
 }
 
@@ -853,7 +845,6 @@ vector<double> Individual::STI_IC()
 	/// Returns the infectivity to all STIs modeled.
 	/// (assume durations are updated [in simulation])
 	
-    
 	// Number of STis modelled
 	int nSTI = _STIduration.size();
 	
@@ -861,8 +852,7 @@ vector<double> Individual::STI_IC()
 	// (at the current simulation time)
 	vector<double> IC(nSTI,0.0);
 	
-	for (int i=0; i<nSTI; i++) 
-	{
+	for (int i=0; i<nSTI; i++) {
 		if (_STIduration[i]>0) 
 		{
 			// Retrieve infectivity curve
@@ -878,7 +868,6 @@ vector<double> Individual::STI_IC()
 			double vax_reduction = VRE(_STI[i].get_name());
 			
 			IC[i] = IC[i] * treat_reduction * vax_reduction;
-			
 			
 			if (_STI[i].get_name() == HIV){
 				// The increased HIV infectiousness
@@ -908,6 +897,9 @@ vector<double> Individual::STI_IC()
 //						cout << " since :"<< _STIduration[j]<<" IC2="<<IC_j <<endl;
 					}
 				}
+				// Integrity check:
+				stopif(incr_infect<0, "Infectiousness increase is suppoed to be negative.");
+				
 				// Final infectivity curve for STI "i"
 				// taking into account all other co-infections:
 				IC[i] = min(1.0, IC[i]*(1+incr_infect));

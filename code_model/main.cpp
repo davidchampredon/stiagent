@@ -147,8 +147,8 @@ int main(int argc, const char * argv[])
 		
 		if (doSingleRun)
 		{
-			double			horizon_prtn		= 40.0;
-			double			timestep_prtn		= 1.0/12.0;
+			double			horizon_prtn		= 35 ; //50.0;
+			double			timestep_prtn		= 20.0/365.0;
 			bool			TraceNetwork		= false;
 			unsigned int	iter_mc				= 1;
 			int				displayProgress		= 11;
@@ -156,7 +156,7 @@ int main(int argc, const char * argv[])
 			string file_init_STI	= _DIR_IN + "in_STI_initial_prevalence.csv";
 			
 			vector<string> file_intervention;
-			string file_interv_base =_DIR_IN + "in_scenario_baseline.csv";
+			string file_interv_base =_DIR_IN + "in_scenario_VaxMass.csv";  //in_scenario_baseline.csv
 			vectorFromCSVfile_string(file_intervention,file_interv_base.c_str(), 1);
 			displayVector(file_intervention);
 			file_intervention = trim(file_intervention);

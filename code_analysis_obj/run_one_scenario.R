@@ -91,36 +91,41 @@ stiagent_runsim_one_scen <- function(folder_inputs,
 
 
 ### ==== TEST =====
-if(FALSE){
+do.test <- FALSE
+if(do.test){
     
-    t0 <- Sys.time()
+    t0 <- as.numeric(Sys.time())
     
     path.stiagent.lib <- "../Rlibrary/lib"
     
     # library(stiagent, lib.loc = path.stiagent.lib)
     
     ### path to model input files:
-    folder_inputs = "../inputs/"
+    folder_inputs = "../inputs_B/"
     folder_calib = "../calibration/"
+    
+    founder_file <- "in_populationFeatures_TEST.csv"
     
     # Scenario file defining interventions
     # that will be run during this simulation:
-    scenario_file <- "in_scenario_vaxMass.csv"
+    scenario_file <- "in_scenario_vaxMass.csv"  # "in_scenario_vaxMass.csv  in_scenario_baseline.csv
     
     ### run in parallel using snowfall:
-    n.mc <- 4
-    n.cpu <- 2
+    n.mc <- 1
+    n.cpu <- 1
     
     res <- stiagent_runsim_one_scen(folder_inputs,
                                     folder_calib,
+    								founder_file,
                                     scenario_file,
                                     n.mc,
                                     n.cpu,
-                                    path.stiagent.lib)
+                                    path.stiagent.lib,
+    								displayProgress = 11)
     
     save.image(file = "onescen.RData")
-    t1 <- Sys.time()
-    print(paste("time elapsed:",round(t1-t0,1),"sec"))
+    t1 <- as.numeric(Sys.time())
+    print(paste("time elapsed:",round(t1-t0,0),"sec"))
 }
 # ====================================================================
 # ====================================================================
