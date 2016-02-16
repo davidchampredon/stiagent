@@ -1,3 +1,18 @@
+2016-02-16
+
+[12:24pm] Lower dissolution (dissolution_MaxRate from 0.4 to 0.1) on pop B to see if HIV still increases
+==> always HIV increase
+
+[13:30pm] Lower formation max rate (formation_MaxRate from 3.1 to 2.0) on pop B to see if HIV still increases
+==> always HIV increase
+
+[2:50pm] Lower difference for sex act type b/w risk groups (_sexAct_condom_param_2 from 0.7 to 0) on pop B to see if HIV still increases
+==> always HIV increase
+
+[3:55pm] Lower difference for formation b/w risk groups (formation_RiskGroup_1 from 0.3 to 0.0) on pop B to see if HIV still increases
+==> ...
+
+
 2016-02-07
 
 [7:37am] Run pop B with no partnership formation (in_paramFORM.csv: 'formation_STIsymptom_[f/m]' from 0.82 to 1.0) and dissolution (in_paramDISSOL.csv: 'dissolution_STI_symptom' from 0.54 to 1.0) impact when STI symptoms.
@@ -7,7 +22,7 @@ Because the HIV increase in pop B was clearly present in _every_ MC iterations, 
 ==> no, that does not explain. 
 
 [3:55pm] clean repo, reset everything on 2 scen (base and vaxmass), rerun pop A,B just to make sure there's no silly mistake with inputs...
-
+==> no, always a HIV-increase in pop B
 
 
 

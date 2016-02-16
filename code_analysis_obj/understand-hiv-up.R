@@ -4,11 +4,11 @@ library(ggplot2)
 
 # load("/Users/davidchampredon/Dropbox/MyStudies/Syphilis_vax/simul-results/2016-02-07/compScen_B_0.2_1_0p05_symptNoEffect.RData")
 # load("/Users/davidchampredon/Dropbox/MyStudies/Syphilis_vax/simul-results/2016-02-04/compScen_A_0.2_1_0p05_nosexreduc.RData")
-load("/Users/davidchampredon/Dropbox/MyStudies/Syphilis_vax/simul-results/2016-02-04/compScen_A_0.2_1_0p05.RData")
+load("/Users/davidchampredon/GitHub/__fromearnserv/stiagent/compScen_B_0.2_1_0p05.RData")
 
 sim0 <- all.scen[[1]]
-# sim <- all.scen[[2]]
-sim <- all.scen[[3]]  # <-- when 5 scenarios run
+sim <- all.scen[[2]]
+# sim <- all.scen[[3]]  # <-- when 5 scenarios run
 sim[[length(sim)]]
 
 
@@ -155,8 +155,8 @@ g <- g + facet_wrap(~gender+riskgroup, scales = "free_y")
 plot(g)
 
 g <- ggplot(P)
-g <- g + geom_density(aes(log10(nLifetimePartner/age+1), colour=scen),size=2)
-g <- g + facet_wrap(~gender+riskgroup, scales = "free_y")
+g <- g + geom_density(aes(log10(nLifetimePartner/age+1), colour=scen),size=1,adjust=1.9)
+g <- g + facet_wrap(~gender+riskgroup, scales = "free") + scale_y_log10()
 plot(g)
 
 
