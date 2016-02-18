@@ -2388,7 +2388,7 @@ unsigned long Population::census_pregnant(int riskgroup)
 	/// Returns total number of all pregnant women
 	/// of a given risk group
 	
-	unsigned long res;
+	unsigned long res = 0;
 	
 	for (int i=0; i<_size; i++){
 		if (_individual[i].isAlive() &&
