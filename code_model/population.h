@@ -610,7 +610,9 @@ public:
 	vector<double>			census_nMaxCurrSexPartnerDistrib(vector<double> nBreaks, Gender g);	// Distribution of maximum number of concurrent sex partners
 	vector<double>			census_nLifeSexPrtnrDistrib(vector<double> nBreaks, Gender g);	// Distribution of lifetime number of sex partners
 	
-	vector<unsigned long>	census_pregnant();	// UID of all pregnant women
+	unsigned long			census_pregnant();		// total number of pregnant females
+	unsigned long			census_pregnant(int riskgroup);		// total number of pregnant females of given risk group
+	vector<unsigned long>	census_pregnant_UID();	// UID of all pregnant women
 
 	
 	//DEBUG ----

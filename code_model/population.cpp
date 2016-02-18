@@ -2368,22 +2368,52 @@ vector<unsigned long> Population::census_riskGroup()
 }
 
 
+unsigned long Population::census_pregnant()
+{
+	/// Returns total number of all pregnant women
+	
+	unsigned long res;
+	
+	for (int i=0; i<_size; i++){
+		if (_individual[i].isAlive() &&
+			_individual[i].get_isPregnant()){
+			res++;
+		}
+	}
+	return res;
+}
 
-vector<unsigned long> Population::census_pregnant()
+unsigned long Population::census_pregnant(int riskgroup)
+{
+	/// Returns total number of all pregnant women
+	/// of a given risk group
+	
+	unsigned long res;
+	
+	for (int i=0; i<_size; i++){
+		if (_individual[i].isAlive() &&
+			_individual[i].get_isPregnant() &&
+			(_individual[i].get_riskGroup()==riskgroup) ){
+			res++;
+		}
+	}
+	return res;
+}
+
+
+
+vector<unsigned long> Population::census_pregnant_UID()
 {
 	/// Returns UID of all pregnant women
 	
 	vector<unsigned long> res;
 	
-	for (int i=0; i<_size; i++)
-	{
+	for (int i=0; i<_size; i++){
 		if (_individual[i].isAlive() &&
-			_individual[i].get_isPregnant())
-		{
+			_individual[i].get_isPregnant()){
 			res.push_back(_individual[i].get_UID());
 		}
 	}
-	
 	return res;
 }
 
@@ -5577,9 +5607,6 @@ dcDataFrame Population::export_to_dataframe(){
 		header = stiname + "_IC";
 		df.addcol(header, sti_IC);
 	}
-	
-	
-	
 	return df;
 }
 

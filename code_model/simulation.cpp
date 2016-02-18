@@ -160,14 +160,17 @@ void Simulation::update_pregnancies(double timestep)
 	if (uid_pot_preg.size()>0)
 	{
 		// loop through all mothers-to-be
-		// calculates the proba b	ased on number of sex acts (types 1 or 2)
-		// draw random variable for actual pregnancy
+		// calculates the proba to become pregnant
+		// based on number of sex acts (types 1 or 2).
+		// Draw random variable for actual pregnancy
+		
+		double ppsex = _population.get_probaPregnantPerSexAct();
 		
 		for (int i=0; i<uid_pot_preg.size(); i++)
 		{
 			int nsex = _population.getIndividual(uid_pot_preg[i]).get_nSexActs_period();    //.nSexActType1or2(); <--- TO DO: WARNING condom not taken into account here!!!
 			
-			double proba_pregnant = 1 - pow(1-_population.get_probaPregnantPerSexAct(),nsex);
+			double proba_pregnant = 1 - pow(1 - ppsex, nsex);
 			
 			double u = uniform01();
 			if (u<proba_pregnant)
@@ -177,7 +180,7 @@ void Simulation::update_pregnancies(double timestep)
 	
 	// --- EXISTING PREGNANCIES
 	
-	vector<unsigned long> uid_preg = _population.census_pregnant();
+	vector<unsigned long> uid_preg = _population.census_pregnant_UID();
 	
 	_newborn_timestep = 0;  // reset at each time step
 	
@@ -522,7 +525,6 @@ void Simulation::runAllEvents_timeStep_obj(int numTimeStep,
 		}
 	}
 	
-	
 	vector<double> v;
 	
 	if(doSex)	// TO DO: do not impose no log file when no sex
@@ -557,6 +559,12 @@ void Simulation::runAllEvents_timeStep_obj(int numTimeStep,
 		
 		v.push_back(_population.census_circum());
 		v.push_back(_newborn_timestep);
+		
+		v.push_back(_population.census_pregnant(0));
+		v.push_back(_population.census_pregnant(1));
+		v.push_back(_population.census_pregnant(2));
+		v.push_back(_population.census_pregnant(9));
+		
 		v.push_back(_population.get_STI_mtct_cumcount()[0]);
 		v.push_back(_population.get_STI_mtct_cumcount()[1]);
 		
@@ -897,6 +905,12 @@ void Simulation::runAllEvents_horizon_obj(bool doSex,
 		
 		colnames.push_back("nCircum");
 		colnames.push_back("nNewBorn");
+		
+		colnames.push_back("nPregnantRisk0");
+		colnames.push_back("nPregnantRisk1");
+		colnames.push_back("nPregnantRisk2");
+		colnames.push_back("nPregnantRisk9");
+		
 		colnames.push_back("mtctHIV");
 		colnames.push_back("mtctTp");
 

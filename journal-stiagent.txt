@@ -1,3 +1,18 @@
+2016-02-17
+
+Set all parameters that affect sex and partnerships when STI symptoms to neutral levels:
+_sexAct_reduce_STIsymptom_param_male 0.8 -> 1
+_sexAct_reduce_STIsymptom_param_female 0.8 -> 1
+formation_STIsymptom_f 0.82 -> 1
+formation_STIsymptom_f 0.82 -> 1
+dissolution_STI_symptom 0.54 -> 1
+==> always HIV increase
+
+Same as above, reducing proportion of risk group 2:
+risk group 0/1/2 from 25/55/20% to 30/60/10%
+==> always HIV increase
+
+
 2016-02-16
 
 [12:24pm] Lower dissolution (dissolution_MaxRate from 0.4 to 0.1) on pop B to see if HIV still increases
@@ -10,7 +25,12 @@
 ==> always HIV increase
 
 [3:55pm] Lower difference for formation b/w risk groups (formation_RiskGroup_1 from 0.3 to 0.0) on pop B to see if HIV still increases
-==> ...
+==> always HIV increase
+
+Again, trying with neutral value for "_sexAct_reduce_STIsymptom_param_male" and "_sexAct_reduce_STIsymptom_param_female" (from 0.8 to 1.0) because I'm clueless... 
+==> always HIV increase
+
+
 
 
 2016-02-07
