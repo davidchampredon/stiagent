@@ -91,7 +91,7 @@ stiagent_runsim_one_scen <- function(folder_inputs,
 
 
 ### ==== TEST =====
-do.test <- T #FALSE
+do.test <- FALSE
 if(do.test){
     
 	ARG <- commandArgs(trailingOnly = TRUE)
