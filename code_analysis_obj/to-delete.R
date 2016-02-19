@@ -1,11 +1,12 @@
 # xx <- tsv[[3]]
 # xx[1:10,1:10]
 
+
 length(all.scen[[1]])
 
-mc = 24
+mc = 3
 
-q1 = yy[length(yy)]
+
 
 for(i in 1:5){
 	z = all.scen[[i]][[mc]]
@@ -18,7 +19,7 @@ for(i in 1:5){
 	text(x=length(bb), y=bb[length(bb)],
 		 labels = i,pos = 4,cex = 0.7,col=i)
 	
-	q3 = yy[length(yy)]
-	
-	r = q3/q1
+# 	q3 = yy[length(yy)]
+# 	
+# 	r = q3/q1
 }
