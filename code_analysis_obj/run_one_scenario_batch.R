@@ -91,10 +91,13 @@ stiagent_runsim_one_scen <- function(folder_inputs,
 
 
 ### ==== TEST =====
-do.test <- T #FALSE
+do.test <- TRUE #FALSE
 if(do.test){
     
 	ARG <- commandArgs(trailingOnly = TRUE)
+	
+	n.mc <- n.cpu <- ARG[1]
+	scenario_file2 <- ARG[2]
 	
     t0 <- as.numeric(Sys.time())
     
@@ -110,13 +113,9 @@ if(do.test){
     
     # Scenario file defining interventions
     # that will be run during this simulation:
-    scenario_file <- "in_scenario_vaxMass.csv"  # "in_scenario_vaxMass.csv  in_scenario_baseline.csv
-    scenario_file2 <- gsub("in_scenario_","",scenario_file)
-    scenario_file2 <- gsub(".csv","",scenario_file2)
+    scenario_file <- paste0("in_scenario_",scenario_file2,".csv")  # "in_scenario_vaxMass.csv  in_scenario_baseline.csv
     
     ### run in parallel using snowfall:
-    n.mc <- 1
-    n.cpu <- 1
     
     res <- stiagent_runsim_one_scen(folder_inputs,
                                     folder_calib,
@@ -125,7 +124,7 @@ if(do.test){
                                     n.mc,
                                     n.cpu,
                                     path.stiagent.lib,
-    								displayProgress = 11)
+    								displayProgress = 1)
     
     save.image(file = paste0("onescen_",scenario_file2,".RData"))
     t1 <- as.numeric(Sys.time())
