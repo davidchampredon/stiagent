@@ -23,3 +23,9 @@ for(i in 1:5){
 # 	
 # 	r = q3/q1
 }
+
+
+x = all.scen[[2]][[mc]]$population
+z = x$Tpimmun
+sum(z>0)/length(z)
+hist(z)
