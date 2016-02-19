@@ -1,7 +1,19 @@
+2016-02-19
+
+So, it's not the vaccination event that increase HIV prevalence.
+
+Maybe it's the co-infection mechanism that doesn't work as expected? Maybe HIV susceptibility _decreases_ when syphilis infection?
+==> debugged line by line: seems ok. 
+==> Input large values for odds of increased susceptibility: seems OK
+
+
+
 2016-02-18
 
+Discussed with JD. Likely a bug b/c no mechanism should make HIV increase. 
+
 [5:08pm] Set Tp vaccine proba failure to 1 (from 0.2) to see if HIV increases still occurs in pop B.
-==> ...
+==> HIV does NOT increase. 
 
 
 2016-02-17

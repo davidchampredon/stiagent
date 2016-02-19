@@ -4381,12 +4381,10 @@ vector<double> Population::STI_CalcProbaTransmission(unsigned long uid_infect,
 	/// FOR EVERY STI MODELLED
 	/// BETWEEN TWO INDIVIDUALS
 	
-	// trace file of all transmission tentatives
 
 	// BEFORE DELETING IMPLEMENT OBJECT EQUIVALENT TO THIS FILE SAVE:
-	
+	// trace file of all transmission tentatives
 //	bool logTentativeInFile = false;
-//	
 //	string logTentativeInFile_name = _DIR_OUT + "transmission_details.out";
 //	ifstream fcheck(logTentativeInFile_name.c_str());
 //	string tmp;
@@ -4413,6 +4411,9 @@ vector<double> Population::STI_CalcProbaTransmission(unsigned long uid_infect,
 	
 	vector<double> MPT(_nSTImodelled, 0.0);
 	
+	Individual I_inf = _individual[uid_infect];
+	Individual I_sus = _individual[uid_suscep];
+	
 	for (int sti=0; sti<_nSTImodelled; sti++)
 	{
 		// This individual is infected
@@ -4420,21 +4421,23 @@ vector<double> Population::STI_CalcProbaTransmission(unsigned long uid_infect,
 		// Also check the susceptible partner
 		// is not vaccinated against this STI
 		
-		if (_individual[uid_infect].get_STIduration()[sti]>0 &&
-			_individual[uid_suscep].get_STIduration()[sti]==0 &&
-			_individual[uid_suscep].get_STI_immunity()[sti]<1 ){
+		double dummy_debug = I_inf.get_STIduration()[sti];
+		
+		if (I_inf.get_STIduration()[sti]>0 &&
+			I_sus.get_STIduration()[sti]==0 &&
+			I_sus.get_STI_immunity()[sti]<1 ){
 			
 			// Infectivity for this individual and this sti
-			double infectivity = _individual[uid_infect].STI_IC()[sti];
+			double infectivity = I_inf.STI_IC()[sti];
 			
 			// Susceptibility factor of the partner for this sti
-			double susceptFactor = _individual[uid_suscep].get_STIsusceptFactor()[sti];
+			double susceptFactor = I_sus.get_STIsusceptFactor()[sti];
 						
 			// Max probability of transmission per sex act
-			double maxProba = _individual[uid_infect].get_STI()[sti].get_probaMaxSexTransm();
+			double maxProba = I_inf.get_STI()[sti].get_probaMaxSexTransm();
 			
 			// Reduction factor associated with sex act type
-			vector<double> SAT = _individual[uid_infect].get_STI()[sti].get_probaSexTransm_SAT();
+			vector<double> SAT = I_inf.get_STI()[sti].get_probaSexTransm_SAT();
 			
 			// Number of sex acts of a given type
 			vector<int> nSexType(3);
@@ -4452,17 +4455,17 @@ vector<double> Population::STI_CalcProbaTransmission(unsigned long uid_infect,
 			nSexType[1] = _individual[uid_male].get_UID_n_sexAct_Type1_period(p_position);
 			nSexType[2] = _individual[uid_male].get_UID_n_sexAct_Type2_period(p_position);
 			
-			
-			// --- Loop through all sex act types ---
-			
+			// Probability of STI transmission
+			// given multiple sex acts and STI co-infections:
 			double MPT_sti = 1.0;
 			
+			// Loop through al sex acts:
 			for (int T=0; T<3; T++)
 			{
 				if (nSexType[T]>0) // Calculate proba only if sex act occured
 				{
 					// Probability without any other STI co-infection
-					double proba_T = infectivity*susceptFactor*SAT[T]*maxProba;
+					double proba_T = infectivity * susceptFactor * SAT[T] * maxProba;
 					
 					// = = Co infections = =
 					
@@ -4470,7 +4473,18 @@ vector<double> Population::STI_CalcProbaTransmission(unsigned long uid_infect,
 					double oddsratio = STI_coInfection_oddsRatio(uid_suscep,sti);
 					
 					// proba taking into account the odds-ratio
-					double proba_T_coinf = oddsratio * proba_T / (1 + (oddsratio-1) * proba_T);
+					double proba_T_coinf = oddsratio * proba_T / (1.0 + (oddsratio-1.0) * proba_T);
+					
+					// DEBUG ==========
+//					
+//					if(_individual[uid_suscep].get_STIduration(Tp)>0 &&
+//					   _individual[uid_suscep].get_STIduration(HIV) == 0.0){
+//						double dummy = oddsratio;
+//						
+//						dummy ++;
+//					}
+					// ================
+					
 					
 					// product
 					double tmp = pow(1.0 - proba_T_coinf, nSexType[T]);
@@ -4511,7 +4525,7 @@ vector<double> Population::STI_CalcProbaTransmission(unsigned long uid_infect,
 					 */
 				}
 			}
-			MPT_sti = 1-MPT_sti;  // see formula of MPT in documentation
+			MPT_sti = 1.0 - MPT_sti;  // see formula of MPT in documentation
 			MPT[sti] = MPT_sti;
 		} // end if
 	} // end for(sti)
@@ -4579,9 +4593,7 @@ vector<unsigned long>  Population::STI_transmissions(double timeStep,
 				// is indeed discordant
 				// (else, nothing to do!)
 				
-				if (/*_individual[uid].STI_anyInfection() &&  */
-					STI_isDiscordPartner(uid, uid_p))
-				{
+				if (STI_isDiscordPartner(uid, uid_p)){
 					// We don't know who's infected with which STI,
 					// hence look at both partners and take the 'max'
 					// of transmission probability.
@@ -4589,28 +4601,38 @@ vector<unsigned long>  Population::STI_transmissions(double timeStep,
 					
 					vector<double> probaTransm_to	= STI_CalcProbaTransmission(uid, uid_p);
 					vector<double> probaTransm_from = STI_CalcProbaTransmission(uid_p, uid);
+					vector<double> probaTransm		= max_vector(probaTransm_to, probaTransm_from);
 					
-					vector<double> probaTransm = max_vector(probaTransm_to, probaTransm_from);
+					// DEBUG ===
+					if (_individual[uid].get_STIduration(HIV)>0 &&
+						_individual[uid_p].get_STIduration(Tp)>0) {
+//						cout << endl <<_simulationTime<<  " Attempt to transmit: "<<uid<<"->"<<uid_p<<endl;
+//						
+//						cout<<"HIV durations:"<<_individual[uid].get_STIduration(HIV)<<";"<<_individual[uid_p].get_STIduration(HIV)<<endl;
+//						cout<<"Tp durations:"<<_individual[uid].get_STIduration(Tp)<<";"<<_individual[uid_p].get_STIduration(Tp)<<endl;
+//						displayVector(probaTransm_to);
+//						displayVector(probaTransm_from);
+//						displayVector(probaTransm);
+//						
+//						vector<double> dummy	= STI_CalcProbaTransmission(uid, uid_p);
+						
+					}
+					// =========
+					 
 					
-					/*DEBUG
-					 cout <<_simulationTime<<  " Attempt to transmit: "<<uid<<">"<<uid_p<<endl;
-					 displayVector(probaTransm);*/
 					
 					for (int sti=0; sti<_nSTImodelled; sti++)
 					{
-						// Loop only through STIs t`hat
+						// Loop only through STIs that
 						// have a chance to be transmissible
-						
-						if (probaTransm[sti]>0)
-						{
+						if (probaTransm[sti]>0){
 							// Actual transmission if random variable
 							// translates into 'success' (of transmission)
 							
 							double u = uniform01();
 							bool successTransmission = (u<probaTransm[sti]);
 							
-							if (successTransmission)
-							{
+							if (successTransmission){
 								STI_transmission_indiv(_STI[sti].get_name(),
 													   uid, uid_p,
 													   timeStep,
