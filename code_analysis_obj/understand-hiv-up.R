@@ -9,8 +9,6 @@ load("/Users/davidchampredon/GitHub/__fromearnserv/stiagent/compScen_B_0.2_1_0p0
 sim0 <- all.scen[[1]]
 sim <- all.scen[[2]]
 # sim <- all.scen[[3]]  # <-- when 5 scenarios run
-sim[[length(sim)]]
-
 
 z0 <- list()
 z <- list()
@@ -55,13 +53,15 @@ D$mtctHIV.inc[D$mtctHIV.inc<0] <- 0
 D$mtctHIV.inc.birth <- D$mtctHIV.inc / D$nNewBorn
 D$mtctHIV.inc.birth[D$nNewBorn] <-0 
 D$tb <- round(D$time)
-# "time"         "nAlive"       "nDead"        "nPartn"       "nSp"          "nFemale"      "HIV"         
-# [8] "Tp"           "nHIVTp"       "nHIVTp0"      "nHIVTp1"      "nHIVTp2"      "nHIVTp9"      "nCSW"        
-# [15] "nRskGrp0"     "nRskGrp1"     "nRskGrp2"     "nCircum"      "nNewBorn"     "mtctHIV"      "mtctTp"      
-# [22] "HIVprev"      "Tpprev"       "HIVprevRisk0" "HIVprevRisk1" "HIVprevRisk2" "HIVprevRisk9" "TpprevRisk0" 
-# [29] "TpprevRisk1"  "TpprevRisk2"  "TpprevRisk9"  "Reff_HIV"     "Reff_Tp"      "nSexActRisk0" "nSexActRisk1"
-# [36] "nSexActRisk2" "nSexActRisk9" "mc"           "scen"      
 
+# [1] "time"           "nAlive"         "nDead"          "nPartn"         "nSp"            "nFemale"       
+# [7] "HIV"            "Tp"             "nHIVTp"         "nHIVTp0"        "nHIVTp1"        "nHIVTp2"       
+# [13] "nHIVTp9"        "nCSW"           "nRskGrp0"       "nRskGrp1"       "nRskGrp2"       "nCircum"       
+# [19] "nNewBorn"       "nPregnantRisk0" "nPregnantRisk1" "nPregnantRisk2" "nPregnantRisk9" "mtctHIV"       
+# [25] "mtctTp"         "HIVprev"        "Tpprev"         "HIVprevRisk0"   "HIVprevRisk1"   "HIVprevRisk2"  
+# [31] "HIVprevRisk9"   "TpprevRisk0"    "TpprevRisk1"    "TpprevRisk2"    "TpprevRisk9"    "Reff_HIV"      
+# [37] "Reff_Tp"        "nSexActRisk0"   "nSexActRisk1"   "nSexActRisk2"   "nSexActRisk9"   "mc"            
+# [43] "scen"          
 
 g <- ggplot(D)+geom_line(aes(x=time,
 							 y =  HIVprev ,
@@ -81,6 +81,25 @@ g <- ggplot(D)+geom_line(aes(x=time,
 							 y =  HIVprevRisk2 ,
 							 colour=scen))+facet_wrap(~mc)
 plot(g)
+
+
+g <- ggplot(D)+geom_line(aes(x=time,
+							 y =  nPregnantRisk0 ,
+							 colour=scen))+facet_wrap(~mc)
+plot(g)
+g <- ggplot(D)+geom_line(aes(x=time,
+							 y =  nPregnantRisk1 ,
+							 colour=scen))+facet_wrap(~mc)
+plot(g)
+g <- ggplot(D)+geom_line(aes(x=time,
+							 y =  nPregnantRisk2 ,
+							 colour=scen))+facet_wrap(~mc)
+plot(g)
+g <- ggplot(D)+geom_line(aes(x=time,
+							 y =  nPregnantRisk9 ,
+							 colour=scen))+facet_wrap(~mc)
+plot(g)
+
 
 zz = subset(D, time >49)
 zz$r = zz$HIV/ zz$nAlive

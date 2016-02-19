@@ -1,3 +1,9 @@
+2016-02-18
+
+[5:08pm] Set Tp vaccine proba failure to 1 (from 0.2) to see if HIV increases still occurs in pop B.
+==> ...
+
+
 2016-02-17
 
 Set all parameters that affect sex and partnerships when STI symptoms to neutral levels:
