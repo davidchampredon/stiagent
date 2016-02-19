@@ -125,7 +125,7 @@ if(do.test){
                                     n.mc,
                                     n.cpu,
                                     path.stiagent.lib,
-    								displayProgress = 11)
+    								displayProgress = 0)
     
     save.image(file = paste0("onescen_",scenario_file2,".RData"))
     t1 <- as.numeric(Sys.time())
