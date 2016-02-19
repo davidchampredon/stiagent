@@ -898,7 +898,7 @@ vector<double> Individual::STI_IC()
 					}
 				}
 				// Integrity check:
-				stopif(incr_infect<0, "Infectiousness increase is suppoed to be negative.");
+				stopif(incr_infect<0, "Infectiousness increase is supposed to be positive.");
 				
 				// Final infectivity curve for STI "i"
 				// taking into account all other co-infections:
