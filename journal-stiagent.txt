@@ -7,7 +7,9 @@ Maybe it's the co-infection mechanism that doesn't work as expected? Maybe HIV s
 ==> Input large values for odds of increased susceptibility: seems OK
 
 
-OK GOT IT! This is indeed linked to the fact that there are more sex acts when syphilis is reduced (syphilis symptoms reduces number of sex acts on average) 
+* * * OK GOT IT! * * * *
+
+This is indeed linked to the fact that there are more sex acts when syphilis is reduced (syphilis symptoms reduces number of sex acts on average) 
 
 Proven setting '_sexAct_reduce_STIsymptom_param_male' (and female) from 0.8 to 1.0 and the script "understanding-hiv-up-small.R" running "run_one_scenario_batch.R" with smaller population (to speed up). When doing this,  HIV prevalence at the final date is about the same in baseline scenario (no vax) as in mass vaccination syphilis.
 
