@@ -3067,13 +3067,18 @@ void Simulation::update_vacc(STIname stiname){
 		
 		Individual tmp = _population.getIndividual(uid);
 		
-		if (tmp.isAlive() && tmp.get_STI_vacc()[sti_i]){
+		if (tmp.isAlive() &&
+			tmp.get_STI_vacc()[sti_i]){
+			
+			// immunity resulting from vaccination
+			// (1 if success; 0 if failed)
+			double imm_vax = tmp.get_STI_immunity(stiname);
 			// time since vaccination:
 			double tv = _simulationTime - tmp.get_STI_vacc_time()[sti_i];
 			// waning rate:
 			double w = _population.get_STI()[sti_i].get_vacc_waneRate();
 			// immunity:
-			double imm = exp(-tv * w);
+			double imm = imm_vax * exp(-tv * w);
 			// update the value of waning immunity:
 			_population.set_STI_immunity(uid, stiname, imm);
 			
