@@ -1,3 +1,18 @@
+2016-03-15
+
+do sensi "manually" (overwritting in_STI_vaccine.csv). MC=30, timestep=5 days, init pop=1250)
+
+(DON'T FORGET 'setup-param' each time new param set)
+
+	* vax fail @ 0: - - - launched on earnserv2 @ 9:40am (Mar15th)
+	* vax fail @ 0.2 (baseline): - - - 
+	* vax fail @ 0.5:  - - - 
+	* vax VRE @ 0.5:  - - -   
+	* vax wane @ 0.7:  - - -   
+	* vax wane @ 0:  - - - 
+
+
+
 2016-02-19
 
 So, it's not the vaccination event that increase HIV prevalence.
