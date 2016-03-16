@@ -4,9 +4,9 @@ do sensi "manually" (overwritting in_STI_vaccine.csv). MC=30, timestep=5 days, i
 
 (DON'T FORGET 'setup-param' each time new param set)
 
-	* vax fail @ 0: - - - launched on earnserv2 @ 9:40am (Mar15th)
+	* vax fail @ 0: A B C  (took 18 hours on 3 x 4cpus)
 	* vax fail @ 0.2 (baseline): - - - 
-	* vax fail @ 0.5:  - - - 
+	* vax fail @ 0.5:  - - -  launched on earnserv1 @ 6:45am (Mar16th) 
 	* vax VRE @ 0.5:  - - -   
 	* vax wane @ 0.7:  - - -   
 	* vax wane @ 0:  - - - 
