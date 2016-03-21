@@ -8,8 +8,8 @@ do sensi "manually" (overwritting in_STI_vaccine.csv). MC=30, timestep=5 days, i
 	* vax fail @ 0.2 (baseline): - - - 
 	* vax fail @ 0.5:  A B C  (took 15 hours on 3 x 4cpus)
 	* vax VRE @ 0.5:  A B C  (took 15 hours on 3 x 4cpus)
-	* vax wane @ 0.7:  - - -  (launched Mar17th @ 8:45pm) 
-	* vax wane @ 0:  - - - 
+	* vax wane @ 0.7:  A B C   (took 15 hours on 3 x 4cpus) 
+	* vax wane @ 0:  A B C   (took 15 hours on 3 x 4cpus) 
 
 
 
